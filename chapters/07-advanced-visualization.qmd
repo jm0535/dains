@@ -406,31 +406,24 @@ ggplot() +
   theme(panel.grid = element_blank())
 ```
 
-## Advanced Visualization in Jamovi
-
-While Jamovi has more limited visualization capabilities compared to R, it offers:
-
-1. **Customization Options**: Adjust colors, labels, and themes
-2. **Export Features**: Save high-resolution images for publications
-3. **Interactive Elements**: Zoom and pan functionality in some plots
-
 ## Summary
 
-In this chapter, we've explored advanced data visualization techniques for ecological research:
+In this chapter, we've explored advanced visualization techniques in R that go beyond basic plots. These techniques allow researchers to create more informative, interactive, and publication-quality visualizations for ecological and forestry data.
 
-- Creating publication-quality graphics with customized themes and color palettes
-- Arranging multiple plots for comprehensive data presentation
-- Building interactive visualizations for data exploration
-- Developing specialized plots for ecological data (ordination, heatmaps, networks)
-- Visualizing spatial data with maps
+Key points covered include:
 
-These advanced visualization techniques allow you to communicate complex ecological patterns and relationships more effectively, enhancing both data exploration and the presentation of research findings.
+- Creating complex multi-panel visualizations
+- Developing interactive plots for exploration
+- Designing effective spatial visualizations
+- Implementing animation for temporal data
+- Customizing visualizations for publication
+
+As you continue to develop your data visualization skills, remember that effective visualization is both an art and a science. The goal is not just to make visually appealing graphics, but to create visualizations that accurately and clearly communicate your findings to your audience.
 
 ## Exercises
 
-1. Create a publication-quality figure with multiple panels using the patchwork package.
-2. Design a custom theme for ggplot2 that matches the style guidelines of a scientific journal.
-3. Convert a static ggplot2 visualization to an interactive plotly plot.
-4. Create a heatmap to visualize a species-by-site abundance matrix.
-5. Visualize a PCA or NMDS ordination of an ecological dataset.
-6. Create a map showing the distribution of species or environmental variables.
+1. Create a faceted plot showing the relationship between two variables across different categories in one of the datasets.
+2. Develop an interactive plot that allows users to explore relationships in ecological data.
+3. Create a custom theme for ggplot2 that matches the style guidelines of a scientific journal in your field.
+4. Design a spatial visualization showing the distribution of a species or environmental variable.
+5. Create an animated plot showing changes in an ecological variable over time.

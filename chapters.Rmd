@@ -306,7 +306,7 @@ In this code, we create both a box plot and a violin plot of tooth length (**`le
 
 -   **Creating Maps:**
 
-    -   Step-by-step instructions for creating ecological maps using geographic data in R and Jamovi.
+    -   Step-by-step instructions for creating ecological maps using geographic data in R.
 
     -   Examples illustrating habitat distribution and species diversity mapping.
 
@@ -378,7 +378,7 @@ Chapter 7, titled "Advanced Topics," marks a significant step in your journey th
 
 -   **GIS Integration:**
 
-    -   Discuss the integration of Geographic Information Systems (GIS) with R and Jamovi.
+    -   Discuss the integration of Geographic Information Systems (GIS) with R.
 
     -   Examples of spatial data visualization and analysis.
 
@@ -428,9 +428,9 @@ Chapter 7, titled "Advanced Topics," marks a significant step in your journey th
 
 ## **Introduction:**
 
-Chapter 8, titled "Case Studies," offers a practical dimension to your ecological data analysis journey. In this chapter, you will dive into real-world ecological scenarios, witnessing how R and Jamovi are applied to solve practical problems and make data-driven decisions. The primary objectives of this chapter are:
+Chapter 8, titled "Case Studies," offers a practical dimension to your ecological data analysis journey. In this chapter, you will dive into real-world ecological scenarios, witnessing how R is applied to solve practical problems and make data-driven decisions. The primary objectives of this chapter are:
 
--   Presenting real ecological case studies that showcase the application of R and Jamovi.
+-   Presenting real ecological case studies that showcase the application of R.
 
 -   Offering insights into the decision-making process within ecological research.
 
@@ -544,7 +544,7 @@ Chapter 8, titled "Case Studies," offers a practical dimension to your ecologica
 
 -   Summarize the key takeaways from Chapter 8.
 
--   Highlight that real-world case studies serve as practical guides for applying ecological data analysis techniques using R and Jamovi. By exploring these cases, you gain insights into ecological problem-solving, data handling, and decision-making processes. These case studies exemplify the power of data-driven ecological research and its positive impact on understanding and conserving our natural world.
+-   Highlight that real-world case studies serve as practical guides for applying ecological data analysis techniques using R. By exploring these cases, you gain insights into ecological problem-solving, data handling, and decision-making processes. These case studies exemplify the power of data-driven ecological research and its positive impact on understanding and conserving our natural world.
 
 # Supplementary Information
 
@@ -636,53 +636,7 @@ Non-parametric tests should be employed when data doesn't meet parametric assump
 
 -   **Wilcoxon Signed-Rank Test:** Assess changes in insect abundance before and after a controlled burn in a grassland ecosystem. This non-parametric test is used for paired data to determine if the medians are different.
 
-Understanding the choice between parametric and non-parametric tests is essential in forestry and ecology research. Parametric tests make specific assumptions about data distribution, while non-parametric tests are more flexible and suitable when assumptions are not met or when dealing with non-continuous data. The choice of test should align with the nature of the data and the research question.
-
-### **Considerations for Choosing Between Parametric and Non-Parametric Tests in Forestry and Ecology**
-
-1.  **Data Characteristics**
-
-    -   **Normality:** If your data follows a normal distribution and meets the assumptions of parametric tests, then parametric tests can provide more statistical power. Ensure you check normality using tools like normal probability plots or Shapiro-Wilk tests.
-
-    -   **Data Type:** Consider the type of data you have. Parametric tests are designed for continuous, interval, or ratio data. Non-parametric tests can handle ordinal or ranked data and are robust to outliers.
-
-2.  **Sample Size**
-
-    -   **Large Samples:** Parametric tests tend to perform well with larger sample sizes. If you have a substantial amount of data, parametric tests may detect even small differences.
-
-    -   **Small Samples:** In cases with small sample sizes, non-parametric tests can be more appropriate. They are less sensitive to outliers and deviations from normality.
-
-3.  **Research Questions**
-
-    -   **Nature of Comparison:** The nature of your research question matters. If you're comparing means or conducting regression analysis, parametric tests are common. For comparing distributions or medians, non-parametric tests are often preferred.
-
-    -   **Experimental Design:** The design of your study, such as whether it's a repeated-measures design or an independent measures design, can influence test choice. Some tests, like the paired t-test, are parametric and have non-parametric counterparts.
-
-4.  **Assumptions**
-
-    -   **Assumption Check:** Always check the assumptions of parametric tests, such as normality and homogeneity of variances. If assumptions are violated, consider non-parametric alternatives.
-
-5.  **Robustness**
-
-    -   **Robustness to Outliers:** Non-parametric tests are less affected by outliers. If your data includes extreme values, non-parametric tests may provide more reliable results.
-
-6.  **Type of Data Analysis**
-
-    -   **Regression:** If you're conducting regression analysis, parametric linear regression models are widely used. Non-parametric regression techniques, like kernel regression, exist but are less common.
-
-7.  **Statistical Power**
-
-    -   **Statistical Power:** Consider the balance between statistical power and assumptions. Parametric tests tend to have higher power when assumptions are met, but lower power when assumptions are violated.
-
-8.  **Interpretability**
-
-    -   **Interpretability:** Think about the ease of interpretation. Parametric tests often provide straightforward interpretations, such as differences in means. Non-parametric tests may yield results that are less intuitive to interpret.
-
-9.  **Data Transformations**
-
-    -   **Data Transformations:** If your data doesn't meet parametric assumptions, consider data transformations to achieve normality. However, be cautious with transformations, as they can impact interpretation.
-
-The choice between parametric and non-parametric tests in forestry and ecology should be driven by a thorough understanding of your data, research questions, and assumptions. While parametric tests offer higher power under specific conditions, non-parametric tests provide robustness when assumptions are in doubt. It's essential to carefully consider these factors to make informed decisions about test selection in your research.
+Understanding the choice between parametric and non-parametric tests is essential in forestry and ecology research. Parametric tests make specific assumptions about data distribution, while non-parametric tests provide robustness when assumptions are in doubt or when dealing with non-continuous data. The choice of test should align with the nature of the data and the research question.
 
 ### **Practical Example**
 
@@ -702,7 +656,7 @@ The choice between parametric and non-parametric tests in forestry and ecology s
 
 1.  **Data Collection:** Gather canopy cover measurements for both the logged and old-growth forests. Ensure that the data is properly recorded and labeled.
 
-2.  **Data Inspection:** Start by inspecting the data. Plot histograms or density plots to assess data distribution. You may use tools in R or Jamovi for this purpose.
+2.  **Data Inspection:** Start by inspecting the data. Plot histograms or density plots to assess data distribution. You may use tools in R for this purpose.
 
 3.  **Choosing the Test:** Based on the data distribution:
 
@@ -714,7 +668,7 @@ The choice between parametric and non-parametric tests in forestry and ecology s
 
     -   In R: Use the **`t.test()`** function for the t-test or **`wilcox.test()`** function for the Mann-Whitney U test.
 
-    -   In Jamovi: You can use the point-and-click interface to perform these tests. Import your data and choose the appropriate test based on data distribution.
+    -   In R: You can use the point-and-click interface to perform these tests. Import your data and choose the appropriate test based on data distribution.
 
 5.  **Interpret Results:**
 
@@ -749,8 +703,6 @@ Remember that the choice between the t-test and Mann-Whitney U test depends on t
 -   **Meaningful Results:** Correctly executed hypothesis testing yields meaningful results that can drive scientific discoveries, support evidence-based management practices, and contribute to the conservation of ecological systems.
 
 -   **Interdisciplinary Application:** The principles of hypothesis testing transcend disciplinary boundaries. Researchers in forestry and ecology can benefit from statistical rigor, ensuring that their findings are robust and actionable.
-
--   **Continuous Learning:** As statistical methods and tools evolve, researchers should stay current with best practices in hypothesis testing. Ongoing education and collaboration with statisticians or data scientists can enhance the quality of research.
 
 -   **Ethical Considerations:** Sound hypothesis testing is not only about finding statistical significance; it also carries ethical implications. Responsible interpretation of results and transparent reporting are essential for maintaining scientific integrity.
 
@@ -1002,7 +954,7 @@ In summary, these statistical concepts - confidence intervals, p-values, and cor
 
 Confidence intervals provide a way to estimate population parameters, p-values help assess evidence against the null hypothesis, and correlation tests quantify relationships between variables. These tools are fundamental for researchers in forestry and ecology to draw meaningful conclusions from data and make informed decisions.
 
-## Advanced R and Jamovi Data Analysis: T-test, ANOVA, and Linear Regression
+## Advanced R Data Analysis: T-test, ANOVA, and Linear Regression
 
 *Unlocking the Power of t-test, ANOVA, and Linear Regression*
 
@@ -1104,7 +1056,7 @@ These advanced statistical techniques are indispensable in forestry and ecology 
 
     2.  **Multiple Linear Regression Analysis:** With your dataset in hand, you'd perform a multiple linear regression analysis. This advanced statistical technique allows you to assess how these multiple independent variables (soil pH, temperature, and precipitation) collectively influence the dependent variable (plant growth). In the regression model, you'll examine how changes in each independent variable relate to changes in plant growth while controlling for the others.
 
-        -   Performing the Analysis: You can use statistical software like R or Jamovi to conduct the multiple linear regression analysis. In R, you'd use functions like **`lm()`** to specify the model and estimate coefficients.
+        -   Performing the Analysis: You can use R to conduct the multiple linear regression analysis. You'd use functions like **`lm()`** to specify the model and estimate coefficients.
 
         -   Model Output: The output of this analysis includes coefficients for each independent variable (soil pH, temperature, and precipitation). These coefficients represent the strength and direction of their respective effects on plant growth. Additionally, you'll get statistics such as R-squared (which measures the goodness of fit) and p-values (to determine the significance of each predictor).
 

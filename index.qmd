@@ -1,6 +1,6 @@
 # Preface {.unnumbered}
 
-Welcome to **Data Analysis in Natural Sciences: An R-Based Approach**, a comprehensive guide designed for students, professionals, and researchers across the natural sciences. This book provides practical methods for analyzing and visualizing data using R, with applications spanning forestry, agriculture, ecology, marine biology, environmental science, and more.
+Welcome to **Data Analysis in Natural Sciences: An R-Based Approach**, a comprehensive guide designed for students, professionals, and researchers across the natural sciences. This book provides practical methods for analyzing and visualizing data using R, with applications spanning forestry, agriculture, ecology, marine biology, environmental science, geology, atmospheric science, hydrology, and more.
 
 ## About the Author
 
@@ -14,7 +14,7 @@ This book is designed for:
 - **Researchers** seeking to enhance their data analysis capabilities
 - **Technicians** working in laboratories and field settings
 - **Professionals** in government agencies, NGOs, and private sector
-- **Hobbyists** with an interest in analyzing environmental data
+- **Hobbyists** with an interest in analyzing scientific data
 
 The content is relevant to those working in:
 
@@ -27,7 +27,11 @@ The content is relevant to those working in:
 - Botany and plant sciences
 - Entomology and zoology
 - Epidemiology and veterinary sciences
-- Forest economics and natural resource management
+- Geology and earth sciences
+- Atmospheric and climate sciences
+- Hydrology and water resources
+- Natural resource management
+- Conservation biology
 
 ## What You Will Learn
 
@@ -38,7 +42,7 @@ This book will guide you through:
 - Exploratory data analysis approaches
 - Statistical hypothesis testing
 - Advanced visualization methods
-- Specialized analyses for environmental data
+- Specialized analyses for environmental and scientific data
 - Reproducible research practices
 
 ## How to Use This Book

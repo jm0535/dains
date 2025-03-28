@@ -2,343 +2,306 @@
 
 ## Introduction
 
-This chapter covers the fundamental concepts of working with data in R and Jamovi. You'll learn how to import, clean, and prepare data for analysis, which are essential skills for any data analysis project.
+This chapter covers the fundamental concepts of working with data in R. You'll learn how to import, clean, and prepare data for analysis, which are essential skills for any data analysis project across all natural science disciplines.
 
 ## Understanding Data Structures
 
-### Data Types in R
+Before diving into data analysis, it's important to understand the basic data structures in R:
 
-R has several basic data types that you'll encounter frequently:
+### Data Types
 
-1. **Numeric**: Numbers such as 1, 2.5, -3.14
-2. **Character**: Text values like "species", "forest", "treatment"
-3. **Logical**: Boolean values TRUE or FALSE
-4. **Factor**: Categorical variables with predefined levels
-5. **Date/Time**: Specialized formats for dates and times
+R has several basic data types:
+
+- **Numeric**: Decimal values (e.g., measurements of temperature, pH, concentration, or distance)
+- **Integer**: Whole numbers (e.g., counts of organisms, samples, or observations)
+- **Character**: Text strings (e.g., species names, site descriptions, or treatment labels)
+- **Logical**: TRUE/FALSE values (e.g., presence/absence data or condition met/not met)
+- **Factor**: Categorical variables with levels (e.g., experimental treatments, taxonomic classifications, or soil types)
+- **Date/Time**: Temporal data (e.g., sampling dates, observation times, or seasonal markers)
 
 ```{r}
 # Examples of different data types
-numeric_example <- 42.5
-character_example <- "Ecological data"
-logical_example <- TRUE
+numeric_example <- 25.4  # Temperature in Celsius
+character_example <- "Adelie"  # Penguin species
+logical_example <- TRUE  # Presence/absence data
 factor_example <- factor(c("Control", "Treatment", "Control"), 
                          levels = c("Control", "Treatment"))
-date_example <- as.Date("2025-03-27")
+date_example <- as.Date("2020-07-15")  # Sampling date
 
-# Check the data types
-str(numeric_example)
-str(character_example)
-str(logical_example)
-str(factor_example)
-str(date_example)
+# Print examples
+print(numeric_example)
+print(character_example)
+print(logical_example)
+print(factor_example)
+print(date_example)
 ```
 
 ### Data Structures in R
 
-R uses several data structures to organize and store data:
-
-1. **Vectors**: One-dimensional arrays of elements of the same type
-2. **Matrices**: Two-dimensional arrays of elements of the same type
-3. **Data Frames**: Two-dimensional structures that can contain different types of data
-4. **Lists**: Collections of objects that can be of different types
-5. **Arrays**: Multi-dimensional structures of elements of the same type
+R has several data structures for organizing information:
 
 ```{r}
-# Vector example
-tree_heights <- c(15.2, 18.7, 12.3, 20.1, 17.5)
-print(tree_heights)
+# Load real datasets
+library(readr)
+penguins <- read_csv("../data/environmental/climate_data.csv")
+crops <- read_csv("../data/agriculture/crop_yields.csv")
 
-# Matrix example
-soil_samples <- matrix(1:12, nrow = 4, ncol = 3)
-colnames(soil_samples) <- c("pH", "Nitrogen", "Phosphorus")
-print(soil_samples)
+# Vector example - penguin bill lengths
+bill_lengths <- na.omit(penguins$bill_length_mm[1:10])
+print(bill_lengths)
 
-# Data frame example
-forest_data <- data.frame(
-  species = c("Oak", "Pine", "Maple", "Birch"),
-  height = c(18.2, 22.5, 15.7, 12.8),
-  diameter = c(45, 30, 25, 20),
-  age = c(120, 80, 60, 40)
+# Matrix example - create a matrix from penguin measurements
+penguin_matrix <- as.matrix(penguins[1:5, 3:6])
+print(penguin_matrix)
+
+# Data frame example - first few rows of penguin data
+penguin_data <- penguins[1:5, ]
+print(penguin_data)
+
+# List example - store different aspects of the dataset
+penguin_summary <- list(
+  species = unique(penguins$species),
+  avg_bill_length = mean(penguins$bill_length_mm, na.rm = TRUE),
+  sample_size = nrow(penguins),
+  years = unique(penguins$year)
 )
-print(forest_data)
-
-# List example
-ecosystem <- list(
-  forest_type = "Temperate",
-  dominant_species = c("Oak", "Maple", "Beech"),
-  average_rainfall = 1200,
-  temperature_range = c(-5, 30)
-)
-print(ecosystem)
+print(penguin_summary)
 ```
 
 ## Importing Data
 
-### Reading Data from Files
+### Reading Data Files
 
 R provides several functions for importing data from different file formats:
 
 ```{r}
-#| eval: false
+# CSV files - Palmer Penguins dataset
+penguins_csv <- read.csv("../data/environmental/climate_data.csv")
+head(penguins_csv, 3)
 
-# CSV files
-data_csv <- read.csv("data/forest_inventory.csv")
-
-# Tab-delimited files
-data_tab <- read.delim("data/species_counts.txt", header = TRUE)
-
-# Excel files (requires readxl package)
-library(readxl)
-data_excel <- read_excel("data/climate_data.xlsx", sheet = "Temperature")
-
-# Using the tidyverse approach
+# Using the tidyverse approach for better handling
 library(tidyverse)
-data_csv_tidy <- readr::read_csv("data/forest_inventory.csv")
+penguins_tidy <- readr::read_csv("../data/environmental/climate_data.csv")
+head(penguins_tidy, 3)
+
+# Crop yields dataset
+crops_csv <- read.csv("../data/agriculture/crop_yields.csv")
+head(crops_csv, 3)
 ```
 
-### Using Our Downloaded Forestry Dataset
+### Exploring Real-World Datasets
 
-Let's explore the forestry dataset we've downloaded:
+Let's explore some of the real-world datasets we have available:
 
 ```{r}
-# Basic read.csv function
-forest_data <- read.csv("../data/forestry/forest_inventory.csv")
-head(forest_data)
+# Palmer Penguins dataset
+penguins <- read_csv("../data/environmental/climate_data.csv")
+glimpse(penguins)
 
-# Using readr package for better performance and control
-library(readr)
-forest_data_tidy <- read_csv("../data/forestry/forest_inventory.csv")
-head(forest_data_tidy)
+# Basic summary statistics
+summary(penguins$bill_length_mm)
+summary(penguins$flipper_length_mm)
+
+# Crop yields dataset
+crops <- read_csv("../data/agriculture/crop_yields.csv")
+glimpse(crops)
 ```
-
-### Importing Data in Jamovi
-
-In Jamovi, you can import data by:
-
-1. Clicking on the "Data" tab
-2. Selecting "Import" from the menu
-3. Choosing the file format (CSV, Excel, SPSS, etc.)
-4. Navigating to and selecting your file
-5. Adjusting import options if necessary
 
 ## Data Cleaning and Preparation
 
 ### Handling Missing Values
 
-Missing values are common in ecological datasets and need to be addressed before analysis:
+Missing values are common in scientific datasets and need to be addressed before analysis:
 
 ```{r}
-# Create a dataset with missing values
-tree_data <- data.frame(
-  height = c(15.2, NA, 12.3, 20.1, NA),
-  diameter = c(45, 30, NA, 20, 35),
-  age = c(120, 80, 60, NA, 90)
-)
+# Check for missing values in the penguins dataset
+sum(is.na(penguins))
+colSums(is.na(penguins))
 
-# Check for missing values
-sum(is.na(tree_data))
-colSums(is.na(tree_data))
+# Create a complete cases dataset
+penguins_complete <- na.omit(penguins)
+print(paste("Original dataset rows:", nrow(penguins)))
+print(paste("Complete cases rows:", nrow(penguins_complete)))
 
-# Remove rows with any missing values
-tree_data_complete <- na.omit(tree_data)
-print(tree_data_complete)
+# Replace missing values with the mean for numeric columns
+penguins_imputed <- penguins
+penguins_imputed$bill_length_mm[is.na(penguins_imputed$bill_length_mm)] <- 
+  mean(penguins_imputed$bill_length_mm, na.rm = TRUE)
+penguins_imputed$bill_depth_mm[is.na(penguins_imputed$bill_depth_mm)] <- 
+  mean(penguins_imputed$bill_depth_mm, na.rm = TRUE)
 
-# Replace missing values with the mean
-tree_data$height[is.na(tree_data$height)] <- mean(tree_data$height, na.rm = TRUE)
-tree_data$diameter[is.na(tree_data$diameter)] <- mean(tree_data$diameter, na.rm = TRUE)
-tree_data$age[is.na(tree_data$age)] <- mean(tree_data$age, na.rm = TRUE)
-print(tree_data)
+# Check if missing values were replaced
+sum(is.na(penguins_imputed$bill_length_mm))
 ```
 
 ### Data Transformation
 
-Often, you'll need to transform your data to meet the assumptions of statistical tests or to make patterns more apparent:
+Often, you'll need to transform variables to meet statistical assumptions or for better visualization:
 
 ```{r}
-# Load a dataset
-data(iris)
+# Load the biodiversity dataset
+biodiversity <- read_csv("../data/ecology/biodiversity.csv")
+glimpse(biodiversity)
 
-# Log transformation
-iris$log_sepal_length <- log(iris$Sepal.Length)
+# Log transformation of a skewed variable (if available)
+if("n" %in% colnames(biodiversity)) {
+  biodiversity$log_n <- log(biodiversity$n + 1)  # Add 1 to handle zeros
+  
+  # Compare original and transformed
+  summary(biodiversity$n)
+  summary(biodiversity$log_n)
+}
 
-# Square root transformation
-iris$sqrt_sepal_width <- sqrt(iris$Sepal.Width)
-
-# Standardization (z-score)
-iris$z_petal_length <- scale(iris$Petal.Length)
+# Standardization (z-score) of penguin measurements
+penguins_std <- penguins %>%
+  mutate(
+    bill_length_std = scale(bill_length_mm),
+    flipper_length_std = scale(flipper_length_mm),
+    body_mass_std = scale(body_mass_g)
+  )
 
 # View the first few rows of the transformed data
-head(iris[, c("Sepal.Length", "log_sepal_length", 
-               "Sepal.Width", "sqrt_sepal_width",
-               "Petal.Length", "z_petal_length")])
+head(select(penguins_std, species, bill_length_mm, bill_length_std, 
+             flipper_length_mm, flipper_length_std), 5)
 ```
 
 ### Creating New Variables
 
-Creating new variables based on existing ones is a common task in data preparation:
+Creating new variables from existing ones is a common data preparation task:
 
 ```{r}
-# Create a dataset
-forest_plots <- data.frame(
-  plot_id = 1:5,
-  length = c(100, 150, 120, 200, 180),
-  width = c(80, 100, 90, 120, 110)
-)
+# Create new variables in the penguins dataset
+penguins_derived <- penguins %>%
+  filter(!is.na(bill_length_mm) & !is.na(bill_depth_mm)) %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm,
+    size_category = case_when(
+      body_mass_g < 3500 ~ "Small",
+      body_mass_g < 4500 ~ "Medium",
+      TRUE ~ "Large"
+    )
+  )
 
-# Calculate area
-forest_plots$area <- forest_plots$length * forest_plots$width
-
-# Create a categorical variable
-forest_plots$size_class <- cut(
-  forest_plots$area,
-  breaks = c(0, 10000, 15000, Inf),
-  labels = c("Small", "Medium", "Large")
-)
-
-print(forest_plots)
+# View the new variables
+head(select(penguins_derived, species, bill_length_mm, bill_depth_mm, 
+             bill_ratio, body_mass_g, size_category), 5)
 ```
 
 ## Data Manipulation with dplyr
 
-The dplyr package from the tidyverse provides a powerful grammar for data manipulation:
+The dplyr package provides a powerful grammar for data manipulation:
 
 ```{r}
 library(dplyr)
 
-# Sample dataset
-data(starwars)
+# Filter rows - only Adelie penguins
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+head(adelie_penguins, 3)
 
-# Select specific columns
-characters <- starwars %>%
-  select(name, species, height, mass)
-
-# Filter rows based on conditions
-humans <- starwars %>%
-  filter(species == "Human")
-
-# Arrange data
-tall_characters <- starwars %>%
-  arrange(desc(height))
+# Select columns - focus on measurements
+penguin_measurements <- penguins %>%
+  select(species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g)
+head(penguin_measurements, 3)
 
 # Create new variables
-bmi_data <- starwars %>%
-  filter(!is.na(height), !is.na(mass)) %>%
-  mutate(bmi = mass / ((height / 100)^2))
+penguins_analyzed <- penguins %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm,
+    body_mass_kg = body_mass_g / 1000
+  )
+head(select(penguins_analyzed, species, bill_ratio, body_mass_kg), 3)
 
-# Summarize data
-species_summary <- starwars %>%
+# Summarize data by species
+penguin_summary <- penguins %>%
   group_by(species) %>%
   summarize(
     count = n(),
-    avg_height = mean(height, na.rm = TRUE),
-    avg_mass = mean(mass, na.rm = TRUE)
+    avg_bill_length = mean(bill_length_mm, na.rm = TRUE),
+    avg_bill_depth = mean(bill_depth_mm, na.rm = TRUE),
+    avg_body_mass = mean(body_mass_g, na.rm = TRUE)
   ) %>%
-  filter(count > 1) %>%
-  arrange(desc(count))
+  arrange(desc(avg_body_mass))
+print(penguin_summary)
 
-# Display the results
-head(characters)
-head(humans)
-head(tall_characters)
-head(bmi_data)
-head(species_summary)
-```
-
-### Using Our Downloaded Epidemiology Dataset
-
-Now let's explore our epidemiology dataset (storm data) using dplyr:
-
-```{r}
-# Let's use our epidemiology dataset
-disease_data <- read_csv("../data/epidemiology/disease_data.csv")
-head(disease_data)
-
-# Filter rows
-storm_data <- disease_data %>%
-  filter(year >= 2000)
-
-# Select columns
-storm_subset <- disease_data %>%
-  select(name, year, month, wind, pressure)
-
-# Create new variables
-storm_analysis <- disease_data %>%
-  mutate(wind_kph = wind * 1.852) # Convert knots to kph
-
-# Summarize data
-storm_summary <- disease_data %>%
-  group_by(name) %>%
+# Analyze crop yields data
+crop_summary <- crops %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`)) %>%
+  group_by(Entity) %>%
   summarize(
-    avg_wind = mean(wind, na.rm = TRUE),
-    max_wind = max(wind, na.rm = TRUE),
-    count = n()
+    years_recorded = n(),
+    avg_wheat_yield = mean(`Wheat (tonnes per hectare)`, na.rm = TRUE),
+    max_wheat_yield = max(`Wheat (tonnes per hectare)`, na.rm = TRUE)
   ) %>%
-  arrange(desc(max_wind))
+  arrange(desc(avg_wheat_yield)) %>%
+  head(10)  # Top 10 countries by average wheat yield
 
-head(storm_summary)
+print(crop_summary)
 ```
-
-## Working with Data in Jamovi
-
-Jamovi provides a user-friendly interface for data manipulation:
-
-1. **Data View**: The main spreadsheet-like interface for viewing and editing data
-2. **Variables View**: For defining variable properties like name, type, and measurement level
-3. **Compute**: For creating new variables based on formulas
-4. **Transform**: For recoding variables or creating categorical variables from continuous ones
-5. **Filters**: For selecting subsets of data based on conditions
 
 ## Exploratory Data Analysis
 
-Before diving into formal statistical tests, it's important to explore your data:
+Before diving into formal statistical tests, it's essential to explore your data:
 
 ```{r}
-# Load a dataset
-data(mtcars)
-
 # Basic summary statistics
-summary(mtcars)
+summary(penguins$bill_length_mm)
+summary(penguins$flipper_length_mm)
+summary(penguins$body_mass_g)
 
-# Structure of the data
-str(mtcars)
+# Correlation between variables
+cor_matrix <- cor(
+  penguins %>% 
+    select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g),
+  use = "complete.obs"
+)
+print(cor_matrix)
 
-# First few rows
-head(mtcars)
+# Basic visualization - histogram of bill lengths
+library(ggplot2)
+ggplot(penguins, aes(x = bill_length_mm)) +
+  geom_histogram(binwidth = 1, fill = "skyblue", color = "black") +
+  labs(title = "Distribution of Penguin Bill Lengths",
+       x = "Bill Length (mm)",
+       y = "Frequency") +
+  theme_minimal()
 
-# Correlation matrix
-cor_matrix <- cor(mtcars)
-round(cor_matrix, 2)
+# Boxplot of body mass by species
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +
+  geom_boxplot() +
+  labs(title = "Body Mass by Penguin Species",
+       x = "Species",
+       y = "Body Mass (g)") +
+  theme_minimal() +
+  theme(legend.position = "none")
 
-# Basic visualizations
-par(mfrow = c(2, 2))
-hist(mtcars$mpg, main = "Histogram of MPG", xlab = "Miles Per Gallon")
-boxplot(mpg ~ cyl, data = mtcars, main = "MPG by Cylinder Count", 
-        xlab = "Cylinders", ylab = "Miles Per Gallon")
-plot(mtcars$wt, mtcars$mpg, main = "MPG vs. Weight", 
-     xlab = "Weight (1000 lbs)", ylab = "Miles Per Gallon")
-plot(mtcars$hp, mtcars$qsec, main = "Quarter Mile Time vs. Horsepower", 
-     xlab = "Horsepower", ylab = "Quarter Mile Time (sec)")
+# Scatterplot of bill length vs. flipper length
+ggplot(penguins, aes(x = flipper_length_mm, y = bill_length_mm, color = species)) +
+  geom_point(alpha = 0.7) +
+  labs(title = "Bill Length vs. Flipper Length",
+       x = "Flipper Length (mm)",
+       y = "Bill Length (mm)") +
+  theme_minimal()
 ```
 
 ## Summary
 
-In this chapter, we've covered the basics of working with data in R and Jamovi:
+In this chapter, we've covered the basics of working with data in R:
 
 - Understanding different data types and structures
 - Importing data from various file formats
-- Cleaning data by handling missing values
-- Transforming data to meet analysis requirements
+- Cleaning and preparing data for analysis
 - Creating new variables
 - Using dplyr for powerful data manipulation
 - Conducting initial exploratory data analysis
 
-These skills form the foundation for all the analyses we'll perform in the subsequent chapters. By mastering these basics, you'll be well-prepared to tackle more complex analytical challenges in ecological and forestry research.
+These skills form the foundation for all the analyses we'll perform in the subsequent chapters. By mastering these basics, you'll be well-prepared to tackle more complex analytical challenges in various scientific fields.
 
 ## Exercises
 
-1. Import a CSV file of your choice into R and examine its structure.
-2. Create a new variable in the dataset based on existing variables.
-3. Filter the dataset to include only observations that meet specific criteria.
-4. Calculate summary statistics for different groups within your dataset.
-5. Create basic visualizations to explore relationships between variables.
-6. Repeat exercises 1-5 using Jamovi instead of R.
+1. Load the Palmer Penguins dataset (`../data/environmental/climate_data.csv`) and create a summary of the number of penguins by species and island.
+2. Calculate the mean and standard deviation of bill length, bill depth, and body mass for each penguin species.
+3. Create a new variable that represents the ratio of flipper length to body mass. Interpret what this ratio might represent biologically.
+4. Create a visualization that shows the relationship between bill length and bill depth, colored by species.
+5. Load the crop yields dataset (`../data/agriculture/crop_yields.csv`) and analyze trends in wheat yields over time for a country of your choice.
+6. Compare the distributions of body mass between male and female penguins using appropriate visualizations.

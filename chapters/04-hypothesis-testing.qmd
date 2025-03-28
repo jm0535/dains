@@ -409,13 +409,13 @@ ggplot(data.frame(height = site_A), aes(x = height)) +
   theme_minimal()
 ```
 
-## Hypothesis Testing in Jamovi
+## Exercises
 
-Jamovi provides a user-friendly interface for conducting hypothesis tests:
-
-1. **T-Tests**: For one-sample, independent samples, and paired samples t-tests
-2. **Non-Parametric Tests**: For Mann-Whitney U and Wilcoxon signed-rank tests
-3. **Descriptives**: For calculating confidence intervals
+1. Formulate a hypothesis about a relationship between two variables in the forest inventory dataset.
+2. Conduct an appropriate statistical test to evaluate your hypothesis.
+3. Calculate the effect size for your test.
+4. Interpret the results, including the p-value and effect size.
+5. Create a visualization that effectively communicates your findings.
 
 ## Summary
 
@@ -430,15 +430,6 @@ In this chapter, we've covered the fundamental concepts and techniques of hypoth
 - Calculating and interpreting confidence intervals
 
 These statistical tools allow researchers to make informed inferences about populations based on sample data, helping to advance knowledge in ecology and forestry.
-
-## Exercises
-
-1. Formulate null and alternative hypotheses for an ecological research question of your choice.
-2. Simulate data for two groups and perform an independent samples t-test.
-3. Calculate the statistical power for your t-test and determine the sample size needed for 80% power.
-4. Create a dataset where the normality assumption is violated and compare the results of a t-test and a Mann-Whitney U test.
-5. Calculate and visualize a 95% confidence interval for a sample mean.
-6. Perform the same hypothesis tests in Jamovi and compare the results with those obtained in R.
 
 ## Statistical Power
 

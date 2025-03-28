@@ -628,3 +628,5 @@ Regression analysis is a versatile tool in natural sciences research, allowing u
 5. Perform cross-validation on your best regression model from Exercise 1 or 2 to assess its predictive performance.
 
 6. Using the spatial dataset (`../data/geography/spatial.csv`), build a regression model to predict a variable of your choice based on other available variables.
+
+{{ ... }}

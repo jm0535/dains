@@ -1,0 +1,665 @@
+---
+prefer-html: true
+---
+
+# Regression Analysis
+
+## Introduction
+
+Regression analysis is a powerful statistical technique used to model the relationship between a dependent variable and one or more independent variables. In natural sciences research, regression models help us understand how environmental factors influence biological processes, predict future conditions, and test hypotheses about causal relationships.
+
+## Simple Linear Regression
+
+Simple linear regression models the relationship between a dependent variable and a single independent variable.
+
+### The Linear Model
+
+The simple linear regression model is represented by the equation:
+
+$$Y = \beta_0 + \beta_1X + \varepsilon$$
+
+Where:
+- $Y$ is the dependent variable
+- $X$ is the independent variable
+- $\beta_0$ is the intercept
+- $\beta_1$ is the slope
+- $\varepsilon$ is the error term
+
+### Example: Crop Yield Trends Over Time
+
+Let's explore the relationship between time (years) and wheat yields using our agricultural dataset:
+
+```{r}
+# Load necessary libraries
+library(tidyverse)
+
+# Load the crop yield dataset
+crop_yields <- read_csv("../data/agriculture/crop_yields.csv")
+
+# Filter data for a specific country (United States) and select relevant columns
+us_wheat <- crop_yields %>%
+  filter(Entity == "United States", !is.na(`Wheat (tonnes per hectare)`)) %>%
+  select(Year, `Wheat (tonnes per hectare)`)
+
+# Visualize the relationship
+ggplot(us_wheat, aes(x = Year, y = `Wheat (tonnes per hectare)`)) +
+  geom_point(size = 3, alpha = 0.7) +
+  labs(title = "Wheat Yields in the United States (1961-present)",
+       x = "Year",
+       y = "Wheat Yield (tonnes per hectare)") +
+  theme_minimal()
+
+# Fit a simple linear regression model
+model <- lm(`Wheat (tonnes per hectare)` ~ Year, data = us_wheat)
+
+# Display model summary
+summary(model)
+
+# Add the regression line to the plot
+ggplot(us_wheat, aes(x = Year, y = `Wheat (tonnes per hectare)`)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_smooth(method = "lm", color = "blue") +
+  labs(title = "Simple Linear Regression: Wheat Yield vs. Year",
+       x = "Year",
+       y = "Wheat Yield (tonnes per hectare)") +
+  theme_minimal()
+```
+
+### Interpreting the Model
+
+The key components to interpret in a simple linear regression model are:
+
+1. **Intercept ($\beta_0$)**: The expected value of Y when X = 0
+2. **Slope ($\beta_1$)**: The expected change in Y for a one-unit increase in X
+3. **R-squared**: The proportion of variance in Y explained by X
+4. **p-value**: The statistical significance of the relationship
+
+```{r}
+# Extract key model parameters
+intercept <- coef(model)[1]
+slope <- coef(model)[2]
+r_squared <- summary(model)$r.squared
+p_value <- summary(model)$coefficients[2, 4]
+
+# Create a table of results
+results <- data.frame(
+  Parameter = c("Intercept", "Slope", "R-squared", "p-value"),
+  Value = c(intercept, slope, r_squared, p_value)
+)
+
+# Display the results
+knitr::kable(results, digits = 4)
+```
+
+### Checking Model Assumptions
+
+Linear regression relies on several key assumptions:
+
+1. **Linearity**: The relationship between X and Y is linear
+2. **Independence**: Observations are independent of each other
+3. **Homoscedasticity**: Constant variance of residuals
+4. **Normality**: Residuals are normally distributed
+
+```{r}
+# Diagnostic plots
+par(mfrow = c(2, 2))
+plot(model)
+
+# Check normality of residuals with a formal test
+shapiro.test(residuals(model))
+
+# Check homoscedasticity with a formal test
+if(requireNamespace("car", quietly = TRUE)) {
+  library(car)
+  ncvTest(model)
+} else {
+  message("The 'car' package is not installed. Install it with install.packages('car') to run the non-constant variance test.")
+}
+```
+
+::: {.callout-tip}
+## Best Practices for Simple Linear Regression
+
+When applying simple linear regression in natural sciences:
+
+- **Always visualize your data first**: Scatter plots can reveal patterns, outliers, and potential non-linear relationships that might not be captured by a linear model
+- **Check assumptions thoroughly**: Don't rely solely on p-values; verify that your data meets the assumptions of linear regression through diagnostic plots and formal tests
+- **Report effect sizes**: In addition to statistical significance, report the slope (effect size) and its confidence interval to communicate the magnitude of the relationship
+- **Consider transformations**: If your data violates assumptions, consider appropriate transformations (log, square root) before fitting the model
+- **Be cautious with extrapolation**: Avoid predicting beyond the range of your observed data, as the relationship may change outside this range
+:::
+
+## Multiple Linear Regression
+
+Multiple linear regression extends the simple linear model to include multiple independent variables.
+
+### The Multiple Regression Model
+
+The multiple regression model is represented by the equation:
+
+$$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + ... + \beta_pX_p + \varepsilon$$
+
+Where:
+- $Y$ is the dependent variable
+- $X_1, X_2, ..., X_p$ are the independent variables
+- $\beta_0, \beta_1, \beta_2, ..., \beta_p$ are the coefficients
+- $\varepsilon$ is the error term
+
+### Example: Factors Affecting Crop Yields
+
+Let's model wheat yield as a function of multiple crop yields, which might indicate similar agricultural conditions:
+
+```{r}
+# Prepare data for multiple regression
+multi_crop_data <- crop_yields %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`) & !is.na(`Rice (tonnes per hectare)`) & !is.na(`Maize (tonnes per hectare)`)) %>%
+  select(Entity, Year, `Wheat (tonnes per hectare)`, `Rice (tonnes per hectare)`, `Maize (tonnes per hectare)`)
+
+# View the first few rows
+head(multi_crop_data)
+
+# Fit a multiple regression model
+multi_model <- lm(`Wheat (tonnes per hectare)` ~ `Rice (tonnes per hectare)` + `Maize (tonnes per hectare)` + Year, data = multi_crop_data)
+
+# Display model summary
+summary(multi_model)
+```
+
+### Visualizing Multiple Regression
+
+Visualizing multiple regression models is challenging due to the multidimensional nature of the data. Here are some approaches:
+
+```{r}
+# Partial residual plots
+if(requireNamespace("car", quietly = TRUE)) {
+  library(car)
+  # Create a model with simpler variable names to avoid issues with crPlots
+  renamed_data <- multi_crop_data %>%
+    rename(Wheat = `Wheat (tonnes per hectare)`,
+           Rice = `Rice (tonnes per hectare)`,
+           Maize = `Maize (tonnes per hectare)`)
+  
+  simple_model <- lm(Wheat ~ Rice + Maize + Year, data = renamed_data)
+  crPlots(simple_model)
+} else {
+  # Alternative: create individual scatter plots
+  par(mfrow = c(1, 3))
+  plot(multi_crop_data$`Rice (tonnes per hectare)`, multi_crop_data$`Wheat (tonnes per hectare)`, 
+       xlab = "Rice Yield", ylab = "Wheat Yield",
+       main = "Wheat vs. Rice")
+  plot(multi_crop_data$`Maize (tonnes per hectare)`, multi_crop_data$`Wheat (tonnes per hectare)`, 
+       xlab = "Maize Yield", ylab = "Wheat Yield",
+       main = "Wheat vs. Maize")
+  plot(multi_crop_data$Year, multi_crop_data$`Wheat (tonnes per hectare)`, 
+       xlab = "Year", ylab = "Wheat Yield",
+       main = "Wheat vs. Year")
+}
+
+# 3D visualization (for a subset of variables)
+library(knitr)
+if(knitr::is_html_output() && requireNamespace("plotly", quietly = TRUE)) {
+  # For HTML output, use the interactive plotly version
+  library(plotly)
+  plot_ly(multi_crop_data, 
+          x = ~`Rice (tonnes per hectare)`, 
+          y = ~`Maize (tonnes per hectare)`, 
+          z = ~`Wheat (tonnes per hectare)`,
+          type = "scatter3d", mode = "markers",
+          marker = list(size = 5, color = ~`Wheat (tonnes per hectare)`, 
+                        colorscale = "Viridis")) %>%
+    layout(title = "3D Relationship Between Crop Yields",
+           scene = list(
+             xaxis = list(title = "Rice Yield (tonnes/ha)"),
+             yaxis = list(title = "Maize Yield (tonnes/ha)"),
+             zaxis = list(title = "Wheat Yield (tonnes/ha)")))
+} else {
+  # For PDF output, use a static 3D scatter plot with ggplot2
+  library(ggplot2)
+  
+  # Create a 2D plot with color as the third dimension
+  ggplot(multi_crop_data, 
+         aes(x = `Rice (tonnes per hectare)`, 
+             y = `Maize (tonnes per hectare)`, 
+             color = `Wheat (tonnes per hectare)`)) +
+    geom_point(size = 3, alpha = 0.7) +
+    scale_color_viridis_c(option = "viridis", name = "Wheat Yield\n(tonnes/ha)") +
+    labs(title = "3D Relationship Between Crop Yields",
+         subtitle = "Wheat yield shown as color (interactive 3D version in HTML)",
+         x = "Rice Yield (tonnes/ha)",
+         y = "Maize Yield (tonnes/ha)") +
+    theme_minimal() +
+    theme(legend.position = "right")
+}
+```
+
+::: {.callout-tip}
+## Handling Multicollinearity in Multiple Regression
+
+When working with multiple predictors in ecological and environmental studies:
+
+- **Check for multicollinearity**: Use variance inflation factors (VIF) to detect problematic correlations among predictors (values > 5-10 indicate potential issues)
+- **Center continuous predictors**: Subtract the mean from continuous variables to reduce multicollinearity and make intercepts more interpretable
+- **Consider standardization**: Standardizing predictors (z-scores) allows direct comparison of coefficient magnitudes
+- **Use partial plots**: Examine partial residual plots to understand each predictor's relationship with the response while controlling for other variables
+- **Apply regularization**: For many predictors, consider ridge or lasso regression to handle multicollinearity and perform variable selection simultaneously
+:::
+
+### Variable Selection
+
+When working with multiple predictors, it's essential to select the most relevant variables:
+
+```{r}
+# Stepwise variable selection
+if(requireNamespace("MASS", quietly = TRUE)) {
+  library(MASS)
+  step_model <- stepAIC(multi_model, direction = "both")
+  summary(step_model)
+} else {
+  message("The 'MASS' package is not installed. Install it with install.packages('MASS') to perform stepwise variable selection.")
+}
+
+# Variance Inflation Factor (VIF) to check for multicollinearity
+if(requireNamespace("car", quietly = TRUE)) {
+  # Use the renamed data and simple model from earlier
+  vif(simple_model)
+} else {
+  message("The 'car' package is not installed. Install it with install.packages('car') to calculate VIF values.")
+  
+  # Alternative: correlation matrix
+  cor_matrix <- cor(multi_crop_data[, c("Rice (tonnes per hectare)", "Maize (tonnes per hectare)", "Year")], use = "complete.obs")
+  print("Correlation matrix of predictors:")
+  print(cor_matrix)
+}
+```
+
+## Polynomial Regression
+
+Polynomial regression allows modeling of nonlinear relationships by including polynomial terms.
+
+### Example: Nonlinear Crop Yield Trends
+
+Let's explore whether the relationship between time and wheat yields might be nonlinear:
+
+```{r}
+# Create a dataset for polynomial regression
+us_wheat$Year_centered <- us_wheat$Year - mean(us_wheat$Year)  # Center year to reduce multicollinearity
+
+# Fit polynomial models of different degrees
+poly1 <- lm(`Wheat (tonnes per hectare)` ~ Year_centered, data = us_wheat)
+poly2 <- lm(`Wheat (tonnes per hectare)` ~ Year_centered + I(Year_centered^2), data = us_wheat)
+poly3 <- lm(`Wheat (tonnes per hectare)` ~ Year_centered + I(Year_centered^2) + I(Year_centered^3), data = us_wheat)
+
+# Compare models
+anova(poly1, poly2, poly3)
+
+# Summary of the best model (based on the ANOVA result)
+best_poly_model <- poly2  # Change this based on the ANOVA results
+summary(best_poly_model)
+
+# Visualize the polynomial fit
+us_wheat$Year_orig <- us_wheat$Year  # Keep original year for plotting
+us_wheat <- us_wheat %>%
+  arrange(Year_orig)
+
+# Generate predictions
+us_wheat$pred_linear <- predict(poly1)
+us_wheat$pred_quadratic <- predict(poly2)
+us_wheat$pred_cubic <- predict(poly3)
+
+# Plot the data with different model fits
+ggplot(us_wheat, aes(x = Year_orig, y = `Wheat (tonnes per hectare)`)) +
+  geom_point(alpha = 0.7) +
+  geom_line(aes(y = pred_linear, color = "Linear"), size = 1) +
+  geom_line(aes(y = pred_quadratic, color = "Quadratic"), size = 1) +
+  geom_line(aes(y = pred_cubic, color = "Cubic"), size = 1) +
+  scale_color_manual(values = c("Linear" = "blue", "Quadratic" = "red", "Cubic" = "green")) +
+  labs(title = "Polynomial Regression: Wheat Yield Trends",
+       x = "Year",
+       y = "Wheat Yield (tonnes per hectare)",
+       color = "Model") +
+  theme_minimal()
+```
+
+::: {.callout-tip}
+## When to Use Polynomial Regression
+
+When considering polynomial regression for your ecological or environmental data:
+
+- **Start simple**: Begin with a linear model and only add polynomial terms if there's theoretical justification or clear visual evidence of non-linearity
+- **Avoid overfitting**: Higher-degree polynomials can fit the training data perfectly but perform poorly on new data; use cross-validation to select the optimal degree
+- **Center your predictors**: Always center continuous predictors before creating polynomial terms to reduce multicollinearity
+- **Consider alternatives**: For many non-linear relationships, other approaches like splines or generalized additive models (GAMs) may be more appropriate than high-degree polynomials
+- **Interpret with care**: Polynomial terms can be difficult to interpret biologically; focus on visualizing the fitted curve rather than individual coefficients
+:::
+
+## Generalized Linear Models (GLMs)
+
+Generalized linear models extend linear regression to handle response variables with non-normal distributions.
+
+### Logistic Regression
+
+Logistic regression is used when the dependent variable is binary. Let's use our coffee economics dataset to predict coffee quality:
+
+```{r}
+# Load the coffee economics dataset
+coffee_data <- read_csv("../data/economics/economic.csv")
+
+# View the structure of the dataset
+str(coffee_data)
+
+# Prepare data for logistic regression
+# We'll create a binary variable for high-quality coffee
+if(any(grepl("total_cup_points", names(coffee_data), ignore.case = TRUE))) {
+  # Find the column name that matches "total_cup_points" (case insensitive)
+  score_col <- names(coffee_data)[grep("total_cup_points", names(coffee_data), ignore.case = TRUE)][1]
+  
+  # Create a binary variable for high-quality coffee
+  coffee_data$high_quality <- as.numeric(coffee_data[[score_col]] > median(coffee_data[[score_col]], na.rm = TRUE))
+  
+  # Select predictors (this will depend on your actual dataset)
+  # For this example, we'll use numeric columns as potential predictors
+  numeric_cols <- sapply(coffee_data, is.numeric)
+  predictor_cols <- names(coffee_data)[numeric_cols & names(coffee_data) != score_col & 
+                                      names(coffee_data) != "high_quality"]
+  
+  if(length(predictor_cols) >= 3) {
+    # Create formula
+    formula_str <- paste("high_quality ~", paste(predictor_cols[1:3], collapse = " + "))
+    
+    # Fit logistic regression model
+    logit_model <- glm(as.formula(formula_str), family = binomial, data = coffee_data)
+    
+    # Display model summary
+    summary(logit_model)
+    
+    # Calculate odds ratios
+    odds_ratios <- exp(coef(logit_model))
+    odds_ratio_df <- data.frame(
+      Variable = names(odds_ratios),
+      Odds_Ratio = odds_ratios
+    )
+    
+    # Display odds ratios
+    knitr::kable(odds_ratio_df, digits = 3)
+  } else {
+    message("Not enough numeric predictors available for logistic regression.")
+  }
+} else {
+  message("Could not find a column for coffee quality scores. Using a simulated example instead.")
+  
+  # Create a simulated example
+  set.seed(123)
+  n <- 100
+  altitude <- rnorm(n, 1500, 300)
+  rainfall <- rnorm(n, 2000, 500)
+  high_quality <- rbinom(n, 1, plogis(-10 + 0.005 * altitude + 0.0002 * rainfall))
+  
+  sim_coffee <- data.frame(altitude = altitude, rainfall = rainfall, high_quality = high_quality)
+  
+  # Fit logistic regression model
+  logit_model <- glm(high_quality ~ altitude + rainfall, family = binomial, data = sim_coffee)
+  
+  # Display model summary
+  summary(logit_model)
+  
+  # Calculate odds ratios
+  odds_ratios <- exp(coef(logit_model))
+  odds_ratio_df <- data.frame(
+    Variable = names(odds_ratios),
+    Odds_Ratio = odds_ratios
+  )
+  
+  # Display odds ratios
+  knitr::kable(odds_ratio_df, digits = 3)
+  
+  # Visualize the relationship
+  ggplot(sim_coffee, aes(x = altitude, y = high_quality, color = factor(high_quality))) +
+    geom_point(alpha = 0.7) +
+    geom_smooth(method = "glm", method.args = list(family = "binomial"), se = TRUE, color = "black") +
+    labs(title = "Logistic Regression: Coffee Quality vs. Altitude",
+         x = "Altitude (m)",
+         y = "Probability of High Quality",
+         color = "High Quality") +
+    theme_minimal()
+}
+```
+
+### Poisson Regression
+
+Poisson regression is used for count data. Let's use it to model species counts from our biodiversity dataset:
+
+```{r}
+# Using a simulated example for Poisson regression.
+# This avoids issues with column names and data types
+message("Using a simulated example for Poisson regression.")
+
+# Create a simulated example for species counts
+set.seed(456)
+n <- 100
+habitat_size <- runif(n, 1, 10)  # Habitat size in hectares
+species_count <- rpois(n, lambda = exp(1 + 0.3 * habitat_size))
+
+sim_biodiversity <- data.frame(habitat_size = habitat_size, species_count = species_count)
+
+# Fit Poisson regression model
+poisson_model <- glm(species_count ~ habitat_size, family = poisson, data = sim_biodiversity)
+
+# Display model summary
+summary(poisson_model)
+
+# Visualize the relationship
+# Create prediction data
+pred_data <- data.frame(habitat_size = seq(min(habitat_size), max(habitat_size), length.out = 100))
+pred_data$predicted_count <- predict(poisson_model, newdata = pred_data, type = "response")
+
+ggplot(sim_biodiversity, aes(x = habitat_size, y = species_count)) +
+  geom_point(alpha = 0.7) +
+  geom_line(data = pred_data, aes(x = habitat_size, y = predicted_count), color = "blue", size = 1) +
+  labs(title = "Poisson Regression: Species Count vs. Habitat Size",
+       x = "Habitat Size (hectares)",
+       y = "Species Count") +
+  theme_minimal()
+```
+
+::: {.callout-tip}
+## Choosing the Right GLM for Your Data
+
+When working with non-normal data in ecological and environmental research:
+
+- **Match the distribution to your data type**: Use binomial for presence/absence data, Poisson for count data, and gamma for continuous positive data with increasing variance
+- **Check for overdispersion**: In count data, variance often exceeds the mean (overdispersion); use quasi-Poisson or negative binomial models in these cases
+- **Transform the scale, not the data**: Instead of transforming your response variable, use the appropriate link function (e.g., log link for Poisson, logit link for binomial)
+- **Validate your model**: Check residuals for patterns and use simulation-based approaches (e.g., DHARMa package) to assess model fit
+- **Interpret on the response scale**: Convert log-odds or log-counts back to probabilities or counts when reporting results to make them more interpretable
+:::
+
+## Mixed-Effects Models
+
+Mixed-effects models are useful when data has a hierarchical or nested structure, such as repeated measurements or grouped observations.
+
+### Example: Crop Yields Across Countries and Years
+
+Let's model wheat yields with countries as random effects and year as a fixed effect:
+
+```{r}
+# Prepare data for mixed-effects model
+mixed_data <- crop_yields %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`)) %>%
+  dplyr::select(Entity, Year, `Wheat (tonnes per hectare)`)
+
+# Fit mixed-effects model
+if(requireNamespace("lme4", quietly = TRUE)) {
+  library(lme4)
+  
+  # Create a version with simpler column names
+  renamed_mixed_data <- mixed_data %>%
+    rename(Wheat = `Wheat (tonnes per hectare)`)
+  
+  # Fit the model with country as random effect and year as fixed effect
+  mixed_model <- lmer(Wheat ~ Year + (1|Entity), data = renamed_mixed_data)
+  
+  # Display model summary
+  summary(mixed_model)
+  
+  # Random effects
+  ranef(mixed_model)
+  
+  # Visualize random effects
+  if(requireNamespace("lattice", quietly = TRUE)) {
+    library(lattice)
+    dotplot(ranef(mixed_model, condVar = TRUE))
+  }
+} else {
+  message("The 'lme4' package is not installed. Install it with install.packages('lme4') to fit mixed-effects models.")
+  
+  # Alternative: separate regressions for a few countries
+  top_countries <- mixed_data %>%
+    group_by(Entity) %>%
+    summarize(mean_yield = mean(`Wheat (tonnes per hectare)`, na.rm = TRUE)) %>%
+    arrange(desc(mean_yield)) %>%
+    head(4) %>%
+    pull(Entity)
+  
+  # Filter data for top countries
+  top_country_data <- mixed_data %>%
+    filter(Entity %in% top_countries)
+  
+  # Create separate regression models
+  ggplot(top_country_data, aes(x = Year, y = `Wheat (tonnes per hectare)`, color = Entity)) +
+    geom_point(alpha = 0.7) +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(title = "Wheat Yield Trends for Top Producing Countries",
+         x = "Year",
+         y = "Wheat Yield (tonnes per hectare)") +
+    theme_minimal()
+}
+```
+
+::: {.callout-tip}
+## When and How to Use Mixed-Effects Models
+
+For hierarchical data structures common in ecological and environmental studies:
+
+- **Recognize nested data**: Use mixed models when observations are grouped (e.g., multiple measurements from the same site, individual, or time period)
+- **Distinguish fixed vs. random effects**: Use fixed effects for specific levels you care about (e.g., treatments) and random effects for samples from a larger population (e.g., sites, subjects)
+- **Start simple**: Begin with random intercepts before considering random slopes
+- **Check for convergence issues**: Complex random effects structures may not converge; simplify if necessary
+- **Compare models properly**: Use REML for comparing fixed effects and ML for comparing random effects structures
+- **Report both fixed and random effects**: Include estimates of variance components and their standard errors along with fixed effects
+:::
+
+## Model Selection and Validation
+
+### Cross-Validation
+
+Cross-validation helps assess how well a model will generalize to new data:
+
+```{r}
+# Prepare data for cross-validation
+cv_data <- us_wheat %>%
+  rename(Wheat = `Wheat (tonnes per hectare)`) %>%
+  dplyr::select(Year_centered, Wheat)
+
+# Perform k-fold cross-validation
+if(requireNamespace("caret", quietly = TRUE)) {
+  library(caret)
+  
+  # Set up cross-validation
+  ctrl <- trainControl(method = "cv", number = 5)
+  
+  # Train models with cross-validation
+  linear_cv <- train(Wheat ~ Year_centered, data = cv_data, method = "lm",
+                    trControl = ctrl)
+  quadratic_cv <- train(Wheat ~ Year_centered + I(Year_centered^2), data = cv_data, 
+                       method = "lm", trControl = ctrl)
+  
+  # Compare results
+  results <- resamples(list(Linear = linear_cv, Quadratic = quadratic_cv))
+  summary(results)
+  
+  # Visualize comparison
+  bwplot(results)
+} else {
+  message("The 'caret' package is not installed. Install it with install.packages('caret') to perform cross-validation.")
+  
+  # Manual cross-validation for linear model
+  set.seed(123)
+  n <- nrow(cv_data)
+  k <- 5  # Number of folds
+  folds <- sample(1:k, n, replace = TRUE)
+  
+  cv_rmse <- numeric(k)
+  for(i in 1:k) {
+    # Split data into training and testing sets
+    train_data <- cv_data[folds != i, ]
+    test_data <- cv_data[folds == i, ]
+    
+    # Fit model on training data
+    cv_model <- lm(Wheat ~ Year_centered, data = train_data)
+    
+    # Predict on testing data
+    predictions <- predict(cv_model, newdata = test_data)
+    
+    # Calculate RMSE
+    cv_rmse[i] <- sqrt(mean((test_data$Wheat - predictions)^2))
+  }
+  
+  # Display average RMSE
+  cat("Average RMSE from 5-fold cross-validation:", mean(cv_rmse))
+}
+```
+
+### Information Criteria
+
+Information criteria like AIC and BIC help compare models:
+
+```{r}
+# Compare models using AIC and BIC
+models <- list(
+  Linear = poly1,
+  Quadratic = poly2,
+  Cubic = poly3
+)
+
+# Calculate AIC and BIC for each model
+model_comparison <- data.frame(
+  Model = names(models),
+  AIC = sapply(models, AIC),
+  BIC = sapply(models, BIC)
+)
+
+# Display comparison
+knitr::kable(model_comparison)
+
+# Visualize comparison
+if(requireNamespace("ggplot2", quietly = TRUE)) {
+  model_comparison_long <- model_comparison %>%
+    pivot_longer(cols = c(AIC, BIC), names_to = "Criterion", values_to = "Value")
+  
+  ggplot(model_comparison_long, aes(x = Model, y = Value, fill = Criterion)) +
+    geom_bar(stat = "identity", position = "dodge") +
+    labs(title = "Model Comparison using Information Criteria",
+         x = "Model",
+         y = "Value (lower is better)") +
+    theme_minimal()
+}
+```
+
+::: {.callout-tip}
+## Robust Model Selection and Validation
+
+To ensure your regression models are reliable and generalizable:
+
+- **Use cross-validation**: K-fold cross-validation provides a more realistic assessment of model performance than in-sample metrics
+- **Consider multiple metrics**: Evaluate models using multiple criteria (RMSE, MAE, R², AIC, BIC) for a more complete picture
+- **Validate with independent data**: When possible, test your model on a completely independent dataset not used during model development
+- **Avoid data leakage**: Ensure that your validation procedure doesn't inadvertently use information from the test set during model building
+- **Balance complexity and interpretability**: The most complex model isn't always the best; consider the trade-off between fit and interpretability
+- **Report uncertainty**: Always include confidence or prediction intervals with your model estimates and predictions
+:::
+
+## Conclusion
+
+Regression analysis provides powerful tools for modeling relationships in natural sciences data. By understanding the appropriate model type for your data and research question, checking assumptions, and validating your models, you can derive meaningful insights from your data and make reliable predictions.
+
+Remember that the goal of regression analysis is not just to find statistically significant relationships, but to build models that are biologically meaningful, robust, and generalizable to new data. Always interpret your results in the context of your research question and the underlying biological processes.

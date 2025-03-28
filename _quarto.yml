@@ -28,7 +28,7 @@ book:
         - chapters/07-advanced-visualization.qmd
     - part: "Advanced Topics"
       chapters:
-        # - chapters/08-regression.qmd  # Temporarily commented out due to rendering issues
+        - chapters/08-regression.qmd  # Rendering issues fixed with distributed professional tips
         - chapters/09-conservation.qmd
     - references.qmd
 

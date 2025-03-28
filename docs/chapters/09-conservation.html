@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>8&nbsp; Conservation Applications – Data Analysis in Natural Sciences: An R-Based Approach</title>
+<title>9&nbsp; Conservation Applications – Data Analysis in Natural Sciences: An R-Based Approach</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,7 +86,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../references.html" rel="next">
-<link href="../chapters/07-advanced-visualization.html" rel="prev">
+<link href="../chapters/08-regression.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -139,7 +139,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/09-conservation.html">Advanced Topics</a></li><li class="breadcrumb-item"><a href="../chapters/09-conservation.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conservation Applications</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/08-regression.html">Advanced Topics</a></li><li class="breadcrumb-item"><a href="../chapters/09-conservation.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conservation Applications</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -265,8 +265,14 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regression Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/09-conservation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conservation Applications</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conservation Applications</span></span></a>
   </div>
 </li>
       </ul>
@@ -287,55 +293,55 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">8.1</span> Introduction</a></li>
-  <li><a href="#conservation-data-types-and-sources" id="toc-conservation-data-types-and-sources" class="nav-link" data-scroll-target="#conservation-data-types-and-sources"><span class="header-section-number">8.2</span> Conservation Data Types and Sources</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">9.1</span> Introduction</a></li>
+  <li><a href="#conservation-data-types-and-sources" id="toc-conservation-data-types-and-sources" class="nav-link" data-scroll-target="#conservation-data-types-and-sources"><span class="header-section-number">9.2</span> Conservation Data Types and Sources</a>
   <ul class="collapse">
-  <li><a href="#types-of-conservation-data" id="toc-types-of-conservation-data" class="nav-link" data-scroll-target="#types-of-conservation-data"><span class="header-section-number">8.2.1</span> Types of Conservation Data</a></li>
-  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources"><span class="header-section-number">8.2.2</span> Data Sources</a></li>
+  <li><a href="#types-of-conservation-data" id="toc-types-of-conservation-data" class="nav-link" data-scroll-target="#types-of-conservation-data"><span class="header-section-number">9.2.1</span> Types of Conservation Data</a></li>
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources"><span class="header-section-number">9.2.2</span> Data Sources</a></li>
   </ul></li>
-  <li><a href="#species-distribution-modeling" id="toc-species-distribution-modeling" class="nav-link" data-scroll-target="#species-distribution-modeling"><span class="header-section-number">8.3</span> Species Distribution Modeling</a>
+  <li><a href="#species-distribution-modeling" id="toc-species-distribution-modeling" class="nav-link" data-scroll-target="#species-distribution-modeling"><span class="header-section-number">9.3</span> Species Distribution Modeling</a>
   <ul class="collapse">
-  <li><a href="#example-simple-species-distribution-model" id="toc-example-simple-species-distribution-model" class="nav-link" data-scroll-target="#example-simple-species-distribution-model"><span class="header-section-number">8.3.1</span> Example: Simple Species Distribution Model</a></li>
+  <li><a href="#example-simple-species-distribution-model" id="toc-example-simple-species-distribution-model" class="nav-link" data-scroll-target="#example-simple-species-distribution-model"><span class="header-section-number">9.3.1</span> Example: Simple Species Distribution Model</a></li>
   </ul></li>
-  <li><a href="#population-trend-analysis" id="toc-population-trend-analysis" class="nav-link" data-scroll-target="#population-trend-analysis"><span class="header-section-number">8.4</span> Population Trend Analysis</a>
+  <li><a href="#population-trend-analysis" id="toc-population-trend-analysis" class="nav-link" data-scroll-target="#population-trend-analysis"><span class="header-section-number">9.4</span> Population Trend Analysis</a>
   <ul class="collapse">
-  <li><a href="#example-linear-mixed-models-for-population-trends" id="toc-example-linear-mixed-models-for-population-trends" class="nav-link" data-scroll-target="#example-linear-mixed-models-for-population-trends"><span class="header-section-number">8.4.1</span> Example: Linear Mixed Models for Population Trends</a></li>
+  <li><a href="#example-linear-mixed-models-for-population-trends" id="toc-example-linear-mixed-models-for-population-trends" class="nav-link" data-scroll-target="#example-linear-mixed-models-for-population-trends"><span class="header-section-number">9.4.1</span> Example: Linear Mixed Models for Population Trends</a></li>
   </ul></li>
-  <li><a href="#habitat-fragmentation-analysis" id="toc-habitat-fragmentation-analysis" class="nav-link" data-scroll-target="#habitat-fragmentation-analysis"><span class="header-section-number">8.5</span> Habitat Fragmentation Analysis</a>
+  <li><a href="#habitat-fragmentation-analysis" id="toc-habitat-fragmentation-analysis" class="nav-link" data-scroll-target="#habitat-fragmentation-analysis"><span class="header-section-number">9.5</span> Habitat Fragmentation Analysis</a>
   <ul class="collapse">
-  <li><a href="#example-calculating-landscape-metrics" id="toc-example-calculating-landscape-metrics" class="nav-link" data-scroll-target="#example-calculating-landscape-metrics"><span class="header-section-number">8.5.1</span> Example: Calculating Landscape Metrics</a></li>
+  <li><a href="#example-calculating-landscape-metrics" id="toc-example-calculating-landscape-metrics" class="nav-link" data-scroll-target="#example-calculating-landscape-metrics"><span class="header-section-number">9.5.1</span> Example: Calculating Landscape Metrics</a></li>
   </ul></li>
-  <li><a href="#protected-area-effectiveness" id="toc-protected-area-effectiveness" class="nav-link" data-scroll-target="#protected-area-effectiveness"><span class="header-section-number">8.6</span> Protected Area Effectiveness</a>
+  <li><a href="#protected-area-effectiveness" id="toc-protected-area-effectiveness" class="nav-link" data-scroll-target="#protected-area-effectiveness"><span class="header-section-number">9.6</span> Protected Area Effectiveness</a>
   <ul class="collapse">
-  <li><a href="#example-before-after-control-impact-baci-analysis" id="toc-example-before-after-control-impact-baci-analysis" class="nav-link" data-scroll-target="#example-before-after-control-impact-baci-analysis"><span class="header-section-number">8.6.1</span> Example: Before-After-Control-Impact (BACI) Analysis</a></li>
+  <li><a href="#example-before-after-control-impact-baci-analysis" id="toc-example-before-after-control-impact-baci-analysis" class="nav-link" data-scroll-target="#example-before-after-control-impact-baci-analysis"><span class="header-section-number">9.6.1</span> Example: Before-After-Control-Impact (BACI) Analysis</a></li>
   </ul></li>
-  <li><a href="#threat-assessment-and-prioritization" id="toc-threat-assessment-and-prioritization" class="nav-link" data-scroll-target="#threat-assessment-and-prioritization"><span class="header-section-number">8.7</span> Threat Assessment and Prioritization</a>
+  <li><a href="#threat-assessment-and-prioritization" id="toc-threat-assessment-and-prioritization" class="nav-link" data-scroll-target="#threat-assessment-and-prioritization"><span class="header-section-number">9.7</span> Threat Assessment and Prioritization</a>
   <ul class="collapse">
-  <li><a href="#example-multi-criteria-decision-analysis" id="toc-example-multi-criteria-decision-analysis" class="nav-link" data-scroll-target="#example-multi-criteria-decision-analysis"><span class="header-section-number">8.7.1</span> Example: Multi-Criteria Decision Analysis</a></li>
+  <li><a href="#example-multi-criteria-decision-analysis" id="toc-example-multi-criteria-decision-analysis" class="nav-link" data-scroll-target="#example-multi-criteria-decision-analysis"><span class="header-section-number">9.7.1</span> Example: Multi-Criteria Decision Analysis</a></li>
   </ul></li>
-  <li><a href="#conservation-planning" id="toc-conservation-planning" class="nav-link" data-scroll-target="#conservation-planning"><span class="header-section-number">8.8</span> Conservation Planning</a>
+  <li><a href="#conservation-planning" id="toc-conservation-planning" class="nav-link" data-scroll-target="#conservation-planning"><span class="header-section-number">9.8</span> Conservation Planning</a>
   <ul class="collapse">
-  <li><a href="#example-complementarity-analysis" id="toc-example-complementarity-analysis" class="nav-link" data-scroll-target="#example-complementarity-analysis"><span class="header-section-number">8.8.1</span> Example: Complementarity Analysis</a></li>
+  <li><a href="#example-complementarity-analysis" id="toc-example-complementarity-analysis" class="nav-link" data-scroll-target="#example-complementarity-analysis"><span class="header-section-number">9.8.1</span> Example: Complementarity Analysis</a></li>
   </ul></li>
-  <li><a href="#climate-change-vulnerability-assessment" id="toc-climate-change-vulnerability-assessment" class="nav-link" data-scroll-target="#climate-change-vulnerability-assessment"><span class="header-section-number">8.9</span> Climate Change Vulnerability Assessment</a>
+  <li><a href="#climate-change-vulnerability-assessment" id="toc-climate-change-vulnerability-assessment" class="nav-link" data-scroll-target="#climate-change-vulnerability-assessment"><span class="header-section-number">9.9</span> Climate Change Vulnerability Assessment</a>
   <ul class="collapse">
-  <li><a href="#example-trait-based-vulnerability-analysis" id="toc-example-trait-based-vulnerability-analysis" class="nav-link" data-scroll-target="#example-trait-based-vulnerability-analysis"><span class="header-section-number">8.9.1</span> Example: Trait-Based Vulnerability Analysis</a></li>
+  <li><a href="#example-trait-based-vulnerability-analysis" id="toc-example-trait-based-vulnerability-analysis" class="nav-link" data-scroll-target="#example-trait-based-vulnerability-analysis"><span class="header-section-number">9.9.1</span> Example: Trait-Based Vulnerability Analysis</a></li>
   </ul></li>
-  <li><a href="#community-based-conservation-monitoring" id="toc-community-based-conservation-monitoring" class="nav-link" data-scroll-target="#community-based-conservation-monitoring"><span class="header-section-number">8.10</span> Community-Based Conservation Monitoring</a>
+  <li><a href="#community-based-conservation-monitoring" id="toc-community-based-conservation-monitoring" class="nav-link" data-scroll-target="#community-based-conservation-monitoring"><span class="header-section-number">9.10</span> Community-Based Conservation Monitoring</a>
   <ul class="collapse">
-  <li><a href="#example-analyzing-community-monitoring-data" id="toc-example-analyzing-community-monitoring-data" class="nav-link" data-scroll-target="#example-analyzing-community-monitoring-data"><span class="header-section-number">8.10.1</span> Example: Analyzing Community Monitoring Data</a></li>
+  <li><a href="#example-analyzing-community-monitoring-data" id="toc-example-analyzing-community-monitoring-data" class="nav-link" data-scroll-target="#example-analyzing-community-monitoring-data"><span class="header-section-number">9.10.1</span> Example: Analyzing Community Monitoring Data</a></li>
   </ul></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">8.11</span> Summary</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.12</span> Exercises</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">9.11</span> Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.12</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/09-conservation.html">Advanced Topics</a></li><li class="breadcrumb-item"><a href="../chapters/09-conservation.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conservation Applications</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/08-regression.html">Advanced Topics</a></li><li class="breadcrumb-item"><a href="../chapters/09-conservation.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conservation Applications</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conservation Applications</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conservation Applications</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -352,8 +358,8 @@ div.csl-indent {
 </header>
 
 
-<section id="introduction" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">8.1</span> Introduction</h2>
+<section id="introduction" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">9.1</span> Introduction</h2>
 <p>This chapter explores how data analysis techniques can be applied to conservation science and management. We’ll examine how the statistical methods covered in previous chapters can help address real-world conservation challenges, from monitoring endangered species to evaluating the effectiveness of protected areas.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -381,10 +387,10 @@ PROFESSIONAL TIP: Data-Driven Decision Making in Conservation
 </div>
 </div>
 </section>
-<section id="conservation-data-types-and-sources" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="conservation-data-types-and-sources"><span class="header-section-number">8.2</span> Conservation Data Types and Sources</h2>
-<section id="types-of-conservation-data" class="level3" data-number="8.2.1">
-<h3 data-number="8.2.1" class="anchored" data-anchor-id="types-of-conservation-data"><span class="header-section-number">8.2.1</span> Types of Conservation Data</h3>
+<section id="conservation-data-types-and-sources" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="conservation-data-types-and-sources"><span class="header-section-number">9.2</span> Conservation Data Types and Sources</h2>
+<section id="types-of-conservation-data" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="types-of-conservation-data"><span class="header-section-number">9.2.1</span> Types of Conservation Data</h3>
 <p>Conservation science relies on various types of data:</p>
 <ol type="1">
 <li><strong>Species Occurrence Data</strong>: Presence/absence or abundance of species</li>
@@ -394,8 +400,8 @@ PROFESSIONAL TIP: Data-Driven Decision Making in Conservation
 <li><strong>Socioeconomic Data</strong>: Human population, land use, resource extraction</li>
 </ol>
 </section>
-<section id="data-sources" class="level3" data-number="8.2.2">
-<h3 data-number="8.2.2" class="anchored" data-anchor-id="data-sources"><span class="header-section-number">8.2.2</span> Data Sources</h3>
+<section id="data-sources" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="data-sources"><span class="header-section-number">9.2.2</span> Data Sources</h3>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -451,11 +457,11 @@ PROFESSIONAL TIP: Data-Driven Decision Making in Conservation
 </div>
 </section>
 </section>
-<section id="species-distribution-modeling" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="species-distribution-modeling"><span class="header-section-number">8.3</span> Species Distribution Modeling</h2>
+<section id="species-distribution-modeling" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="species-distribution-modeling"><span class="header-section-number">9.3</span> Species Distribution Modeling</h2>
 <p>Species distribution models (SDMs) predict where species are likely to occur based on environmental variables <span class="citation" data-cites="elith2009species">(<a href="../references.html#ref-elith2009species" role="doc-biblioref">Elith et al., 2009</a>)</span>.</p>
-<section id="example-simple-species-distribution-model" class="level3" data-number="8.3.1">
-<h3 data-number="8.3.1" class="anchored" data-anchor-id="example-simple-species-distribution-model"><span class="header-section-number">8.3.1</span> Example: Simple Species Distribution Model</h3>
+<section id="example-simple-species-distribution-model" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="example-simple-species-distribution-model"><span class="header-section-number">9.3.1</span> Example: Simple Species Distribution Model</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -598,11 +604,11 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </section>
 </section>
-<section id="population-trend-analysis" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="population-trend-analysis"><span class="header-section-number">8.4</span> Population Trend Analysis</h2>
+<section id="population-trend-analysis" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="population-trend-analysis"><span class="header-section-number">9.4</span> Population Trend Analysis</h2>
 <p>Analyzing population trends is crucial for conservation planning and evaluating management effectiveness.</p>
-<section id="example-linear-mixed-models-for-population-trends" class="level3" data-number="8.4.1">
-<h3 data-number="8.4.1" class="anchored" data-anchor-id="example-linear-mixed-models-for-population-trends"><span class="header-section-number">8.4.1</span> Example: Linear Mixed Models for Population Trends</h3>
+<section id="example-linear-mixed-models-for-population-trends" class="level3" data-number="9.4.1">
+<h3 data-number="9.4.1" class="anchored" data-anchor-id="example-linear-mixed-models-for-population-trends"><span class="header-section-number">9.4.1</span> Example: Linear Mixed Models for Population Trends</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -719,11 +725,11 @@ year -1.000</code></pre>
 </div>
 </section>
 </section>
-<section id="habitat-fragmentation-analysis" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="habitat-fragmentation-analysis"><span class="header-section-number">8.5</span> Habitat Fragmentation Analysis</h2>
+<section id="habitat-fragmentation-analysis" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="habitat-fragmentation-analysis"><span class="header-section-number">9.5</span> Habitat Fragmentation Analysis</h2>
 <p>Habitat fragmentation is a major threat to biodiversity. Landscape metrics help quantify fragmentation patterns.</p>
-<section id="example-calculating-landscape-metrics" class="level3" data-number="8.5.1">
-<h3 data-number="8.5.1" class="anchored" data-anchor-id="example-calculating-landscape-metrics"><span class="header-section-number">8.5.1</span> Example: Calculating Landscape Metrics</h3>
+<section id="example-calculating-landscape-metrics" class="level3" data-number="9.5.1">
+<h3 data-number="9.5.1" class="anchored" data-anchor-id="example-calculating-landscape-metrics"><span class="header-section-number">9.5.1</span> Example: Calculating Landscape Metrics</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -819,11 +825,11 @@ year -1.000</code></pre>
 </div>
 </section>
 </section>
-<section id="protected-area-effectiveness" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="protected-area-effectiveness"><span class="header-section-number">8.6</span> Protected Area Effectiveness</h2>
+<section id="protected-area-effectiveness" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="protected-area-effectiveness"><span class="header-section-number">9.6</span> Protected Area Effectiveness</h2>
 <p>Evaluating the effectiveness of protected areas is essential for conservation planning and management.</p>
-<section id="example-before-after-control-impact-baci-analysis" class="level3" data-number="8.6.1">
-<h3 data-number="8.6.1" class="anchored" data-anchor-id="example-before-after-control-impact-baci-analysis"><span class="header-section-number">8.6.1</span> Example: Before-After-Control-Impact (BACI) Analysis</h3>
+<section id="example-before-after-control-impact-baci-analysis" class="level3" data-number="9.6.1">
+<h3 data-number="9.6.1" class="anchored" data-anchor-id="example-before-after-control-impact-baci-analysis"><span class="header-section-number">9.6.1</span> Example: Before-After-Control-Impact (BACI) Analysis</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -927,11 +933,11 @@ F-statistic: 4.916 on 3 and 196 DF,  p-value: 0.002578</code></pre>
 </div>
 </section>
 </section>
-<section id="threat-assessment-and-prioritization" class="level2" data-number="8.7">
-<h2 data-number="8.7" class="anchored" data-anchor-id="threat-assessment-and-prioritization"><span class="header-section-number">8.7</span> Threat Assessment and Prioritization</h2>
+<section id="threat-assessment-and-prioritization" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="threat-assessment-and-prioritization"><span class="header-section-number">9.7</span> Threat Assessment and Prioritization</h2>
 <p>Conservation resources are limited, so prioritizing threats and actions is essential.</p>
-<section id="example-multi-criteria-decision-analysis" class="level3" data-number="8.7.1">
-<h3 data-number="8.7.1" class="anchored" data-anchor-id="example-multi-criteria-decision-analysis"><span class="header-section-number">8.7.1</span> Example: Multi-Criteria Decision Analysis</h3>
+<section id="example-multi-criteria-decision-analysis" class="level3" data-number="9.7.1">
+<h3 data-number="9.7.1" class="anchored" data-anchor-id="example-multi-criteria-decision-analysis"><span class="header-section-number">9.7.1</span> Example: Multi-Criteria Decision Analysis</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -996,11 +1002,11 @@ F-statistic: 4.916 on 3 and 196 DF,  p-value: 0.002578</code></pre>
 </div>
 </section>
 </section>
-<section id="conservation-planning" class="level2" data-number="8.8">
-<h2 data-number="8.8" class="anchored" data-anchor-id="conservation-planning"><span class="header-section-number">8.8</span> Conservation Planning</h2>
+<section id="conservation-planning" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="conservation-planning"><span class="header-section-number">9.8</span> Conservation Planning</h2>
 <p>Systematic conservation planning helps identify priority areas for conservation.</p>
-<section id="example-complementarity-analysis" class="level3" data-number="8.8.1">
-<h3 data-number="8.8.1" class="anchored" data-anchor-id="example-complementarity-analysis"><span class="header-section-number">8.8.1</span> Example: Complementarity Analysis</h3>
+<section id="example-complementarity-analysis" class="level3" data-number="9.8.1">
+<h3 data-number="9.8.1" class="anchored" data-anchor-id="example-complementarity-analysis"><span class="header-section-number">9.8.1</span> Example: Complementarity Analysis</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1127,11 +1133,11 @@ F-statistic: 4.916 on 3 and 196 DF,  p-value: 0.002578</code></pre>
 </div>
 </section>
 </section>
-<section id="climate-change-vulnerability-assessment" class="level2" data-number="8.9">
-<h2 data-number="8.9" class="anchored" data-anchor-id="climate-change-vulnerability-assessment"><span class="header-section-number">8.9</span> Climate Change Vulnerability Assessment</h2>
+<section id="climate-change-vulnerability-assessment" class="level2" data-number="9.9">
+<h2 data-number="9.9" class="anchored" data-anchor-id="climate-change-vulnerability-assessment"><span class="header-section-number">9.9</span> Climate Change Vulnerability Assessment</h2>
 <p>Climate change poses significant threats to biodiversity. Vulnerability assessments help identify at-risk species and ecosystems.</p>
-<section id="example-trait-based-vulnerability-analysis" class="level3" data-number="8.9.1">
-<h3 data-number="8.9.1" class="anchored" data-anchor-id="example-trait-based-vulnerability-analysis"><span class="header-section-number">8.9.1</span> Example: Trait-Based Vulnerability Analysis</h3>
+<section id="example-trait-based-vulnerability-analysis" class="level3" data-number="9.9.1">
+<h3 data-number="9.9.1" class="anchored" data-anchor-id="example-trait-based-vulnerability-analysis"><span class="header-section-number">9.9.1</span> Example: Trait-Based Vulnerability Analysis</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1202,11 +1208,11 @@ F-statistic: 4.916 on 3 and 196 DF,  p-value: 0.002578</code></pre>
 </div>
 </section>
 </section>
-<section id="community-based-conservation-monitoring" class="level2" data-number="8.10">
-<h2 data-number="8.10" class="anchored" data-anchor-id="community-based-conservation-monitoring"><span class="header-section-number">8.10</span> Community-Based Conservation Monitoring</h2>
+<section id="community-based-conservation-monitoring" class="level2" data-number="9.10">
+<h2 data-number="9.10" class="anchored" data-anchor-id="community-based-conservation-monitoring"><span class="header-section-number">9.10</span> Community-Based Conservation Monitoring</h2>
 <p>Involving local communities in conservation monitoring can improve data collection and conservation outcomes.</p>
-<section id="example-analyzing-community-monitoring-data" class="level3" data-number="8.10.1">
-<h3 data-number="8.10.1" class="anchored" data-anchor-id="example-analyzing-community-monitoring-data"><span class="header-section-number">8.10.1</span> Example: Analyzing Community Monitoring Data</h3>
+<section id="example-analyzing-community-monitoring-data" class="level3" data-number="9.10.1">
+<h3 data-number="9.10.1" class="anchored" data-anchor-id="example-analyzing-community-monitoring-data"><span class="header-section-number">9.10.1</span> Example: Analyzing Community Monitoring Data</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1357,8 +1363,8 @@ Response: poaching
 </div>
 </section>
 </section>
-<section id="summary" class="level2" data-number="8.11">
-<h2 data-number="8.11" class="anchored" data-anchor-id="summary"><span class="header-section-number">8.11</span> Summary</h2>
+<section id="summary" class="level2" data-number="9.11">
+<h2 data-number="9.11" class="anchored" data-anchor-id="summary"><span class="header-section-number">9.11</span> Summary</h2>
 <p>In this chapter, we’ve explored how data analysis techniques can be applied to conservation challenges:</p>
 <ul>
 <li>Species distribution modeling to predict habitat suitability</li>
@@ -1372,8 +1378,8 @@ Response: poaching
 </ul>
 <p>These applications demonstrate how the statistical methods covered throughout this book can help address real-world conservation problems, inform management decisions, and ultimately contribute to biodiversity conservation.</p>
 </section>
-<section id="exercises" class="level2" data-number="8.12">
-<h2 data-number="8.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">8.12</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="9.12">
+<h2 data-number="9.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">9.12</span> Exercises</h2>
 <ol type="1">
 <li>Import a dataset on species occurrences and environmental variables, then build a simple species distribution model.</li>
 <li>Analyze population monitoring data to detect trends and assess conservation status.</li>
@@ -1848,8 +1854,8 @@ Elith, J., Leathwick, J. R., &amp; Hastie, T. (2009). Species distribution model
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/07-advanced-visualization.html" class="pagination-link" aria-label="Advanced Data Visualization">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced Data Visualization</span></span>
+      <a href="../chapters/08-regression.html" class="pagination-link" aria-label="Regression Analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regression Analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

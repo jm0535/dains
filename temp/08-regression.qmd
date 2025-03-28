@@ -221,7 +221,8 @@ if(knitr::is_html_output() && requireNamespace("plotly", quietly = TRUE)) {
     theme(legend.position = "right")
 }
 
-## Professional Tip: Model Selection and Validation in Ecological Research
+
+## PROFESSIONAL TIP: Model Selection and Validation in Ecological Research
 
 When building regression models for natural sciences data:
 
@@ -235,6 +236,7 @@ When building regression models for natural sciences data:
 - **Report effect sizes**: Include standardized coefficients or partial R² values to show the relative importance of predictors
 - **Present uncertainty**: Always report confidence intervals around parameter estimates
 - **Consider mixed-effects models**: For nested or hierarchical data structures, consider using mixed-effects models
+
 
 ### Variable Selection
 

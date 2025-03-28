@@ -51,13 +51,11 @@ Each dataset directory contains a CITATION.txt file with source information and 
    ```bash
    git clone https://github.com/jm0535/data-analysis-book.git
    ```
-
 2. Download the datasets by running the script:
 
    ```r
    Rscript download_datasets.R
    ```
-
 3. Install required R packages:
 
    ```r
@@ -74,13 +72,12 @@ To build the HTML version of the book:
    ```bash
    quarto render
    ```
-
 3. The rendered book will be available in the `docs/` directory
 
 ## GitHub Pages
 
 This book is published using GitHub Pages and can be accessed at:
-[https://jm0535.github.io/data-analysis-book/](https://jm0535.github.io/data-analysis-book/)
+[https://jm0535.github.io/Data-Analysis-in-Natural-Sciences/]()
 
 The publishing process is automated using GitHub Actions. When changes are pushed to the main branch, the book is automatically rebuilt and published.
 

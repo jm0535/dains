@@ -384,6 +384,31 @@ Levels: Control Treatment</code></pre>
 <pre><code>[1] "2020-07-15"</code></pre>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+PROFESSIONAL TIP: Data Management Best Practices
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Proper data management is critical for reproducible research in natural sciences:</p>
+<ul>
+<li><strong>Document metadata</strong>: Always maintain detailed records about data collection methods, units, and variable definitions</li>
+<li><strong>Use consistent naming conventions</strong>: Create clear, consistent file and variable names (e.g., <code>site_01_temp_2023.csv</code> instead of <code>data1.csv</code>)</li>
+<li><strong>Preserve raw data</strong>: Never modify your original data files; always work with copies for cleaning and analysis</li>
+<li><strong>Version control</strong>: Use Git or similar tools to track changes to your data processing scripts</li>
+<li><strong>Implement quality control</strong>: Create automated checks for impossible values, outliers, and inconsistencies</li>
+<li><strong>Plan for missing data</strong>: Develop a consistent strategy for handling missing values before analysis begins</li>
+<li><strong>Create tidy data</strong>: Structure data with one observation per row and one variable per column</li>
+<li><strong>Use open formats</strong>: Store data in non-proprietary formats (CSV, TSV) for long-term accessibility</li>
+<li><strong>Back up regularly</strong>: Maintain multiple copies of your data in different physical locations</li>
+<li><strong>Consider data repositories</strong>: Share your data through repositories like Dryad, Zenodo, or discipline-specific databases</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="data-structures-in-r" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="data-structures-in-r"><span class="header-section-number">2.2.2</span> Data Structures in R</h3>
@@ -1510,275 +1535,292 @@ body_mass_g            0.5951098    -0.4719156         0.8712018   1.0000000</co
 <span id="cb70-38"><a href="#cb70-38" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(date_example)</span>
 <span id="cb70-39"><a href="#cb70-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb70-40"><a href="#cb70-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-41"><a href="#cb70-41" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Structures in R</span></span>
-<span id="cb70-42"><a href="#cb70-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-43"><a href="#cb70-43" aria-hidden="true" tabindex="-1"></a>R has several data structures for organizing information:</span>
-<span id="cb70-44"><a href="#cb70-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-47"><a href="#cb70-47" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb70-48"><a href="#cb70-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Load real datasets</span></span>
-<span id="cb70-49"><a href="#cb70-49" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb70-50"><a href="#cb70-50" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/environmental/climate_data.csv"</span>)</span>
-<span id="cb70-51"><a href="#cb70-51" aria-hidden="true" tabindex="-1"></a>crops <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/agriculture/crop_yields.csv"</span>)</span>
-<span id="cb70-52"><a href="#cb70-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-53"><a href="#cb70-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector example - penguin bill lengths</span></span>
-<span id="cb70-54"><a href="#cb70-54" aria-hidden="true" tabindex="-1"></a>bill_lengths <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins<span class="sc">$</span>bill_length_mm[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
-<span id="cb70-55"><a href="#cb70-55" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bill_lengths)</span>
-<span id="cb70-56"><a href="#cb70-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-57"><a href="#cb70-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix example - create a matrix from penguin measurements</span></span>
-<span id="cb70-58"><a href="#cb70-58" aria-hidden="true" tabindex="-1"></a>penguin_matrix <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(penguins[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">6</span>])</span>
-<span id="cb70-59"><a href="#cb70-59" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_matrix)</span>
-<span id="cb70-60"><a href="#cb70-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-61"><a href="#cb70-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Data frame example - first few rows of penguin data</span></span>
-<span id="cb70-62"><a href="#cb70-62" aria-hidden="true" tabindex="-1"></a>penguin_data <span class="ot">&lt;-</span> penguins[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ]</span>
-<span id="cb70-63"><a href="#cb70-63" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_data)</span>
-<span id="cb70-64"><a href="#cb70-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-65"><a href="#cb70-65" aria-hidden="true" tabindex="-1"></a><span class="co"># List example - store different aspects of the dataset</span></span>
-<span id="cb70-66"><a href="#cb70-66" aria-hidden="true" tabindex="-1"></a>penguin_summary <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb70-67"><a href="#cb70-67" aria-hidden="true" tabindex="-1"></a>  <span class="at">species =</span> <span class="fu">unique</span>(penguins<span class="sc">$</span>species),</span>
-<span id="cb70-68"><a href="#cb70-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">avg_bill_length =</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb70-69"><a href="#cb70-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_size =</span> <span class="fu">nrow</span>(penguins),</span>
-<span id="cb70-70"><a href="#cb70-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> <span class="fu">unique</span>(penguins<span class="sc">$</span>year)</span>
-<span id="cb70-71"><a href="#cb70-71" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb70-72"><a href="#cb70-72" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_summary)</span>
-<span id="cb70-73"><a href="#cb70-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb70-74"><a href="#cb70-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-75"><a href="#cb70-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## Importing Data</span></span>
-<span id="cb70-76"><a href="#cb70-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-77"><a href="#cb70-77" aria-hidden="true" tabindex="-1"></a><span class="fu">### Reading Data Files</span></span>
-<span id="cb70-78"><a href="#cb70-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-79"><a href="#cb70-79" aria-hidden="true" tabindex="-1"></a>R provides several functions for importing data from different file formats:</span>
-<span id="cb70-80"><a href="#cb70-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-83"><a href="#cb70-83" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb70-84"><a href="#cb70-84" aria-hidden="true" tabindex="-1"></a><span class="co"># CSV files - Palmer Penguins dataset</span></span>
-<span id="cb70-85"><a href="#cb70-85" aria-hidden="true" tabindex="-1"></a>penguins_csv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/environmental/climate_data.csv"</span>)</span>
-<span id="cb70-86"><a href="#cb70-86" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(penguins_csv, <span class="dv">3</span>)</span>
-<span id="cb70-87"><a href="#cb70-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-88"><a href="#cb70-88" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the tidyverse approach for better handling</span></span>
-<span id="cb70-89"><a href="#cb70-89" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb70-90"><a href="#cb70-90" aria-hidden="true" tabindex="-1"></a>penguins_tidy <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"../data/environmental/climate_data.csv"</span>)</span>
-<span id="cb70-91"><a href="#cb70-91" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(penguins_tidy, <span class="dv">3</span>)</span>
-<span id="cb70-92"><a href="#cb70-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-93"><a href="#cb70-93" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop yields dataset</span></span>
-<span id="cb70-94"><a href="#cb70-94" aria-hidden="true" tabindex="-1"></a>crops_csv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/agriculture/crop_yields.csv"</span>)</span>
-<span id="cb70-95"><a href="#cb70-95" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(crops_csv, <span class="dv">3</span>)</span>
-<span id="cb70-96"><a href="#cb70-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-41"><a href="#cb70-41" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb70-42"><a href="#cb70-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## PROFESSIONAL TIP: Data Management Best Practices</span></span>
+<span id="cb70-43"><a href="#cb70-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-44"><a href="#cb70-44" aria-hidden="true" tabindex="-1"></a>Proper data management is critical for reproducible research in natural sciences:</span>
+<span id="cb70-45"><a href="#cb70-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-46"><a href="#cb70-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Document metadata**: Always maintain detailed records about data collection methods, units, and variable definitions</span>
+<span id="cb70-47"><a href="#cb70-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Use consistent naming conventions**: Create clear, consistent file and variable names (e.g., <span class="in">`site_01_temp_2023.csv`</span> instead of <span class="in">`data1.csv`</span>)</span>
+<span id="cb70-48"><a href="#cb70-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Preserve raw data**: Never modify your original data files; always work with copies for cleaning and analysis</span>
+<span id="cb70-49"><a href="#cb70-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Version control**: Use Git or similar tools to track changes to your data processing scripts</span>
+<span id="cb70-50"><a href="#cb70-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Implement quality control**: Create automated checks for impossible values, outliers, and inconsistencies</span>
+<span id="cb70-51"><a href="#cb70-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Plan for missing data**: Develop a consistent strategy for handling missing values before analysis begins</span>
+<span id="cb70-52"><a href="#cb70-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Create tidy data**: Structure data with one observation per row and one variable per column</span>
+<span id="cb70-53"><a href="#cb70-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Use open formats**: Store data in non-proprietary formats (CSV, TSV) for long-term accessibility</span>
+<span id="cb70-54"><a href="#cb70-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Back up regularly**: Maintain multiple copies of your data in different physical locations</span>
+<span id="cb70-55"><a href="#cb70-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Consider data repositories**: Share your data through repositories like Dryad, Zenodo, or discipline-specific databases</span>
+<span id="cb70-56"><a href="#cb70-56" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb70-57"><a href="#cb70-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-58"><a href="#cb70-58" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Structures in R</span></span>
+<span id="cb70-59"><a href="#cb70-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-60"><a href="#cb70-60" aria-hidden="true" tabindex="-1"></a>R has several data structures for organizing information:</span>
+<span id="cb70-61"><a href="#cb70-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-64"><a href="#cb70-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb70-65"><a href="#cb70-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Load real datasets</span></span>
+<span id="cb70-66"><a href="#cb70-66" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb70-67"><a href="#cb70-67" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/environmental/climate_data.csv"</span>)</span>
+<span id="cb70-68"><a href="#cb70-68" aria-hidden="true" tabindex="-1"></a>crops <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/agriculture/crop_yields.csv"</span>)</span>
+<span id="cb70-69"><a href="#cb70-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-70"><a href="#cb70-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector example - penguin bill lengths</span></span>
+<span id="cb70-71"><a href="#cb70-71" aria-hidden="true" tabindex="-1"></a>bill_lengths <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins<span class="sc">$</span>bill_length_mm[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
+<span id="cb70-72"><a href="#cb70-72" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bill_lengths)</span>
+<span id="cb70-73"><a href="#cb70-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-74"><a href="#cb70-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix example - create a matrix from penguin measurements</span></span>
+<span id="cb70-75"><a href="#cb70-75" aria-hidden="true" tabindex="-1"></a>penguin_matrix <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(penguins[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">6</span>])</span>
+<span id="cb70-76"><a href="#cb70-76" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_matrix)</span>
+<span id="cb70-77"><a href="#cb70-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-78"><a href="#cb70-78" aria-hidden="true" tabindex="-1"></a><span class="co"># Data frame example - first few rows of penguin data</span></span>
+<span id="cb70-79"><a href="#cb70-79" aria-hidden="true" tabindex="-1"></a>penguin_data <span class="ot">&lt;-</span> penguins[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ]</span>
+<span id="cb70-80"><a href="#cb70-80" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_data)</span>
+<span id="cb70-81"><a href="#cb70-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-82"><a href="#cb70-82" aria-hidden="true" tabindex="-1"></a><span class="co"># List example - store different aspects of the dataset</span></span>
+<span id="cb70-83"><a href="#cb70-83" aria-hidden="true" tabindex="-1"></a>penguin_summary <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb70-84"><a href="#cb70-84" aria-hidden="true" tabindex="-1"></a>  <span class="at">species =</span> <span class="fu">unique</span>(penguins<span class="sc">$</span>species),</span>
+<span id="cb70-85"><a href="#cb70-85" aria-hidden="true" tabindex="-1"></a>  <span class="at">avg_bill_length =</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb70-86"><a href="#cb70-86" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_size =</span> <span class="fu">nrow</span>(penguins),</span>
+<span id="cb70-87"><a href="#cb70-87" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> <span class="fu">unique</span>(penguins<span class="sc">$</span>year)</span>
+<span id="cb70-88"><a href="#cb70-88" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb70-89"><a href="#cb70-89" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_summary)</span>
+<span id="cb70-90"><a href="#cb70-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-91"><a href="#cb70-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-92"><a href="#cb70-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## Importing Data</span></span>
+<span id="cb70-93"><a href="#cb70-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-94"><a href="#cb70-94" aria-hidden="true" tabindex="-1"></a><span class="fu">### Reading Data Files</span></span>
+<span id="cb70-95"><a href="#cb70-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-96"><a href="#cb70-96" aria-hidden="true" tabindex="-1"></a>R provides several functions for importing data from different file formats:</span>
 <span id="cb70-97"><a href="#cb70-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-98"><a href="#cb70-98" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exploring Real-World Datasets</span></span>
-<span id="cb70-99"><a href="#cb70-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-100"><a href="#cb70-100" aria-hidden="true" tabindex="-1"></a>Let's explore some of the real-world datasets we have available:</span>
-<span id="cb70-101"><a href="#cb70-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-104"><a href="#cb70-104" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb70-105"><a href="#cb70-105" aria-hidden="true" tabindex="-1"></a><span class="co"># Palmer Penguins dataset</span></span>
-<span id="cb70-106"><a href="#cb70-106" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/environmental/climate_data.csv"</span>)</span>
-<span id="cb70-107"><a href="#cb70-107" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span>
-<span id="cb70-108"><a href="#cb70-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-109"><a href="#cb70-109" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic summary statistics</span></span>
-<span id="cb70-110"><a href="#cb70-110" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>bill_length_mm)</span>
-<span id="cb70-111"><a href="#cb70-111" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>flipper_length_mm)</span>
-<span id="cb70-112"><a href="#cb70-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-113"><a href="#cb70-113" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop yields dataset</span></span>
-<span id="cb70-114"><a href="#cb70-114" aria-hidden="true" tabindex="-1"></a>crops <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/agriculture/crop_yields.csv"</span>)</span>
-<span id="cb70-115"><a href="#cb70-115" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(crops)</span>
-<span id="cb70-116"><a href="#cb70-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb70-117"><a href="#cb70-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-118"><a href="#cb70-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Cleaning and Preparation</span></span>
-<span id="cb70-119"><a href="#cb70-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-120"><a href="#cb70-120" aria-hidden="true" tabindex="-1"></a><span class="fu">### Handling Missing Values</span></span>
-<span id="cb70-121"><a href="#cb70-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-122"><a href="#cb70-122" aria-hidden="true" tabindex="-1"></a>Missing values are common in scientific datasets and need to be addressed before analysis:</span>
-<span id="cb70-123"><a href="#cb70-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-126"><a href="#cb70-126" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb70-127"><a href="#cb70-127" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values in the penguins dataset</span></span>
-<span id="cb70-128"><a href="#cb70-128" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(penguins))</span>
-<span id="cb70-129"><a href="#cb70-129" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(penguins))</span>
-<span id="cb70-130"><a href="#cb70-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-131"><a href="#cb70-131" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a complete cases dataset</span></span>
-<span id="cb70-132"><a href="#cb70-132" aria-hidden="true" tabindex="-1"></a>penguins_complete <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins)</span>
-<span id="cb70-133"><a href="#cb70-133" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Original dataset rows:"</span>, <span class="fu">nrow</span>(penguins)))</span>
-<span id="cb70-134"><a href="#cb70-134" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Complete cases rows:"</span>, <span class="fu">nrow</span>(penguins_complete)))</span>
-<span id="cb70-135"><a href="#cb70-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-136"><a href="#cb70-136" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace missing values with the mean for numeric columns</span></span>
-<span id="cb70-137"><a href="#cb70-137" aria-hidden="true" tabindex="-1"></a>penguins_imputed <span class="ot">&lt;-</span> penguins</span>
-<span id="cb70-138"><a href="#cb70-138" aria-hidden="true" tabindex="-1"></a>penguins_imputed<span class="sc">$</span>bill_length_mm[<span class="fu">is.na</span>(penguins_imputed<span class="sc">$</span>bill_length_mm)] <span class="ot">&lt;-</span> </span>
-<span id="cb70-139"><a href="#cb70-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(penguins_imputed<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb70-140"><a href="#cb70-140" aria-hidden="true" tabindex="-1"></a>penguins_imputed<span class="sc">$</span>bill_depth_mm[<span class="fu">is.na</span>(penguins_imputed<span class="sc">$</span>bill_depth_mm)] <span class="ot">&lt;-</span> </span>
-<span id="cb70-141"><a href="#cb70-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(penguins_imputed<span class="sc">$</span>bill_depth_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb70-142"><a href="#cb70-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-143"><a href="#cb70-143" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if missing values were replaced</span></span>
-<span id="cb70-144"><a href="#cb70-144" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(penguins_imputed<span class="sc">$</span>bill_length_mm))</span>
-<span id="cb70-145"><a href="#cb70-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb70-146"><a href="#cb70-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-147"><a href="#cb70-147" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Transformation</span></span>
-<span id="cb70-148"><a href="#cb70-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-149"><a href="#cb70-149" aria-hidden="true" tabindex="-1"></a>Often, you'll need to transform variables to meet statistical assumptions or for better visualization:</span>
-<span id="cb70-150"><a href="#cb70-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-153"><a href="#cb70-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb70-154"><a href="#cb70-154" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the biodiversity dataset</span></span>
-<span id="cb70-155"><a href="#cb70-155" aria-hidden="true" tabindex="-1"></a>biodiversity <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/ecology/biodiversity.csv"</span>)</span>
-<span id="cb70-156"><a href="#cb70-156" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(biodiversity)</span>
-<span id="cb70-157"><a href="#cb70-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-158"><a href="#cb70-158" aria-hidden="true" tabindex="-1"></a><span class="co"># Log transformation of a skewed variable (if available)</span></span>
-<span id="cb70-159"><a href="#cb70-159" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="st">"n"</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(biodiversity)) {</span>
-<span id="cb70-160"><a href="#cb70-160" aria-hidden="true" tabindex="-1"></a>  biodiversity<span class="sc">$</span>log_n <span class="ot">&lt;-</span> <span class="fu">log</span>(biodiversity<span class="sc">$</span>n <span class="sc">+</span> <span class="dv">1</span>)  <span class="co"># Add 1 to handle zeros</span></span>
-<span id="cb70-161"><a href="#cb70-161" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb70-162"><a href="#cb70-162" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compare original and transformed</span></span>
-<span id="cb70-163"><a href="#cb70-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(biodiversity<span class="sc">$</span>n)</span>
-<span id="cb70-164"><a href="#cb70-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(biodiversity<span class="sc">$</span>log_n)</span>
-<span id="cb70-165"><a href="#cb70-165" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb70-166"><a href="#cb70-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-167"><a href="#cb70-167" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardization (z-score) of penguin measurements</span></span>
-<span id="cb70-168"><a href="#cb70-168" aria-hidden="true" tabindex="-1"></a>penguins_std <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
-<span id="cb70-169"><a href="#cb70-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb70-170"><a href="#cb70-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_length_std =</span> <span class="fu">scale</span>(bill_length_mm),</span>
-<span id="cb70-171"><a href="#cb70-171" aria-hidden="true" tabindex="-1"></a>    <span class="at">flipper_length_std =</span> <span class="fu">scale</span>(flipper_length_mm),</span>
-<span id="cb70-172"><a href="#cb70-172" aria-hidden="true" tabindex="-1"></a>    <span class="at">body_mass_std =</span> <span class="fu">scale</span>(body_mass_g)</span>
-<span id="cb70-173"><a href="#cb70-173" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb70-100"><a href="#cb70-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb70-101"><a href="#cb70-101" aria-hidden="true" tabindex="-1"></a><span class="co"># CSV files - Palmer Penguins dataset</span></span>
+<span id="cb70-102"><a href="#cb70-102" aria-hidden="true" tabindex="-1"></a>penguins_csv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/environmental/climate_data.csv"</span>)</span>
+<span id="cb70-103"><a href="#cb70-103" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(penguins_csv, <span class="dv">3</span>)</span>
+<span id="cb70-104"><a href="#cb70-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-105"><a href="#cb70-105" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the tidyverse approach for better handling</span></span>
+<span id="cb70-106"><a href="#cb70-106" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb70-107"><a href="#cb70-107" aria-hidden="true" tabindex="-1"></a>penguins_tidy <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"../data/environmental/climate_data.csv"</span>)</span>
+<span id="cb70-108"><a href="#cb70-108" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(penguins_tidy, <span class="dv">3</span>)</span>
+<span id="cb70-109"><a href="#cb70-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-110"><a href="#cb70-110" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop yields dataset</span></span>
+<span id="cb70-111"><a href="#cb70-111" aria-hidden="true" tabindex="-1"></a>crops_csv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/agriculture/crop_yields.csv"</span>)</span>
+<span id="cb70-112"><a href="#cb70-112" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(crops_csv, <span class="dv">3</span>)</span>
+<span id="cb70-113"><a href="#cb70-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-114"><a href="#cb70-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-115"><a href="#cb70-115" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exploring Real-World Datasets</span></span>
+<span id="cb70-116"><a href="#cb70-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-117"><a href="#cb70-117" aria-hidden="true" tabindex="-1"></a>Let's explore some of the real-world datasets we have available:</span>
+<span id="cb70-118"><a href="#cb70-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-121"><a href="#cb70-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb70-122"><a href="#cb70-122" aria-hidden="true" tabindex="-1"></a><span class="co"># Palmer Penguins dataset</span></span>
+<span id="cb70-123"><a href="#cb70-123" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/environmental/climate_data.csv"</span>)</span>
+<span id="cb70-124"><a href="#cb70-124" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span>
+<span id="cb70-125"><a href="#cb70-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-126"><a href="#cb70-126" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic summary statistics</span></span>
+<span id="cb70-127"><a href="#cb70-127" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>bill_length_mm)</span>
+<span id="cb70-128"><a href="#cb70-128" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>flipper_length_mm)</span>
+<span id="cb70-129"><a href="#cb70-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-130"><a href="#cb70-130" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop yields dataset</span></span>
+<span id="cb70-131"><a href="#cb70-131" aria-hidden="true" tabindex="-1"></a>crops <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/agriculture/crop_yields.csv"</span>)</span>
+<span id="cb70-132"><a href="#cb70-132" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(crops)</span>
+<span id="cb70-133"><a href="#cb70-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-134"><a href="#cb70-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-135"><a href="#cb70-135" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Cleaning and Preparation</span></span>
+<span id="cb70-136"><a href="#cb70-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-137"><a href="#cb70-137" aria-hidden="true" tabindex="-1"></a><span class="fu">### Handling Missing Values</span></span>
+<span id="cb70-138"><a href="#cb70-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-139"><a href="#cb70-139" aria-hidden="true" tabindex="-1"></a>Missing values are common in scientific datasets and need to be addressed before analysis:</span>
+<span id="cb70-140"><a href="#cb70-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-143"><a href="#cb70-143" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb70-144"><a href="#cb70-144" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values in the penguins dataset</span></span>
+<span id="cb70-145"><a href="#cb70-145" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(penguins))</span>
+<span id="cb70-146"><a href="#cb70-146" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(penguins))</span>
+<span id="cb70-147"><a href="#cb70-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-148"><a href="#cb70-148" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a complete cases dataset</span></span>
+<span id="cb70-149"><a href="#cb70-149" aria-hidden="true" tabindex="-1"></a>penguins_complete <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins)</span>
+<span id="cb70-150"><a href="#cb70-150" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Original dataset rows:"</span>, <span class="fu">nrow</span>(penguins)))</span>
+<span id="cb70-151"><a href="#cb70-151" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Complete cases rows:"</span>, <span class="fu">nrow</span>(penguins_complete)))</span>
+<span id="cb70-152"><a href="#cb70-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-153"><a href="#cb70-153" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace missing values with the mean for numeric columns</span></span>
+<span id="cb70-154"><a href="#cb70-154" aria-hidden="true" tabindex="-1"></a>penguins_imputed <span class="ot">&lt;-</span> penguins</span>
+<span id="cb70-155"><a href="#cb70-155" aria-hidden="true" tabindex="-1"></a>penguins_imputed<span class="sc">$</span>bill_length_mm[<span class="fu">is.na</span>(penguins_imputed<span class="sc">$</span>bill_length_mm)] <span class="ot">&lt;-</span> </span>
+<span id="cb70-156"><a href="#cb70-156" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(penguins_imputed<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb70-157"><a href="#cb70-157" aria-hidden="true" tabindex="-1"></a>penguins_imputed<span class="sc">$</span>bill_depth_mm[<span class="fu">is.na</span>(penguins_imputed<span class="sc">$</span>bill_depth_mm)] <span class="ot">&lt;-</span> </span>
+<span id="cb70-158"><a href="#cb70-158" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(penguins_imputed<span class="sc">$</span>bill_depth_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb70-159"><a href="#cb70-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-160"><a href="#cb70-160" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if missing values were replaced</span></span>
+<span id="cb70-161"><a href="#cb70-161" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(penguins_imputed<span class="sc">$</span>bill_length_mm))</span>
+<span id="cb70-162"><a href="#cb70-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-163"><a href="#cb70-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-164"><a href="#cb70-164" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Transformation</span></span>
+<span id="cb70-165"><a href="#cb70-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-166"><a href="#cb70-166" aria-hidden="true" tabindex="-1"></a>Often, you'll need to transform variables to meet statistical assumptions or for better visualization:</span>
+<span id="cb70-167"><a href="#cb70-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-170"><a href="#cb70-170" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb70-171"><a href="#cb70-171" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the biodiversity dataset</span></span>
+<span id="cb70-172"><a href="#cb70-172" aria-hidden="true" tabindex="-1"></a>biodiversity <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/ecology/biodiversity.csv"</span>)</span>
+<span id="cb70-173"><a href="#cb70-173" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(biodiversity)</span>
 <span id="cb70-174"><a href="#cb70-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-175"><a href="#cb70-175" aria-hidden="true" tabindex="-1"></a><span class="co"># View the first few rows of the transformed data</span></span>
-<span id="cb70-176"><a href="#cb70-176" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">select</span>(penguins_std, species, bill_length_mm, bill_length_std, </span>
-<span id="cb70-177"><a href="#cb70-177" aria-hidden="true" tabindex="-1"></a>             flipper_length_mm, flipper_length_std), <span class="dv">5</span>)</span>
-<span id="cb70-178"><a href="#cb70-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb70-179"><a href="#cb70-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-180"><a href="#cb70-180" aria-hidden="true" tabindex="-1"></a><span class="fu">### Creating New Variables</span></span>
-<span id="cb70-181"><a href="#cb70-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-182"><a href="#cb70-182" aria-hidden="true" tabindex="-1"></a>Creating new variables from existing ones is a common data preparation task:</span>
+<span id="cb70-175"><a href="#cb70-175" aria-hidden="true" tabindex="-1"></a><span class="co"># Log transformation of a skewed variable (if available)</span></span>
+<span id="cb70-176"><a href="#cb70-176" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="st">"n"</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(biodiversity)) {</span>
+<span id="cb70-177"><a href="#cb70-177" aria-hidden="true" tabindex="-1"></a>  biodiversity<span class="sc">$</span>log_n <span class="ot">&lt;-</span> <span class="fu">log</span>(biodiversity<span class="sc">$</span>n <span class="sc">+</span> <span class="dv">1</span>)  <span class="co"># Add 1 to handle zeros</span></span>
+<span id="cb70-178"><a href="#cb70-178" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb70-179"><a href="#cb70-179" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compare original and transformed</span></span>
+<span id="cb70-180"><a href="#cb70-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(biodiversity<span class="sc">$</span>n)</span>
+<span id="cb70-181"><a href="#cb70-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(biodiversity<span class="sc">$</span>log_n)</span>
+<span id="cb70-182"><a href="#cb70-182" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb70-183"><a href="#cb70-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-186"><a href="#cb70-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb70-187"><a href="#cb70-187" aria-hidden="true" tabindex="-1"></a><span class="co"># Create new variables in the penguins dataset</span></span>
-<span id="cb70-188"><a href="#cb70-188" aria-hidden="true" tabindex="-1"></a>penguins_derived <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
-<span id="cb70-189"><a href="#cb70-189" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(bill_length_mm) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(bill_depth_mm)) <span class="sc">%&gt;%</span></span>
-<span id="cb70-190"><a href="#cb70-190" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb70-191"><a href="#cb70-191" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_ratio =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm,</span>
-<span id="cb70-192"><a href="#cb70-192" aria-hidden="true" tabindex="-1"></a>    <span class="at">size_category =</span> <span class="fu">case_when</span>(</span>
-<span id="cb70-193"><a href="#cb70-193" aria-hidden="true" tabindex="-1"></a>      body_mass_g <span class="sc">&lt;</span> <span class="dv">3500</span> <span class="sc">~</span> <span class="st">"Small"</span>,</span>
-<span id="cb70-194"><a href="#cb70-194" aria-hidden="true" tabindex="-1"></a>      body_mass_g <span class="sc">&lt;</span> <span class="dv">4500</span> <span class="sc">~</span> <span class="st">"Medium"</span>,</span>
-<span id="cb70-195"><a href="#cb70-195" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Large"</span></span>
-<span id="cb70-196"><a href="#cb70-196" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb70-197"><a href="#cb70-197" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb70-184"><a href="#cb70-184" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardization (z-score) of penguin measurements</span></span>
+<span id="cb70-185"><a href="#cb70-185" aria-hidden="true" tabindex="-1"></a>penguins_std <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb70-186"><a href="#cb70-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb70-187"><a href="#cb70-187" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_length_std =</span> <span class="fu">scale</span>(bill_length_mm),</span>
+<span id="cb70-188"><a href="#cb70-188" aria-hidden="true" tabindex="-1"></a>    <span class="at">flipper_length_std =</span> <span class="fu">scale</span>(flipper_length_mm),</span>
+<span id="cb70-189"><a href="#cb70-189" aria-hidden="true" tabindex="-1"></a>    <span class="at">body_mass_std =</span> <span class="fu">scale</span>(body_mass_g)</span>
+<span id="cb70-190"><a href="#cb70-190" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb70-191"><a href="#cb70-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-192"><a href="#cb70-192" aria-hidden="true" tabindex="-1"></a><span class="co"># View the first few rows of the transformed data</span></span>
+<span id="cb70-193"><a href="#cb70-193" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">select</span>(penguins_std, species, bill_length_mm, bill_length_std, </span>
+<span id="cb70-194"><a href="#cb70-194" aria-hidden="true" tabindex="-1"></a>             flipper_length_mm, flipper_length_std), <span class="dv">5</span>)</span>
+<span id="cb70-195"><a href="#cb70-195" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-196"><a href="#cb70-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-197"><a href="#cb70-197" aria-hidden="true" tabindex="-1"></a><span class="fu">### Creating New Variables</span></span>
 <span id="cb70-198"><a href="#cb70-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-199"><a href="#cb70-199" aria-hidden="true" tabindex="-1"></a><span class="co"># View the new variables</span></span>
-<span id="cb70-200"><a href="#cb70-200" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">select</span>(penguins_derived, species, bill_length_mm, bill_depth_mm, </span>
-<span id="cb70-201"><a href="#cb70-201" aria-hidden="true" tabindex="-1"></a>             bill_ratio, body_mass_g, size_category), <span class="dv">5</span>)</span>
-<span id="cb70-202"><a href="#cb70-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb70-203"><a href="#cb70-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-204"><a href="#cb70-204" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Manipulation with dplyr</span></span>
-<span id="cb70-205"><a href="#cb70-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-206"><a href="#cb70-206" aria-hidden="true" tabindex="-1"></a>The dplyr package provides a powerful grammar for data manipulation:</span>
-<span id="cb70-207"><a href="#cb70-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-210"><a href="#cb70-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb70-211"><a href="#cb70-211" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb70-212"><a href="#cb70-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-213"><a href="#cb70-213" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter rows - only Adelie penguins</span></span>
-<span id="cb70-214"><a href="#cb70-214" aria-hidden="true" tabindex="-1"></a>adelie_penguins <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
-<span id="cb70-215"><a href="#cb70-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"Adelie"</span>)</span>
-<span id="cb70-216"><a href="#cb70-216" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(adelie_penguins, <span class="dv">3</span>)</span>
-<span id="cb70-217"><a href="#cb70-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-218"><a href="#cb70-218" aria-hidden="true" tabindex="-1"></a><span class="co"># Select columns - focus on measurements</span></span>
-<span id="cb70-219"><a href="#cb70-219" aria-hidden="true" tabindex="-1"></a>penguin_measurements <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
-<span id="cb70-220"><a href="#cb70-220" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g)</span>
-<span id="cb70-221"><a href="#cb70-221" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(penguin_measurements, <span class="dv">3</span>)</span>
+<span id="cb70-199"><a href="#cb70-199" aria-hidden="true" tabindex="-1"></a>Creating new variables from existing ones is a common data preparation task:</span>
+<span id="cb70-200"><a href="#cb70-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-203"><a href="#cb70-203" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb70-204"><a href="#cb70-204" aria-hidden="true" tabindex="-1"></a><span class="co"># Create new variables in the penguins dataset</span></span>
+<span id="cb70-205"><a href="#cb70-205" aria-hidden="true" tabindex="-1"></a>penguins_derived <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb70-206"><a href="#cb70-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(bill_length_mm) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(bill_depth_mm)) <span class="sc">%&gt;%</span></span>
+<span id="cb70-207"><a href="#cb70-207" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb70-208"><a href="#cb70-208" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_ratio =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm,</span>
+<span id="cb70-209"><a href="#cb70-209" aria-hidden="true" tabindex="-1"></a>    <span class="at">size_category =</span> <span class="fu">case_when</span>(</span>
+<span id="cb70-210"><a href="#cb70-210" aria-hidden="true" tabindex="-1"></a>      body_mass_g <span class="sc">&lt;</span> <span class="dv">3500</span> <span class="sc">~</span> <span class="st">"Small"</span>,</span>
+<span id="cb70-211"><a href="#cb70-211" aria-hidden="true" tabindex="-1"></a>      body_mass_g <span class="sc">&lt;</span> <span class="dv">4500</span> <span class="sc">~</span> <span class="st">"Medium"</span>,</span>
+<span id="cb70-212"><a href="#cb70-212" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Large"</span></span>
+<span id="cb70-213"><a href="#cb70-213" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb70-214"><a href="#cb70-214" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb70-215"><a href="#cb70-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-216"><a href="#cb70-216" aria-hidden="true" tabindex="-1"></a><span class="co"># View the new variables</span></span>
+<span id="cb70-217"><a href="#cb70-217" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">select</span>(penguins_derived, species, bill_length_mm, bill_depth_mm, </span>
+<span id="cb70-218"><a href="#cb70-218" aria-hidden="true" tabindex="-1"></a>             bill_ratio, body_mass_g, size_category), <span class="dv">5</span>)</span>
+<span id="cb70-219"><a href="#cb70-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-220"><a href="#cb70-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-221"><a href="#cb70-221" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Manipulation with dplyr</span></span>
 <span id="cb70-222"><a href="#cb70-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-223"><a href="#cb70-223" aria-hidden="true" tabindex="-1"></a><span class="co"># Create new variables</span></span>
-<span id="cb70-224"><a href="#cb70-224" aria-hidden="true" tabindex="-1"></a>penguins_analyzed <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
-<span id="cb70-225"><a href="#cb70-225" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb70-226"><a href="#cb70-226" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_ratio =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm,</span>
-<span id="cb70-227"><a href="#cb70-227" aria-hidden="true" tabindex="-1"></a>    <span class="at">body_mass_kg =</span> body_mass_g <span class="sc">/</span> <span class="dv">1000</span></span>
-<span id="cb70-228"><a href="#cb70-228" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb70-229"><a href="#cb70-229" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">select</span>(penguins_analyzed, species, bill_ratio, body_mass_kg), <span class="dv">3</span>)</span>
-<span id="cb70-230"><a href="#cb70-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-231"><a href="#cb70-231" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize data by species</span></span>
-<span id="cb70-232"><a href="#cb70-232" aria-hidden="true" tabindex="-1"></a>penguin_summary <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
-<span id="cb70-233"><a href="#cb70-233" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
-<span id="cb70-234"><a href="#cb70-234" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb70-235"><a href="#cb70-235" aria-hidden="true" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>(),</span>
-<span id="cb70-236"><a href="#cb70-236" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_bill_length =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb70-237"><a href="#cb70-237" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_bill_depth =</span> <span class="fu">mean</span>(bill_depth_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb70-238"><a href="#cb70-238" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_body_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb70-239"><a href="#cb70-239" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb70-240"><a href="#cb70-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_body_mass))</span>
-<span id="cb70-241"><a href="#cb70-241" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_summary)</span>
-<span id="cb70-242"><a href="#cb70-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-243"><a href="#cb70-243" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze crop yields data</span></span>
-<span id="cb70-244"><a href="#cb70-244" aria-hidden="true" tabindex="-1"></a>crop_summary <span class="ot">&lt;-</span> crops <span class="sc">%&gt;%</span></span>
-<span id="cb70-245"><a href="#cb70-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb70-246"><a href="#cb70-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Entity) <span class="sc">%&gt;%</span></span>
-<span id="cb70-247"><a href="#cb70-247" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb70-248"><a href="#cb70-248" aria-hidden="true" tabindex="-1"></a>    <span class="at">years_recorded =</span> <span class="fu">n</span>(),</span>
-<span id="cb70-249"><a href="#cb70-249" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_wheat_yield =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb70-250"><a href="#cb70-250" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_wheat_yield =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb70-251"><a href="#cb70-251" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb70-252"><a href="#cb70-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_wheat_yield)) <span class="sc">%&gt;%</span></span>
-<span id="cb70-253"><a href="#cb70-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)  <span class="co"># Top 10 countries by average wheat yield</span></span>
-<span id="cb70-254"><a href="#cb70-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-255"><a href="#cb70-255" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(crop_summary)</span>
-<span id="cb70-256"><a href="#cb70-256" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb70-257"><a href="#cb70-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-258"><a href="#cb70-258" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exploratory Data Analysis</span></span>
+<span id="cb70-223"><a href="#cb70-223" aria-hidden="true" tabindex="-1"></a>The dplyr package provides a powerful grammar for data manipulation:</span>
+<span id="cb70-224"><a href="#cb70-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-227"><a href="#cb70-227" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb70-228"><a href="#cb70-228" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb70-229"><a href="#cb70-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-230"><a href="#cb70-230" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter rows - only Adelie penguins</span></span>
+<span id="cb70-231"><a href="#cb70-231" aria-hidden="true" tabindex="-1"></a>adelie_penguins <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb70-232"><a href="#cb70-232" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"Adelie"</span>)</span>
+<span id="cb70-233"><a href="#cb70-233" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(adelie_penguins, <span class="dv">3</span>)</span>
+<span id="cb70-234"><a href="#cb70-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-235"><a href="#cb70-235" aria-hidden="true" tabindex="-1"></a><span class="co"># Select columns - focus on measurements</span></span>
+<span id="cb70-236"><a href="#cb70-236" aria-hidden="true" tabindex="-1"></a>penguin_measurements <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb70-237"><a href="#cb70-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g)</span>
+<span id="cb70-238"><a href="#cb70-238" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(penguin_measurements, <span class="dv">3</span>)</span>
+<span id="cb70-239"><a href="#cb70-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-240"><a href="#cb70-240" aria-hidden="true" tabindex="-1"></a><span class="co"># Create new variables</span></span>
+<span id="cb70-241"><a href="#cb70-241" aria-hidden="true" tabindex="-1"></a>penguins_analyzed <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb70-242"><a href="#cb70-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb70-243"><a href="#cb70-243" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_ratio =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm,</span>
+<span id="cb70-244"><a href="#cb70-244" aria-hidden="true" tabindex="-1"></a>    <span class="at">body_mass_kg =</span> body_mass_g <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb70-245"><a href="#cb70-245" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb70-246"><a href="#cb70-246" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">select</span>(penguins_analyzed, species, bill_ratio, body_mass_kg), <span class="dv">3</span>)</span>
+<span id="cb70-247"><a href="#cb70-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-248"><a href="#cb70-248" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize data by species</span></span>
+<span id="cb70-249"><a href="#cb70-249" aria-hidden="true" tabindex="-1"></a>penguin_summary <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb70-250"><a href="#cb70-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb70-251"><a href="#cb70-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb70-252"><a href="#cb70-252" aria-hidden="true" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb70-253"><a href="#cb70-253" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_bill_length =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb70-254"><a href="#cb70-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_bill_depth =</span> <span class="fu">mean</span>(bill_depth_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb70-255"><a href="#cb70-255" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_body_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb70-256"><a href="#cb70-256" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb70-257"><a href="#cb70-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_body_mass))</span>
+<span id="cb70-258"><a href="#cb70-258" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_summary)</span>
 <span id="cb70-259"><a href="#cb70-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-260"><a href="#cb70-260" aria-hidden="true" tabindex="-1"></a>Before diving into formal statistical tests, it's essential to explore your data:</span>
-<span id="cb70-261"><a href="#cb70-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-264"><a href="#cb70-264" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb70-265"><a href="#cb70-265" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic summary statistics</span></span>
-<span id="cb70-266"><a href="#cb70-266" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>bill_length_mm)</span>
-<span id="cb70-267"><a href="#cb70-267" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>flipper_length_mm)</span>
-<span id="cb70-268"><a href="#cb70-268" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>body_mass_g)</span>
-<span id="cb70-269"><a href="#cb70-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-270"><a href="#cb70-270" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation between variables</span></span>
-<span id="cb70-271"><a href="#cb70-271" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(</span>
-<span id="cb70-272"><a href="#cb70-272" aria-hidden="true" tabindex="-1"></a>  penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb70-273"><a href="#cb70-273" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g),</span>
-<span id="cb70-274"><a href="#cb70-274" aria-hidden="true" tabindex="-1"></a>  <span class="at">use =</span> <span class="st">"complete.obs"</span></span>
-<span id="cb70-275"><a href="#cb70-275" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb70-276"><a href="#cb70-276" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_matrix)</span>
-<span id="cb70-277"><a href="#cb70-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-278"><a href="#cb70-278" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic visualization - histogram of bill lengths</span></span>
-<span id="cb70-279"><a href="#cb70-279" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb70-280"><a href="#cb70-280" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm)) <span class="sc">+</span></span>
-<span id="cb70-281"><a href="#cb70-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb70-282"><a href="#cb70-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Penguin Bill Lengths"</span>,</span>
-<span id="cb70-283"><a href="#cb70-283" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Bill Length (mm)"</span>,</span>
-<span id="cb70-284"><a href="#cb70-284" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb70-285"><a href="#cb70-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb70-260"><a href="#cb70-260" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze crop yields data</span></span>
+<span id="cb70-261"><a href="#cb70-261" aria-hidden="true" tabindex="-1"></a>crop_summary <span class="ot">&lt;-</span> crops <span class="sc">%&gt;%</span></span>
+<span id="cb70-262"><a href="#cb70-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb70-263"><a href="#cb70-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Entity) <span class="sc">%&gt;%</span></span>
+<span id="cb70-264"><a href="#cb70-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb70-265"><a href="#cb70-265" aria-hidden="true" tabindex="-1"></a>    <span class="at">years_recorded =</span> <span class="fu">n</span>(),</span>
+<span id="cb70-266"><a href="#cb70-266" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_wheat_yield =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb70-267"><a href="#cb70-267" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_wheat_yield =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb70-268"><a href="#cb70-268" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb70-269"><a href="#cb70-269" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_wheat_yield)) <span class="sc">%&gt;%</span></span>
+<span id="cb70-270"><a href="#cb70-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)  <span class="co"># Top 10 countries by average wheat yield</span></span>
+<span id="cb70-271"><a href="#cb70-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-272"><a href="#cb70-272" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(crop_summary)</span>
+<span id="cb70-273"><a href="#cb70-273" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-274"><a href="#cb70-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-275"><a href="#cb70-275" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exploratory Data Analysis</span></span>
+<span id="cb70-276"><a href="#cb70-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-277"><a href="#cb70-277" aria-hidden="true" tabindex="-1"></a>Before diving into formal statistical tests, it's essential to explore your data:</span>
+<span id="cb70-278"><a href="#cb70-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-281"><a href="#cb70-281" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb70-282"><a href="#cb70-282" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic summary statistics</span></span>
+<span id="cb70-283"><a href="#cb70-283" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>bill_length_mm)</span>
+<span id="cb70-284"><a href="#cb70-284" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>flipper_length_mm)</span>
+<span id="cb70-285"><a href="#cb70-285" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>body_mass_g)</span>
 <span id="cb70-286"><a href="#cb70-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-287"><a href="#cb70-287" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot of body mass by species</span></span>
-<span id="cb70-288"><a href="#cb70-288" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> body_mass_g, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
-<span id="cb70-289"><a href="#cb70-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb70-290"><a href="#cb70-290" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Body Mass by Penguin Species"</span>,</span>
-<span id="cb70-291"><a href="#cb70-291" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species"</span>,</span>
-<span id="cb70-292"><a href="#cb70-292" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Body Mass (g)"</span>) <span class="sc">+</span></span>
-<span id="cb70-293"><a href="#cb70-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb70-294"><a href="#cb70-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb70-295"><a href="#cb70-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-296"><a href="#cb70-296" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot of bill length vs. flipper length</span></span>
-<span id="cb70-297"><a href="#cb70-297" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> flipper_length_mm, <span class="at">y =</span> bill_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
-<span id="cb70-298"><a href="#cb70-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb70-299"><a href="#cb70-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
-<span id="cb70-300"><a href="#cb70-300" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Flipper Length (mm)"</span>,</span>
-<span id="cb70-301"><a href="#cb70-301" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>) <span class="sc">+</span></span>
+<span id="cb70-287"><a href="#cb70-287" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation between variables</span></span>
+<span id="cb70-288"><a href="#cb70-288" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(</span>
+<span id="cb70-289"><a href="#cb70-289" aria-hidden="true" tabindex="-1"></a>  penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb70-290"><a href="#cb70-290" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g),</span>
+<span id="cb70-291"><a href="#cb70-291" aria-hidden="true" tabindex="-1"></a>  <span class="at">use =</span> <span class="st">"complete.obs"</span></span>
+<span id="cb70-292"><a href="#cb70-292" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb70-293"><a href="#cb70-293" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_matrix)</span>
+<span id="cb70-294"><a href="#cb70-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-295"><a href="#cb70-295" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic visualization - histogram of bill lengths</span></span>
+<span id="cb70-296"><a href="#cb70-296" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb70-297"><a href="#cb70-297" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm)) <span class="sc">+</span></span>
+<span id="cb70-298"><a href="#cb70-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb70-299"><a href="#cb70-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Penguin Bill Lengths"</span>,</span>
+<span id="cb70-300"><a href="#cb70-300" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Bill Length (mm)"</span>,</span>
+<span id="cb70-301"><a href="#cb70-301" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
 <span id="cb70-302"><a href="#cb70-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb70-303"><a href="#cb70-303" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb70-304"><a href="#cb70-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-305"><a href="#cb70-305" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
-<span id="cb70-306"><a href="#cb70-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-307"><a href="#cb70-307" aria-hidden="true" tabindex="-1"></a>In this chapter, we've covered the basics of working with data in R:</span>
-<span id="cb70-308"><a href="#cb70-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-309"><a href="#cb70-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Understanding different data types and structures</span>
-<span id="cb70-310"><a href="#cb70-310" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Importing data from various file formats</span>
-<span id="cb70-311"><a href="#cb70-311" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cleaning and preparing data for analysis</span>
-<span id="cb70-312"><a href="#cb70-312" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Creating new variables</span>
-<span id="cb70-313"><a href="#cb70-313" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Using dplyr for powerful data manipulation</span>
-<span id="cb70-314"><a href="#cb70-314" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conducting initial exploratory data analysis</span>
-<span id="cb70-315"><a href="#cb70-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-316"><a href="#cb70-316" aria-hidden="true" tabindex="-1"></a>These skills form the foundation for all the analyses we'll perform in the subsequent chapters. By mastering these basics, you'll be well-prepared to tackle more complex analytical challenges in various scientific fields.</span>
-<span id="cb70-317"><a href="#cb70-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-318"><a href="#cb70-318" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
-<span id="cb70-319"><a href="#cb70-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-320"><a href="#cb70-320" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load the Palmer Penguins dataset (<span class="in">`../data/environmental/climate_data.csv`</span>) and create a summary of the number of penguins by species and island.</span>
-<span id="cb70-321"><a href="#cb70-321" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Calculate the mean and standard deviation of bill length, bill depth, and body mass for each penguin species.</span>
-<span id="cb70-322"><a href="#cb70-322" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Create a new variable that represents the ratio of flipper length to body mass. Interpret what this ratio might represent biologically.</span>
-<span id="cb70-323"><a href="#cb70-323" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Create a visualization that shows the relationship between bill length and bill depth, colored by species.</span>
-<span id="cb70-324"><a href="#cb70-324" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Load the crop yields dataset (<span class="in">`../data/agriculture/crop_yields.csv`</span>) and analyze trends in wheat yields over time for a country of your choice.</span>
-<span id="cb70-325"><a href="#cb70-325" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Compare the distributions of body mass between male and female penguins using appropriate visualizations.</span>
+<span id="cb70-303"><a href="#cb70-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-304"><a href="#cb70-304" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot of body mass by species</span></span>
+<span id="cb70-305"><a href="#cb70-305" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> body_mass_g, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb70-306"><a href="#cb70-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb70-307"><a href="#cb70-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Body Mass by Penguin Species"</span>,</span>
+<span id="cb70-308"><a href="#cb70-308" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species"</span>,</span>
+<span id="cb70-309"><a href="#cb70-309" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Body Mass (g)"</span>) <span class="sc">+</span></span>
+<span id="cb70-310"><a href="#cb70-310" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb70-311"><a href="#cb70-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb70-312"><a href="#cb70-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-313"><a href="#cb70-313" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot of bill length vs. flipper length</span></span>
+<span id="cb70-314"><a href="#cb70-314" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> flipper_length_mm, <span class="at">y =</span> bill_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb70-315"><a href="#cb70-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb70-316"><a href="#cb70-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
+<span id="cb70-317"><a href="#cb70-317" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Flipper Length (mm)"</span>,</span>
+<span id="cb70-318"><a href="#cb70-318" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>) <span class="sc">+</span></span>
+<span id="cb70-319"><a href="#cb70-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb70-320"><a href="#cb70-320" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb70-321"><a href="#cb70-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-322"><a href="#cb70-322" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb70-323"><a href="#cb70-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-324"><a href="#cb70-324" aria-hidden="true" tabindex="-1"></a>In this chapter, we've covered the basics of working with data in R:</span>
+<span id="cb70-325"><a href="#cb70-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-326"><a href="#cb70-326" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Understanding different data types and structures</span>
+<span id="cb70-327"><a href="#cb70-327" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Importing data from various file formats</span>
+<span id="cb70-328"><a href="#cb70-328" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cleaning and preparing data for analysis</span>
+<span id="cb70-329"><a href="#cb70-329" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Creating new variables</span>
+<span id="cb70-330"><a href="#cb70-330" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Using dplyr for powerful data manipulation</span>
+<span id="cb70-331"><a href="#cb70-331" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conducting initial exploratory data analysis</span>
+<span id="cb70-332"><a href="#cb70-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-333"><a href="#cb70-333" aria-hidden="true" tabindex="-1"></a>These skills form the foundation for all the analyses we'll perform in the subsequent chapters. By mastering these basics, you'll be well-prepared to tackle more complex analytical challenges in various scientific fields.</span>
+<span id="cb70-334"><a href="#cb70-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-335"><a href="#cb70-335" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
+<span id="cb70-336"><a href="#cb70-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-337"><a href="#cb70-337" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load the Palmer Penguins dataset (<span class="in">`../data/environmental/climate_data.csv`</span>) and create a summary of the number of penguins by species and island.</span>
+<span id="cb70-338"><a href="#cb70-338" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Calculate the mean and standard deviation of bill length, bill depth, and body mass for each penguin species.</span>
+<span id="cb70-339"><a href="#cb70-339" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Create a new variable that represents the ratio of flipper length to body mass. Interpret what this ratio might represent biologically.</span>
+<span id="cb70-340"><a href="#cb70-340" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Create a visualization that shows the relationship between bill length and bill depth, colored by species.</span>
+<span id="cb70-341"><a href="#cb70-341" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Load the crop yields dataset (<span class="in">`../data/agriculture/crop_yields.csv`</span>) and analyze trends in wheat yields over time for a country of your choice.</span>
+<span id="cb70-342"><a href="#cb70-342" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Compare the distributions of body mass between male and female penguins using appropriate visualizations.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

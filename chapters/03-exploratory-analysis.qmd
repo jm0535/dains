@@ -14,6 +14,23 @@ Exploratory Data Analysis serves several important purposes in natural sciences 
 4. **Generating Hypotheses**: Develop questions and hypotheses for formal testing
 5. **Informing Analysis Choices**: Guide decisions about appropriate statistical methods
 
+::: {.callout-tip}
+## PROFESSIONAL TIP: Creating Reproducible EDA Workflows
+
+To ensure your exploratory data analysis is reproducible and transparent:
+
+- **Document all data transformations**: Record every cleaning step, filter, and transformation applied to raw data
+- **Use R Markdown or Quarto**: Create executable documents that combine code, output, and narrative explanation
+- **Version control your analysis**: Track changes to your EDA scripts using Git or similar tools
+- **Save exploratory outputs**: Store key visualizations and summary statistics in organized directories
+- **Create clear data lineage**: Document the origin of each dataset and how it connects to derived datasets
+- **Use consistent naming conventions**: Apply systematic naming to files, variables, and functions
+- **Separate exploration from confirmation**: Clearly distinguish exploratory analyses from confirmatory hypothesis testing
+- **Include data validation checks**: Incorporate automated checks for data integrity and quality
+- **Provide detailed method documentation**: Document statistical approaches like ANOVA types (e.g., Type II tests for unbalanced designs)
+- **Share your EDA code**: Make your exploratory scripts available alongside final analyses for complete transparency
+:::
+
 ## Summarizing Data
 
 ### Descriptive Statistics

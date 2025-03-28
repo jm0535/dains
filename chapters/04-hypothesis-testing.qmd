@@ -49,11 +49,57 @@ Let's consider a specific example from forestry research:
 
 ### The P-value
 
-The p-value is the probability of obtaining results at least as extreme as those observed, assuming the null hypothesis is true. A smaller p-value indicates stronger evidence against the null hypothesis.
+The p-value is the probability of obtaining results at least as extreme as the observed results, assuming that the null hypothesis is true. In simpler terms, it measures the strength of evidence against the null hypothesis.
 
-### Significance Level (Alpha)
+- A small p-value (typically ≤ 0.05) indicates strong evidence against the null hypothesis, leading to its rejection.
+- A large p-value (> 0.05) indicates weak evidence against the null hypothesis, leading to a failure to reject it.
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Interpreting P-values
+
+When reporting p-values in scientific publications:
+
+- Avoid describing results as "statistically significant" or "not significant" without providing the actual p-value
+- Report exact p-values (e.g., p = 0.032) rather than just p < 0.05, when possible
+- Remember that p-values do not measure the size or importance of an effect—only the evidence against the null hypothesis
+- Consider reporting effect sizes and confidence intervals alongside p-values for more comprehensive interpretation
+- Be cautious about p-values just above or below the significance threshold (e.g., p = 0.049 vs. p = 0.051)—they represent similar levels of evidence
+:::
+
+### Significance Level (α)
 
 The significance level, often denoted as α (alpha), represents the threshold for statistical significance. In most research, it is set at 0.05 (5%). This value signifies the maximum acceptable probability of making a Type I error — wrongly rejecting the null hypothesis when it is true.
+
+## Types of Errors in Hypothesis Testing
+
+### Type I and Type II Errors
+
+In hypothesis testing, two types of errors can occur:
+
+1. **Type I Error**: Rejecting a true null hypothesis (false positive).
+   - Probability = α (significance level)
+   - Example: Concluding there's a difference in tree heights when there actually isn't.
+
+2. **Type II Error**: Failing to reject a false null hypothesis (false negative).
+   - Probability = β
+   - Example: Failing to detect a real difference in tree heights.
+
+### Experimental Design
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Improving Statistical Power
+
+To reduce Type II errors and increase the power of your study:
+
+- Increase sample size: Larger samples provide more precise estimates and greater power
+- Reduce measurement variability: Use standardized protocols and calibrated instruments
+- Use paired or repeated measures designs when appropriate: These control for individual variation
+- Conduct a power analysis before data collection: This helps determine the minimum sample size needed
+- Consider using one-tailed tests when appropriate: These provide more power than two-tailed tests when the direction of effect is known
+- Report confidence intervals: These provide information about effect size and precision
+:::
+
+## Common Hypothesis Tests in Ecological Research
 
 ## Example: Two-Sample t-test
 
@@ -242,6 +288,7 @@ sample_size_result <- pwr.t.test(
 )
 
 print(sample_size_result)
+
 ```
 
 ## One-Sample Tests
@@ -439,12 +486,12 @@ knitr::kable(paired_table,
 # Create a summary statistics table
 growth_summary <- growth_data %>%
   summarize(
+    `Median Before` = median(before),
     `Mean Before` = round(mean(before), 2),
-    `SD Before` = round(sd(before), 2),
+    `Median After` = median(after),
     `Mean After` = round(mean(after), 2),
-    `SD After` = round(sd(after), 2),
-    `Mean Difference` = round(mean(difference), 2),
-    `SD Difference` = round(sd(difference), 2)
+    `Median Difference` = median(difference),
+    `Mean Difference` = round(mean(difference), 2)
   )
 
 # Display the summary statistics table
@@ -736,3 +783,5 @@ sample_size_result <- pwr.t.test(
 )
 
 print(sample_size_result)
+
+```

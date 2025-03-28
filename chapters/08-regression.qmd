@@ -220,7 +220,23 @@ if(knitr::is_html_output() && requireNamespace("plotly", quietly = TRUE)) {
     theme_minimal() +
     theme(legend.position = "right")
 }
-```
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Model Selection and Validation in Ecological Research
+
+When building regression models for natural sciences data:
+
+- **Use Type II ANOVA tests**: For unbalanced designs common in ecological data, use Type II tests (available in the `car` package with `Anova(model, type="II")`) rather than sequential Type I tests
+- **Avoid stepwise selection**: Instead of automated stepwise procedures, use theory-driven model selection or information criteria (AIC, BIC)
+- **Check model assumptions**: Always verify linearity, normality of residuals, homoscedasticity, and independence
+- **Beware of multicollinearity**: Use variance inflation factors (VIF) to detect problematic correlations among predictors
+- **Consider transformations**: Log, square root, or other transformations may help meet model assumptions
+- **Use appropriate model types**: Choose GLMs for non-normal data (e.g., Poisson for count data, binomial for presence/absence)
+- **Validate externally**: When possible, validate models with independent data not used in model fitting
+- **Report effect sizes**: Include standardized coefficients or partial R² values to show the relative importance of predictors
+- **Present uncertainty**: Always report confidence intervals around parameter estimates
+- **Consider mixed-effects models**: For nested or hierarchical data structures, consider using mixed-effects models
+:::
 
 ### Variable Selection
 

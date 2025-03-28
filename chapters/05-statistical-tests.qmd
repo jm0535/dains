@@ -151,6 +151,20 @@ digraph test_selection {
    - Dimension Reduction → Principal Component Analysis
    - Grouping → Cluster Analysis
 
+::: {.callout-tip}
+## PROFESSIONAL TIP: Selecting and Reporting Statistical Tests
+
+When selecting and reporting statistical tests in your research:
+
+- **Verify assumptions**: Always check if your data meets the assumptions of the test (normality, homogeneity of variance, independence)
+- **Report assumption tests**: Include results of normality tests or variance tests when presenting your findings
+- **Consider transformations**: If data violates assumptions, consider appropriate transformations (log, square root, etc.) before switching to non-parametric tests
+- **Effect sizes matter**: Always report effect sizes (Cohen's d, r, η²) alongside p-values
+- **Use consistent formatting**: Present similar tests in the same format throughout your paper
+- **Justify your choices**: Briefly explain why you selected a particular test, especially for complex analyses
+- **Consult statisticians early**: For complex study designs, consult with a statistician during the planning phase, not after data collection
+:::
+
 ## Parametric vs. Non-Parametric Tests
 
 ### Parametric Tests

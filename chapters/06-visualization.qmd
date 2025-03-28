@@ -36,6 +36,22 @@ Data in natural sciences come in various forms, including:
 
 3. **Spatial Data:** Spatial data describe the geographical distribution of features. Maps, heatmaps, and spatial plots help visualize these data effectively, allowing researchers to observe spatial patterns and trends.
 
+::: {.callout-tip}
+## PROFESSIONAL TIP: Principles of Effective Scientific Visualization
+
+When creating visualizations for scientific publications or presentations:
+
+- **Choose the right plot type**: Match your visualization to your data type and research question
+- **Prioritize clarity over complexity**: A simple, clear visualization is better than a complex, confusing one
+- **Maintain data integrity**: Never distort data through misleading scales, truncated axes, or cherry-picked views
+- **Design for accessibility**: Use colorblind-friendly palettes (viridis, cividis, or ColorBrewer schemes)
+- **Follow journal standards**: Check target journal guidelines for figure specifications before submission
+- **Include uncertainty**: Always visualize error bars, confidence intervals, or other measures of uncertainty
+- **Label thoroughly**: Every axis should have clear labels with units; legends should be comprehensive
+- **Consider the narrative**: Ensure your visualization supports the scientific story you're telling
+- **Create self-contained figures**: A good figure should be interpretable even when separated from the text
+:::
+
 ## Creating Basic Plots
 
 ### Introduction to Basic Plots

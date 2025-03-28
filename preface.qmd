@@ -40,6 +40,29 @@ This book includes:
 - Exercises to reinforce learning and build skills
 - Tips and best practices from experienced researchers
 - Reproducible code that can be adapted for your own research
+- Professional formatting of data and model outputs
+
+## Professional Data and Model Output Formatting
+
+Throughout this book, we use several R packages to create professionally formatted tables and model outputs suitable for publications:
+
+- **knitr**: The core package for dynamic report generation, allowing seamless integration of R code with text
+- **kableExtra**: For creating elegant, publication-quality tables with customizable styling
+- **gt**: For producing beautiful, highly customizable tables with advanced formatting options
+- **broom**: For converting statistical model outputs into tidy data frames that are easier to work with
+- **sjPlot**: For creating publication-ready tables and plots from statistical models
+- **gtsummary**: For creating publication-ready analytical and summary tables
+- **flextable**: For creating tables that work well across different output formats (HTML, PDF, Word)
+
+These tools help transform raw data and complex statistical outputs into clear, professional presentations. Each chapter demonstrates how to use these packages to format your results effectively, following best practices in scientific publishing. You'll learn to:
+
+- Format regression tables with proper statistical notation
+- Create elegant summary tables with appropriate precision and units
+- Generate publication-ready ANOVA tables
+- Design custom table themes that match your publication requirements
+- Export formatted tables to various formats (HTML, PDF, Word)
+
+The code examples throughout the book show not just how to perform analyses, but how to present the results professionally—a critical skill for scientific communication.
 
 ## How to Use the Code Examples
 

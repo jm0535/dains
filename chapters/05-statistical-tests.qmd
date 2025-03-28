@@ -4,6 +4,26 @@ prefer-html: true
 
 # Common Statistical Tests
 
+```{r setup, include=FALSE}
+# Load required packages for data analysis and visualization
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(magrittr)  # For the pipe operator %>%
+library(reshape2)  # For data reshaping functions
+
+# Set global knitr options
+knitr::opts_chunk$set(
+  echo = TRUE,        # Display code chunks
+  warning = FALSE,    # Suppress warnings
+  message = FALSE,    # Suppress messages
+  fig.width = 8,      # Default figure width
+  fig.height = 5,     # Default figure height
+  fig.align = "center" # Center figures
+)
+```
+
 ## Introduction
 
 This chapter explores common statistical tests used in natural sciences research. Building on the hypothesis testing framework introduced in the previous chapter, we'll examine specific tests for different research scenarios and data types.

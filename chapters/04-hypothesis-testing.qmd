@@ -1,8 +1,31 @@
+---
+prefer-html: true
+---
+
 # Hypothesis Testing
 
 ## Introduction
 
 Hypothesis testing is a fundamental statistical approach used to make inferences about populations based on sample data. In ecological and forestry research, hypothesis testing helps researchers determine whether observed patterns or differences are statistically significant or merely due to random chance.
+
+```{r setup, include=FALSE}
+# Load required packages for data analysis and visualization
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(magrittr)  # For the pipe operator %>%
+
+# Set global knitr options
+knitr::opts_chunk$set(
+  echo = TRUE,        # Display code chunks
+  warning = FALSE,    # Suppress warnings
+  message = FALSE,    # Suppress messages
+  fig.width = 8,      # Default figure width
+  fig.height = 5,     # Default figure height
+  fig.align = "center" # Center figures
+)
+```
 
 ## The Logic of Hypothesis Testing
 

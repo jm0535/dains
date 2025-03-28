@@ -2,20 +2,20 @@
 
 ## About the Author
 
-Dr. Jimmy Moses is a Papua New Guinean entomologist and lecturer at the Papua New Guinea University of Technology's School of Forestry, specializing in ant ecology, biostatistics, and geospatial analysis. He holds a Ph.D. in Entomology from the University of South Bohemia (2021) and has extensive experience in tropical ecology research, particularly focusing on ant communities along elevational gradients.
+Dr. Jimmy Moses is a Papua New Guinean entomologist and lecturer at the Papua New Guinea University of Technology's School of Forestry, specializing in ant ecology, biostatistics, and geospatial analysis. He holds a Ph.D. in Entomology from the University of South Bohemia (2021) and has extensive experience in tropical ecology research, with a particular focus on ant communities along elevational gradients.
 
-He currently supervises four master's students and co-supervises a Ph.D. student, Dr. Moses brings significant expertise in both research and education. He has published several peer-reviewed papers, including work in prestigious journals like *Global Ecology and Biogeography* and *Proceedings of the Royal Society B*.
+As an active researcher and educator, Dr. Moses currently supervises several master's students and co-supervises a Ph.D. student, bringing substantial expertise to both research methodology and educational practices. His research combines ecological field studies with modern analytical approaches, bridging the gap between traditional field ecology and contemporary data science. This interdisciplinary approach has resulted in several publications in high-impact journals, including *Global Ecology and Biogeography* and *Proceedings of the Royal Society B*.
 
-His technical skills span multiple areas:
+Dr. Moses possesses a diverse technical skillset that uniquely qualifies him to author this book:
 
 - Advanced proficiency in R and Python for statistical computing and data science
-- Expertise in GIS and Satellite Remote Sensing
-- Strong background in biostatistics and experimental design
-- Emerging skills in full-stack app development
+- Expert knowledge of GIS and satellite remote sensing for spatial data analysis
+- Strong foundation in biostatistics and experimental design applied to ecological research
+- Developing expertise in full-stack application development for scientific computing
 
-Dr. Moses has maintained strong international collaborations, having worked with institutions in the Czech Republic, Germany, and Belgium. He has been actively involved with the New Guinea Binatang Research Center, contributing to both research and education initiatives in Papua New Guinea.
+His international research collaborations span institutions in the Czech Republic, Germany, and Belgium. He has been an integral contributor to the New Guinea Binatang Research Center, supporting both research initiatives and educational programs in Papua New Guinea.
 
-His research interests combine ecological field studies with modern analytical approaches, particularly in ant ecology, spatial ecology, macroecology, and crop protection. He spends his free time reading technical, historical, psychological and ecological books and more time tinkering with codes.
+When not teaching or conducting research, Dr. Moses enjoys reading across disciplines—from technical manuals to ecological texts—and experimenting with code to solve practical problems in data analysis. His passion for making complex analytical methods accessible to researchers in the natural sciences drives both his teaching and his writing, including this book.
 
 ## Purpose and Scope
 

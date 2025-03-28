@@ -869,18 +869,23 @@ if("red_list_category" %in% colnames(plants) & "group" %in% colnames(plants)) {
   
   # Examine residuals to understand the pattern of association
   chi_sq_residuals <- chi_sq_result$residuals
-  chi_sq_residuals_df <- data.frame(
-    `Red List Category` = rownames(chi_sq_residuals),
-    `Plant Group` = colnames(chi_sq_residuals),
-    Residual = round(chi_sq_residuals, 2)
+  
+  # Create a data frame for the residuals
+  residuals_df <- as.data.frame(chi_sq_residuals)
+  
+  # Add category names as a column
+  residuals_df$Category <- rownames(residuals_df)
+  
+  # Reshape to long format for better display
+  residuals_long <- tidyr::pivot_longer(
+    residuals_df,
+    cols = -Category,
+    names_to = "Group",
+    values_to = "Residual"
   )
-  chi_sq_residuals_long <- pivot_longer(chi_sq_residuals_df, 
-                                        cols = -`Red List Category`, 
-                                        names_to = "Plant Group", 
-                                        values_to = "Residual")
   
   # Display the residuals table
-  knitr::kable(chi_sq_residuals_long, 
+  knitr::kable(residuals_long, 
                caption = "Standardized Residuals: Association Between Red List Categories and Plant Groups",
                align = c("l", "l", "r"),
                format = "html") %>%

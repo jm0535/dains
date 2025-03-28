@@ -276,6 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#about-the-author" id="toc-about-the-author" class="nav-link active" data-scroll-target="#about-the-author">About the Author</a></li>
   <li><a href="#purpose-and-scope" id="toc-purpose-and-scope" class="nav-link" data-scroll-target="#purpose-and-scope">Purpose and Scope</a></li>
   <li><a href="#features-of-this-book" id="toc-features-of-this-book" class="nav-link" data-scroll-target="#features-of-this-book">Features of This Book</a></li>
+  <li><a href="#professional-data-and-model-output-formatting" id="toc-professional-data-and-model-output-formatting" class="nav-link" data-scroll-target="#professional-data-and-model-output-formatting">Professional Data and Model Output Formatting</a></li>
   <li><a href="#how-to-use-the-code-examples" id="toc-how-to-use-the-code-examples" class="nav-link" data-scroll-target="#how-to-use-the-code-examples">How to Use the Code Examples</a></li>
   <li><a href="#software-requirements" id="toc-software-requirements" class="nav-link" data-scroll-target="#software-requirements">Software Requirements</a></li>
   <li><a href="#feedback-and-contributions" id="toc-feedback-and-contributions" class="nav-link" data-scroll-target="#feedback-and-contributions">Feedback and Contributions</a></li>
@@ -342,7 +343,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Exercises to reinforce learning and build skills</li>
 <li>Tips and best practices from experienced researchers</li>
 <li>Reproducible code that can be adapted for your own research</li>
+<li>Professional formatting of data and model outputs</li>
 </ul>
+</section>
+<section id="professional-data-and-model-output-formatting" class="level2">
+<h2 class="anchored" data-anchor-id="professional-data-and-model-output-formatting">Professional Data and Model Output Formatting</h2>
+<p>Throughout this book, we use several R packages to create professionally formatted tables and model outputs suitable for publications:</p>
+<ul>
+<li><strong>knitr</strong>: The core package for dynamic report generation, allowing seamless integration of R code with text</li>
+<li><strong>kableExtra</strong>: For creating elegant, publication-quality tables with customizable styling</li>
+<li><strong>gt</strong>: For producing beautiful, highly customizable tables with advanced formatting options</li>
+<li><strong>broom</strong>: For converting statistical model outputs into tidy data frames that are easier to work with</li>
+<li><strong>sjPlot</strong>: For creating publication-ready tables and plots from statistical models</li>
+<li><strong>gtsummary</strong>: For creating publication-ready analytical and summary tables</li>
+<li><strong>flextable</strong>: For creating tables that work well across different output formats (HTML, PDF, Word)</li>
+</ul>
+<p>These tools help transform raw data and complex statistical outputs into clear, professional presentations. Each chapter demonstrates how to use these packages to format your results effectively, following best practices in scientific publishing. You’ll learn to:</p>
+<ul>
+<li>Format regression tables with proper statistical notation</li>
+<li>Create elegant summary tables with appropriate precision and units</li>
+<li>Generate publication-ready ANOVA tables</li>
+<li>Design custom table themes that match your publication requirements</li>
+<li>Export formatted tables to various formats (HTML, PDF, Word)</li>
+</ul>
+<p>The code examples throughout the book show not just how to perform analyses, but how to present the results professionally—a critical skill for scientific communication.</p>
 </section>
 <section id="how-to-use-the-code-examples" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-use-the-code-examples">How to Use the Code Examples</h2>
@@ -882,33 +906,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Exercises to reinforce learning and build skills</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tips and best practices from experienced researchers</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reproducible code that can be adapted for your own research</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to Use the Code Examples</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>All code examples in this book are written in R and can be executed in RStudio. To use the examples:</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Make sure you have R and RStudio installed (see Chapter 1 for installation instructions)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Install the required packages mentioned at the beginning of each chapter</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Copy and paste the code into your R console or script editor</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Modify the code as needed for your own data</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>The datasets used in the examples are available in the <span class="in">`docs/data`</span> directory of the book's repository and are properly cited throughout the text.</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## Software Requirements</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Professional formatting of data and model outputs</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Professional Data and Model Output Formatting</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>Throughout this book, we use several R packages to create professionally formatted tables and model outputs suitable for publications:</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**knitr**: The core package for dynamic report generation, allowing seamless integration of R code with text</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**kableExtra**: For creating elegant, publication-quality tables with customizable styling</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**gt**: For producing beautiful, highly customizable tables with advanced formatting options</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**broom**: For converting statistical model outputs into tidy data frames that are easier to work with</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**sjPlot**: For creating publication-ready tables and plots from statistical models</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**gtsummary**: For creating publication-ready analytical and summary tables</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**flextable**: For creating tables that work well across different output formats (HTML, PDF, Word)</span>
 <span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>This book uses:</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>These tools help transform raw data and complex statistical outputs into clear, professional presentations. Each chapter demonstrates how to use these packages to format your results effectively, following best practices in scientific publishing. You'll learn to:</span>
 <span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>R (version 4.0.0 or higher)</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>RStudio (latest version recommended)</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Various R packages (installation instructions provided in each chapter)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Feedback and Contributions</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Format regression tables with proper statistical notation</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Create elegant summary tables with appropriate precision and units</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Generate publication-ready ANOVA tables</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Design custom table themes that match your publication requirements</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Export formatted tables to various formats (HTML, PDF, Word)</span>
 <span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>Your feedback is valuable for improving future editions of this book. If you find errors, have suggestions, or want to contribute examples, please submit them through the book's repository or contact the author directly.</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>The code examples throughout the book show not just how to perform analyses, but how to present the results professionally—a critical skill for scientific communication.</span>
 <span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## Acknowledgments</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to Use the Code Examples</span></span>
 <span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>I would like to express my gratitude to colleagues, students, and the broader R community whose insights and feedback have contributed to the development of this book. Special thanks to the creators and maintainers of the R packages used throughout this book, as well as the data providers whose datasets make the examples both practical and relevant.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>All code examples in this book are written in R and can be executed in RStudio. To use the examples:</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Make sure you have R and RStudio installed (see Chapter 1 for installation instructions)</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Install the required packages mentioned at the beginning of each chapter</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Copy and paste the code into your R console or script editor</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Modify the code as needed for your own data</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>The datasets used in the examples are available in the <span class="in">`docs/data`</span> directory of the book's repository and are properly cited throughout the text.</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## Software Requirements</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>This book uses:</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>R (version 4.0.0 or higher)</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>RStudio (latest version recommended)</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Various R packages (installation instructions provided in each chapter)</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## Feedback and Contributions</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>Your feedback is valuable for improving future editions of this book. If you find errors, have suggestions, or want to contribute examples, please submit them through the book's repository or contact the author directly.</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## Acknowledgments</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>I would like to express my gratitude to colleagues, students, and the broader R community whose insights and feedback have contributed to the development of this book. Special thanks to the creators and maintainers of the R packages used throughout this book, as well as the data providers whose datasets make the examples both practical and relevant.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

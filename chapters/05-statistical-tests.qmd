@@ -171,7 +171,13 @@ wheat_yields <- crop_yields %>%
   select(Entity, Year, `Wheat (tonnes per hectare)`)
 
 # View the first few rows
-head(wheat_yields)
+knitr::kable(head(wheat_yields), 
+             caption = "Sample of Wheat Yield Data",
+             align = c("l", "c", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
 # Check for normality
 # Visual methods
@@ -180,7 +186,25 @@ hist(wheat_yields$`Wheat (tonnes per hectare)`, main = "Histogram of Wheat Yield
 qqnorm(wheat_yields$`Wheat (tonnes per hectare)`); qqline(wheat_yields$`Wheat (tonnes per hectare)`, col = "red")
 
 # Statistical test for normality
-shapiro.test(sample(wheat_yields$`Wheat (tonnes per hectare)`, min(5000, length(wheat_yields$`Wheat (tonnes per hectare)`))))
+shapiro_result <- shapiro.test(sample(wheat_yields$`Wheat (tonnes per hectare)`, min(5000, length(wheat_yields$`Wheat (tonnes per hectare)`))))
+
+# Create a formatted table of the results
+shapiro_table <- data.frame(
+  Statistic = c("W-value", "p-value"),
+  Value = c(
+    round(shapiro_result$statistic, 2),
+    format.pval(shapiro_result$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(shapiro_table, 
+             caption = "Shapiro-Wilk Normality Test Results: Wheat Yields",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ## Tests for Comparing Groups
@@ -208,7 +232,48 @@ ggplot(crop_yields_grouped, aes(x = period, y = `Wheat (tonnes per hectare)`, fi
 
 # Perform independent samples t-test using formula interface with backticks
 t_test_result <- t.test(`Wheat (tonnes per hectare)` ~ period, data = crop_yields_grouped)
-t_test_result
+
+# Create a formatted table of the results
+t_test_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(t_test_result$statistic, 3),
+    round(t_test_result$parameter, 1),
+    format.pval(t_test_result$p.value, digits = 3),
+    round(diff(t_test_result$estimate), 2),
+    round(t_test_result$conf.int[1], 2),
+    round(t_test_result$conf.int[2], 2)
+  )
+)
+
+# Display the formatted table
+knitr::kable(t_test_table, 
+             caption = "Independent Samples t-Test Results: Wheat Yields by Time Period",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Summary statistics by period
+period_summary <- crop_yields_grouped %>%
+  group_by(period) %>%
+  summarize(
+    n = n(),
+    Mean = round(mean(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    SD = round(sd(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Min = round(min(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Max = round(max(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(period_summary, 
+             caption = "Summary Statistics: Wheat Yields by Time Period",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 #### Paired Samples t-Test
@@ -222,7 +287,13 @@ paired_data <- crop_yields %>%
   select(Entity, Year, `Wheat (tonnes per hectare)`, `Rice (tonnes per hectare)`)
 
 # View the first few rows
-head(paired_data)
+knitr::kable(head(paired_data), 
+             caption = "Sample of Paired Crop Yield Data",
+             align = c("l", "c", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
 # Visualize the paired data
 paired_data_long <- paired_data %>%
@@ -241,7 +312,49 @@ paired_t_test <- t.test(
   paired_data$`Rice (tonnes per hectare)`, 
   paired = TRUE
 )
-paired_t_test
+
+# Create a formatted table of the results
+paired_t_test_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(paired_t_test$statistic, 3),
+    round(paired_t_test$parameter, 1),
+    format.pval(paired_t_test$p.value, digits = 3),
+    round(mean(paired_data$`Wheat (tonnes per hectare)` - paired_data$`Rice (tonnes per hectare)`, na.rm = TRUE), 2),
+    round(paired_t_test$conf.int[1], 2),
+    round(paired_t_test$conf.int[2], 2)
+  )
+)
+
+# Display the formatted table
+knitr::kable(paired_t_test_table, 
+             caption = "Paired Samples t-Test Results: Wheat vs. Rice Yields",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a summary statistics table
+paired_summary <- paired_data %>%
+  summarize(
+    n = n(),
+    `Mean Wheat` = round(mean(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    `SD Wheat` = round(sd(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    `Mean Rice` = round(mean(`Rice (tonnes per hectare)`, na.rm = TRUE), 2),
+    `SD Rice` = round(sd(`Rice (tonnes per hectare)`, na.rm = TRUE), 2),
+    `Mean Difference` = round(mean(`Wheat (tonnes per hectare)` - `Rice (tonnes per hectare)`, na.rm = TRUE), 2),
+    `SD Difference` = round(sd(`Wheat (tonnes per hectare)` - `Rice (tonnes per hectare)`, na.rm = TRUE), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(paired_summary, 
+             caption = "Summary Statistics: Wheat vs. Rice Yields",
+             align = rep("r", 7),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ### Analysis of Variance (ANOVA)
@@ -281,10 +394,74 @@ ggplot(continental_yields, aes(x = Continent, y = `Wheat (tonnes per hectare)`, 
 
 # Perform ANOVA
 anova_result <- aov(`Wheat (tonnes per hectare)` ~ Continent, data = continental_yields)
-summary(anova_result)
+anova_summary <- summary(anova_result)
+
+# Create a formatted ANOVA table
+anova_df <- data.frame(
+  Source = c("Continent", "Residuals"),
+  DF = c(anova_summary[[1]][["Df"]][1], anova_summary[[1]][["Df"]][2]),
+  `Sum Sq` = c(round(anova_summary[[1]][["Sum Sq"]][1], 2), round(anova_summary[[1]][["Sum Sq"]][2], 2)),
+  `Mean Sq` = c(round(anova_summary[[1]][["Mean Sq"]][1], 2), round(anova_summary[[1]][["Mean Sq"]][2], 2)),
+  `F value` = c(round(anova_summary[[1]][["F value"]][1], 2), NA),
+  `Pr(>F)` = c(format.pval(anova_summary[[1]][["Pr(>F)"]][1], digits = 3), NA)
+)
+
+# Display the ANOVA table
+knitr::kable(anova_df, 
+             caption = "ANOVA Results: Wheat Yields by Continent",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
 # Post-hoc test to identify which groups differ
-TukeyHSD(anova_result)
+tukey_result <- TukeyHSD(anova_result)
+
+# Convert Tukey HSD results to a data frame
+tukey_df <- as.data.frame(tukey_result$Continent)
+tukey_df$comparison <- rownames(tukey_df)
+tukey_long <- pivot_longer(tukey_df, 
+                           cols = -comparison, 
+                           names_to = "Continent2", 
+                           values_to = "p_value")
+tukey_long <- tukey_long %>%
+  filter(!is.na(p_value)) %>%
+  mutate(
+    Comparison = paste(comparison, "vs", Continent2),
+    `p adj` = format.pval(p_value, digits = 3),
+    Significant = ifelse(p_value < 0.05, "Yes", "No")
+  ) %>%
+  select(Comparison, `p adj`, Significant)
+
+# Display the Tukey HSD results
+knitr::kable(tukey_long, 
+             caption = "Tukey HSD Post-hoc Test Results: Pairwise Comparisons of Continents",
+             align = c("l", "c", "c"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a summary statistics table by continent
+continent_summary <- continental_yields %>%
+  group_by(Continent) %>%
+  summarize(
+    n = n(),
+    Mean = round(mean(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    SD = round(sd(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Min = round(min(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Max = round(max(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(continent_summary, 
+             caption = "Summary Statistics: Wheat Yields by Continent",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ### Non-Parametric Alternatives
@@ -296,7 +473,24 @@ The Mann-Whitney U test (also called Wilcoxon rank-sum test) is a non-parametric
 ```{r}
 # Using the same time period groups as before
 wilcox_test <- wilcox.test(`Wheat (tonnes per hectare)` ~ period, data = crop_yields_grouped)
-wilcox_test
+
+# Create a formatted table of the results
+wilcox_table <- data.frame(
+  Statistic = c("W-value", "p-value"),
+  Value = c(
+    wilcox_test$statistic,
+    format.pval(wilcox_test$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(wilcox_table, 
+             caption = "Mann-Whitney U Test Results: Wheat Yields by Time Period",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 #### Kruskal-Wallis Test
@@ -306,16 +500,79 @@ The Kruskal-Wallis test is a non-parametric alternative to ANOVA:
 ```{r}
 # Using the same continental data as before
 kruskal_result <- kruskal.test(`Wheat (tonnes per hectare)` ~ Continent, data = continental_yields)
-kruskal_result
+
+# Create a formatted table of the results
+kruskal_table <- data.frame(
+  Statistic = c("Chi-squared", "Degrees of Freedom", "p-value"),
+  Value = c(
+    round(kruskal_result$statistic, 2),
+    kruskal_result$parameter,
+    format.pval(kruskal_result$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(kruskal_table, 
+             caption = "Kruskal-Wallis Test Results: Wheat Yields by Continent",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
 # Post-hoc test for Kruskal-Wallis
 if(requireNamespace("dunn.test", quietly = TRUE)) {
   library(dunn.test)
-  dunn.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent, method = "bonferroni")
+  dunn_result <- dunn.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent, method = "bonferroni", kw = TRUE)
+  
+  # Create a data frame from the dunn test results
+  dunn_df <- data.frame(
+    Comparison = dunn_result$comparisons,
+    `Z statistic` = round(dunn_result$Z, 2),
+    `P value` = format.pval(dunn_result$P, digits = 3),
+    `Adjusted P` = format.pval(dunn_result$P.adjusted, digits = 3),
+    Significant = ifelse(dunn_result$P.adjusted < 0.05, "Yes", "No")
+  )
+  
+  # Display the formatted dunn test results
+  knitr::kable(dunn_df, 
+               caption = "Dunn's Post-hoc Test Results: Pairwise Comparisons of Continents",
+               align = c("l", "r", "c", "c", "c"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
 } else {
   # Alternative: pairwise Wilcoxon tests
-  pairwise.wilcox.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent, 
-                       p.adjust.method = "bonferroni")
+  pairwise_result <- pairwise.wilcox.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent, 
+                                         p.adjust.method = "bonferroni")
+  
+  # Convert matrix to data frame
+  pairwise_df <- as.data.frame(pairwise_result$p.value)
+  pairwise_df$Continent1 <- rownames(pairwise_df)
+  pairwise_long <- pivot_longer(pairwise_df, 
+                               cols = -Continent1, 
+                               names_to = "Continent2", 
+                               values_to = "p_value")
+  
+  # Filter out NA values and format
+  pairwise_long <- pairwise_long %>%
+    filter(!is.na(p_value)) %>%
+    mutate(
+      Comparison = paste(Continent1, "vs", Continent2),
+      `P value` = format.pval(p_value, digits = 3),
+      Significant = ifelse(p_value < 0.05, "Yes", "No")
+    ) %>%
+    select(Comparison, `P value`, Significant)
+  
+  # Display the formatted pairwise Wilcoxon test results
+  knitr::kable(pairwise_long, 
+               caption = "Pairwise Wilcoxon Test Results with Bonferroni Correction",
+               align = c("l", "c", "c"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
 }
 ```
 
@@ -344,7 +601,28 @@ ggplot(crop_correlation, aes(x = `Wheat (tonnes per hectare)`, y = `Maize (tonne
 
 # Calculate Pearson correlation
 cor_result <- cor.test(crop_correlation$`Wheat (tonnes per hectare)`, crop_correlation$`Maize (tonnes per hectare)`, method = "pearson")
-cor_result
+
+# Create a formatted table of the results
+cor_table <- data.frame(
+  Statistic = c("Correlation Coefficient (r)", "t-value", "Degrees of Freedom", "p-value", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(cor_result$estimate, 3),
+    round(cor_result$statistic, 2),
+    cor_result$parameter,
+    format.pval(cor_result$p.value, digits = 3),
+    round(cor_result$conf.int[1], 3),
+    round(cor_result$conf.int[2], 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(cor_table, 
+             caption = "Pearson Correlation Results: Wheat and Maize Yields",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 #### Spearman Correlation
@@ -354,7 +632,45 @@ Spearman correlation is a non-parametric measure of rank correlation:
 ```{r}
 # Calculate Spearman correlation
 spearman_result <- cor.test(crop_correlation$`Wheat (tonnes per hectare)`, crop_correlation$`Maize (tonnes per hectare)`, method = "spearman")
-spearman_result
+
+# Create a formatted table of the results
+spearman_table <- data.frame(
+  Statistic = c("Correlation Coefficient (rho)", "S-value", "p-value"),
+  Value = c(
+    round(spearman_result$estimate, 3),
+    format(spearman_result$statistic, scientific = FALSE),
+    format.pval(spearman_result$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(spearman_table, 
+             caption = "Spearman Correlation Results: Wheat and Maize Yields",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a comparison table of correlation methods
+correlation_comparison <- data.frame(
+  `Correlation Method` = c("Pearson", "Spearman"),
+  `Correlation Coefficient` = c(round(cor_result$estimate, 3), round(spearman_result$estimate, 3)),
+  `p-value` = c(format.pval(cor_result$p.value, digits = 3), format.pval(spearman_result$p.value, digits = 3)),
+  `Interpretation` = c(
+    ifelse(abs(cor_result$estimate) > 0.7, "Strong", ifelse(abs(cor_result$estimate) > 0.3, "Moderate", "Weak")),
+    ifelse(abs(spearman_result$estimate) > 0.7, "Strong", ifelse(abs(spearman_result$estimate) > 0.3, "Moderate", "Weak"))
+  )
+)
+
+# Display the comparison table
+knitr::kable(correlation_comparison, 
+             caption = "Comparison of Correlation Methods",
+             align = c("l", "c", "c", "c"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ### Regression Analysis
@@ -380,7 +696,47 @@ ggplot(time_series_data, aes(x = Year, y = `Wheat (tonnes per hectare)`)) +
 
 # Perform linear regression
 lm_model <- lm(`Wheat (tonnes per hectare)` ~ Year, data = time_series_data)
-summary(lm_model)
+lm_summary <- summary(lm_model)
+
+# Create a formatted table of the regression coefficients
+coef_table <- data.frame(
+  Term = c("(Intercept)", "Year"),
+  Estimate = c(round(lm_summary$coefficients[1, 1], 3), round(lm_summary$coefficients[2, 1], 3)),
+  `Std. Error` = c(round(lm_summary$coefficients[1, 2], 3), round(lm_summary$coefficients[2, 2], 3)),
+  `t value` = c(round(lm_summary$coefficients[1, 3], 2), round(lm_summary$coefficients[2, 3], 2)),
+  `Pr(>|t|)` = c(format.pval(lm_summary$coefficients[1, 4], digits = 3), format.pval(lm_summary$coefficients[2, 4], digits = 3))
+)
+
+# Display the coefficients table
+knitr::kable(coef_table, 
+             caption = "Linear Regression Coefficients: Wheat Yield by Year",
+             align = c("l", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a formatted table of the model summary statistics
+model_stats <- data.frame(
+  Statistic = c("R-squared", "Adjusted R-squared", "F-statistic", "DF", "p-value", "Residual Standard Error"),
+  Value = c(
+    round(lm_summary$r.squared, 3),
+    round(lm_summary$adj.r.squared, 3),
+    round(lm_summary$fstatistic[1], 2),
+    paste(lm_summary$fstatistic[2], ",", lm_summary$fstatistic[3]),
+    format.pval(pf(lm_summary$fstatistic[1], lm_summary$fstatistic[2], lm_summary$fstatistic[3], lower.tail = FALSE), digits = 3),
+    round(lm_summary$sigma, 3)
+  )
+)
+
+# Display the model summary statistics table
+knitr::kable(model_stats, 
+             caption = "Linear Regression Model Summary Statistics",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
 # Check assumptions
 par(mfrow = c(2, 2))
@@ -399,7 +755,52 @@ multi_crop_data <- crop_yields %>%
 
 # Perform multiple regression
 multi_model <- lm(`Wheat (tonnes per hectare)` ~ `Rice (tonnes per hectare)` + `Maize (tonnes per hectare)` + Year, data = multi_crop_data)
-summary(multi_model)
+multi_summary <- summary(multi_model)
+
+# Create a formatted table of the regression coefficients
+multi_coef_table <- data.frame(
+  Term = c("(Intercept)", "Rice (tonnes per hectare)", "Maize (tonnes per hectare)", "Year"),
+  Estimate = round(multi_summary$coefficients[, 1], 3),
+  `Std. Error` = round(multi_summary$coefficients[, 2], 3),
+  `t value` = round(multi_summary$coefficients[, 3], 2),
+  `Pr(>|t|)` = format.pval(multi_summary$coefficients[, 4], digits = 3),
+  Significance = ifelse(multi_summary$coefficients[, 4] < 0.001, "***", 
+                       ifelse(multi_summary$coefficients[, 4] < 0.01, "**", 
+                              ifelse(multi_summary$coefficients[, 4] < 0.05, "*", 
+                                     ifelse(multi_summary$coefficients[, 4] < 0.1, ".", ""))))
+)
+
+# Display the coefficients table
+knitr::kable(multi_coef_table, 
+             caption = "Multiple Regression Coefficients: Predicting Wheat Yield",
+             align = c("l", "r", "r", "r", "r", "c"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center") %>%
+  kableExtra::add_footnote("Significance codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", notation = "none")
+
+# Create a formatted table of the model summary statistics
+multi_model_stats <- data.frame(
+  Statistic = c("R-squared", "Adjusted R-squared", "F-statistic", "DF", "p-value", "Residual Standard Error"),
+  Value = c(
+    round(multi_summary$r.squared, 3),
+    round(multi_summary$adj.r.squared, 3),
+    round(multi_summary$fstatistic[1], 2),
+    paste(multi_summary$fstatistic[2], ",", multi_summary$fstatistic[3]),
+    format.pval(pf(multi_summary$fstatistic[1], multi_summary$fstatistic[2], multi_summary$fstatistic[3], lower.tail = FALSE), digits = 3),
+    round(multi_summary$sigma, 3)
+  )
+)
+
+# Display the model summary statistics table
+knitr::kable(multi_model_stats, 
+             caption = "Multiple Regression Model Summary Statistics",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ## Tests for Categorical Data
@@ -418,14 +819,54 @@ if("red_list_category" %in% colnames(plants) & "group" %in% colnames(plants)) {
   contingency_table <- table(plants$red_list_category, plants$group)
   
   # View the table
-  contingency_table
+  knitr::kable(contingency_table, 
+               caption = "Contingency Table: Red List Categories by Plant Group",
+               align = rep("r", ncol(contingency_table) + 1),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
   
   # Perform Chi-Square test
   chi_sq_result <- chisq.test(contingency_table)
-  chi_sq_result
+  chi_sq_table <- data.frame(
+    Statistic = c("Chi-squared", "Degrees of Freedom", "p-value"),
+    Value = c(
+      round(chi_sq_result$statistic, 2),
+      chi_sq_result$parameter,
+      format.pval(chi_sq_result$p.value, digits = 3)
+    )
+  )
+  
+  # Display the Chi-Square test results
+  knitr::kable(chi_sq_table, 
+               caption = "Chi-Square Test Results: Association Between Red List Categories and Plant Groups",
+               align = c("l", "r"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
   
   # Examine residuals to understand the pattern of association
-  chi_sq_result$residuals
+  chi_sq_residuals <- chi_sq_result$residuals
+  chi_sq_residuals_df <- data.frame(
+    `Red List Category` = rownames(chi_sq_residuals),
+    `Plant Group` = colnames(chi_sq_residuals),
+    Residual = round(chi_sq_residuals, 2)
+  )
+  chi_sq_residuals_long <- pivot_longer(chi_sq_residuals_df, 
+                                        cols = -`Red List Category`, 
+                                        names_to = "Plant Group", 
+                                        values_to = "Residual")
+  
+  # Display the residuals table
+  knitr::kable(chi_sq_residuals_long, 
+               caption = "Standardized Residuals: Association Between Red List Categories and Plant Groups",
+               align = c("l", "l", "r"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
 } else {
   # If the expected columns don't exist, create a demonstration with available data
   message("Required columns not found. Creating a demonstration with available columns.")
@@ -443,13 +884,34 @@ if("red_list_category" %in% colnames(plants) & "group" %in% colnames(plants)) {
     contingency_table <- table(plants[[col1]], plants[[col2]])
     
     # View the table
-    print(paste("Contingency table of", col1, "by", col2))
-    print(contingency_table)
+    knitr::kable(contingency_table, 
+                 caption = paste("Contingency Table:", col1, "by", col2),
+                 align = rep("r", ncol(contingency_table) + 1),
+                 format = "html") %>%
+      kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                               full_width = FALSE,
+                               position = "center")
     
     # Perform Chi-Square test if appropriate
     if(min(dim(contingency_table)) > 1 && sum(contingency_table) > 0) {
       chi_sq_result <- chisq.test(contingency_table, simulate.p.value = TRUE)
-      print(chi_sq_result)
+      chi_sq_table <- data.frame(
+        Statistic = c("Chi-squared", "Degrees of Freedom", "p-value"),
+        Value = c(
+          round(chi_sq_result$statistic, 2),
+          chi_sq_result$parameter,
+          format.pval(chi_sq_result$p.value, digits = 3)
+        )
+      )
+      
+      # Display the Chi-Square test results
+      knitr::kable(chi_sq_table, 
+                   caption = paste("Chi-Square Test Results: Association Between", col1, "and", col2),
+                   align = c("l", "r"),
+                   format = "html") %>%
+        kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                                 full_width = FALSE,
+                                 position = "center")
     } else {
       message("Contingency table not suitable for Chi-Square test.")
     }
@@ -502,7 +964,22 @@ The Mann-Kendall test is a non-parametric test for identifying trends in time se
 if(requireNamespace("Kendall", quietly = TRUE)) {
   library(Kendall)
   mk_test <- Kendall::MannKendall(us_wheat$`Wheat (tonnes per hectare)`)
-  print(mk_test)
+  mk_table <- data.frame(
+    Statistic = c("Tau", "p-value"),
+    Value = c(
+      round(mk_test$tau, 3),
+      format.pval(mk_test$p.value, digits = 3)
+    )
+  )
+  
+  # Display the Mann-Kendall test results
+  knitr::kable(mk_table, 
+               caption = "Mann-Kendall Trend Test Results: US Wheat Yields",
+               align = c("l", "r"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
 } else {
   message("The Kendall package is not installed. Install it with install.packages('Kendall') to run the Mann-Kendall trend test.")
 }

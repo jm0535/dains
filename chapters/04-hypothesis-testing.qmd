@@ -70,6 +70,28 @@ if (t_test_result$p.value < alpha) {
       "we fail to reject the null hypothesis.\n",
       "There is not enough evidence to conclude a significant difference in tree heights.")
 }
+
+# Create a formatted table of the results
+t_test_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(t_test_result$statistic, 3),
+    round(t_test_result$parameter, 1),
+    format.pval(t_test_result$p.value, digits = 3),
+    round(diff(t_test_result$estimate), 2),
+    round(t_test_result$conf.int[1], 2),
+    round(t_test_result$conf.int[2], 2)
+  )
+)
+
+# Display the formatted table
+knitr::kable(t_test_table, 
+             caption = "Two-Sample t-Test Results: Tree Heights by Site",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ## Example: Using Marine Dataset for Two-Sample t-test
@@ -230,7 +252,28 @@ ggplot(data.frame(diameter = tree_diameters), aes(x = diameter)) +
 
 # Perform a one-sample t-test
 one_sample_result <- t.test(tree_diameters, mu = reference_diameter)
-print(one_sample_result)
+
+# Create a formatted table of the results
+one_sample_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(one_sample_result$statistic, 3),
+    round(one_sample_result$parameter, 1),
+    format.pval(one_sample_result$p.value, digits = 3),
+    round(mean(tree_diameters) - reference_diameter, 2),
+    round(one_sample_result$conf.int[1], 2),
+    round(one_sample_result$conf.int[2], 2)
+  )
+)
+
+# Display the formatted table
+knitr::kable(one_sample_table, 
+             caption = "One-Sample t-Test Results: Tree Diameters vs. Reference Value",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ## Two-Sample Tests
@@ -264,6 +307,51 @@ ggplot(tree_data, aes(x = height, fill = site)) +
        x = "Height (m)",
        y = "Density") +
   theme_minimal()
+
+# Perform the t-test again for demonstration
+t_test_result <- t.test(height ~ site, data = tree_data, var.equal = TRUE)
+
+# Create a formatted table of the results
+t_test_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(t_test_result$statistic, 3),
+    round(t_test_result$parameter, 1),
+    format.pval(t_test_result$p.value, digits = 3),
+    round(diff(t_test_result$estimate), 2),
+    round(t_test_result$conf.int[1], 2),
+    round(t_test_result$conf.int[2], 2)
+  )
+)
+
+# Display the formatted table
+knitr::kable(t_test_table, 
+             caption = "Independent Samples t-Test Results: Tree Heights by Site",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a summary statistics table
+site_summary <- tree_data %>%
+  group_by(site) %>%
+  summarize(
+    n = n(),
+    Mean = round(mean(height), 2),
+    SD = round(sd(height), 2),
+    Min = round(min(height), 2),
+    Max = round(max(height), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(site_summary, 
+             caption = "Summary Statistics: Tree Heights by Site",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ### Paired Samples t-Test
@@ -302,7 +390,48 @@ ggplot(growth_long, aes(x = time, y = height, group = tree_id)) +
 
 # Perform a paired t-test
 paired_result <- t.test(growth_data$after, growth_data$before, paired = TRUE)
-print(paired_result)
+
+# Create a formatted table of the results
+paired_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(paired_result$statistic, 3),
+    round(paired_result$parameter, 1),
+    format.pval(paired_result$p.value, digits = 3),
+    round(mean(growth_data$difference), 2),
+    round(paired_result$conf.int[1], 2),
+    round(paired_result$conf.int[2], 2)
+  )
+)
+
+# Display the formatted table
+knitr::kable(paired_table, 
+             caption = "Paired Samples t-Test Results: Tree Heights Before and After Treatment",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a summary statistics table
+growth_summary <- growth_data %>%
+  summarize(
+    `Mean Before` = round(mean(before), 2),
+    `SD Before` = round(sd(before), 2),
+    `Mean After` = round(mean(after), 2),
+    `SD After` = round(sd(after), 2),
+    `Mean Difference` = round(mean(difference), 2),
+    `SD Difference` = round(sd(difference), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(growth_summary, 
+             caption = "Summary Statistics: Tree Heights Before and After Treatment",
+             align = rep("r", 6),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ## Non-Parametric Tests
@@ -334,12 +463,70 @@ ggplot(species_data, aes(x = habitat, y = count, fill = habitat)) +
   theme_minimal()
 
 # Check for normality
-shapiro.test(habitat_A)
-shapiro.test(habitat_B)
+shapiro_A <- shapiro.test(habitat_A)
+shapiro_B <- shapiro.test(habitat_B)
+
+# Create a table for normality test results
+normality_table <- data.frame(
+  Habitat = c("Habitat A", "Habitat B"),
+  `W Statistic` = c(round(shapiro_A$statistic, 3), round(shapiro_B$statistic, 3)),
+  `p-value` = c(format.pval(shapiro_A$p.value, digits = 3), format.pval(shapiro_B$p.value, digits = 3)),
+  Interpretation = c(
+    ifelse(shapiro_A$p.value < 0.05, "Non-normal distribution", "Normal distribution"),
+    ifelse(shapiro_B$p.value < 0.05, "Non-normal distribution", "Normal distribution")
+  )
+)
+
+# Display the normality test results
+knitr::kable(normality_table, 
+             caption = "Shapiro-Wilk Test for Normality",
+             align = c("l", "c", "c", "l"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
 # Perform Mann-Whitney U test
 wilcox_result <- wilcox.test(count ~ habitat, data = species_data)
-print(wilcox_result)
+
+# Create a formatted table of the results
+wilcox_table <- data.frame(
+  Statistic = c("W-value", "p-value"),
+  Value = c(
+    wilcox_result$statistic,
+    format.pval(wilcox_result$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(wilcox_table, 
+             caption = "Mann-Whitney U Test Results: Species Counts by Habitat",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a summary statistics table
+habitat_summary <- species_data %>%
+  group_by(habitat) %>%
+  summarize(
+    n = n(),
+    Median = median(count),
+    Mean = round(mean(count), 2),
+    SD = round(sd(count), 2),
+    Min = min(count),
+    Max = max(count)
+  )
+
+# Display the summary statistics table
+knitr::kable(habitat_summary, 
+             caption = "Summary Statistics: Species Counts by Habitat",
+             align = c("l", "c", "c", "r", "r", "c", "c"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ### Wilcoxon Signed-Rank Test
@@ -376,7 +563,44 @@ ggplot(restoration_long, aes(x = time, y = species_count, group = site_id)) +
 
 # Perform Wilcoxon signed-rank test
 wilcox_paired_result <- wilcox.test(restoration_data$after, restoration_data$before, paired = TRUE)
-print(wilcox_paired_result)
+
+# Create a formatted table of the results
+wilcox_paired_table <- data.frame(
+  Statistic = c("V-value", "p-value"),
+  Value = c(
+    wilcox_paired_result$statistic,
+    format.pval(wilcox_paired_result$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(wilcox_paired_table, 
+             caption = "Wilcoxon Signed-Rank Test Results: Species Counts Before and After Restoration",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a summary statistics table
+restoration_summary <- restoration_data %>%
+  summarize(
+    `Median Before` = median(before),
+    `Mean Before` = round(mean(before), 2),
+    `Median After` = median(after),
+    `Mean After` = round(mean(after), 2),
+    `Median Difference` = median(difference),
+    `Mean Difference` = round(mean(difference), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(restoration_summary, 
+             caption = "Summary Statistics: Species Counts Before and After Restoration",
+             align = rep("r", 6),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
 
 ## Confidence Intervals
@@ -386,7 +610,27 @@ Confidence intervals provide a range of plausible values for a population parame
 ```{r}
 # Calculate 95% confidence interval for mean tree height in Site A
 ci_result <- t.test(site_A)
-print(ci_result$conf.int)
+
+# Create a formatted table for the confidence interval
+ci_table <- data.frame(
+  Statistic = c("Sample Mean", "Standard Error", "95% CI Lower", "95% CI Upper", "Degrees of Freedom"),
+  Value = c(
+    round(mean(site_A), 2),
+    round(sd(site_A)/sqrt(length(site_A)), 3),
+    round(ci_result$conf.int[1], 2),
+    round(ci_result$conf.int[2], 2),
+    ci_result$parameter
+  )
+)
+
+# Display the formatted table
+knitr::kable(ci_table, 
+             caption = "95% Confidence Interval for Mean Tree Height in Site A",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
 # Visualize confidence interval
 mean_height <- mean(site_A)
@@ -399,13 +643,16 @@ ggplot(data.frame(height = site_A), aes(x = height)) +
   geom_vline(xintercept = ci_lower, color = "blue", linetype = "dashed") +
   geom_vline(xintercept = ci_upper, color = "blue", linetype = "dashed") +
   annotate("rect", xmin = ci_lower, xmax = ci_upper, ymin = 0, ymax = Inf, 
-           fill = "blue", alpha = 0.1) +
+           alpha = 0.2, fill = "lightblue") +
   labs(title = "Tree Heights in Site A with 95% Confidence Interval",
        x = "Height (m)",
        y = "Frequency") +
-  annotate("text", x = mean_height, y = 8, label = "Mean", color = "red") +
-  annotate("text", x = ci_lower - 1, y = 6, label = "Lower CI", color = "blue") +
-  annotate("text", x = ci_upper + 1, y = 6, label = "Upper CI", color = "blue") +
+  annotate("text", x = mean_height, y = 5, 
+           label = paste("Mean =", round(mean_height, 2)), 
+           color = "red", vjust = -1) +
+  annotate("text", x = mean(c(ci_lower, ci_upper)), y = 3, 
+           label = paste("95% CI: [", round(ci_lower, 2), ", ", round(ci_upper, 2), "]", sep = ""), 
+           color = "blue") +
   theme_minimal()
 ```
 

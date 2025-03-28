@@ -48,18 +48,6 @@ format:
       fig-title: "Figure"
       tbl-title: "Table"
     
-  pdf:
-    documentclass: book
-    fig-width: 6.5
-    fig-height: 4.5
-    fig-dpi: 300
-    fig-pos: "H"
-    fig-cap-location: bottom
-    tbl-cap-location: top
-    colorlinks: true
-    geometry:
-      - margin=1in
-    
 bibliography: references.bib
 csl: apa.csl
 

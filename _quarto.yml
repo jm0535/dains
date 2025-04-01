@@ -1,6 +1,8 @@
 project:
   type: book
   output-dir: docs
+  render:
+    - html
 
 book:
   title: "Data Analysis in Natural Sciences: An R-Based Approach"
@@ -50,12 +52,6 @@ format:
       fig-title: "Figure"
       tbl-title: "Table"
     footer-text: "DRAFT - Edition 1 - This book is currently in development. Content may change before final publication."
-  pdf:
-    documentclass: scrreprt
-    prefer-html: true
-    knitr:
-      opts_chunk:
-        dev: "png"
 
 bibliography: references.bib
 csl: apa.csl

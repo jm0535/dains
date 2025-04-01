@@ -201,7 +201,7 @@ names(crop_yields)
 
 # Extract wheat yields for analysis
 wheat_yields <- crop_yields %>%
-  filter(!is.na(`Wheat (tonnes per hectare)`)) %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`) & Year >= 1960) %>%
   select(Entity, Year, `Wheat (tonnes per hectare)`)
 
 # View the first few rows
@@ -240,7 +240,7 @@ knitr::kable(shapiro_table,
                            full_width = FALSE,
                            position = "center")
 
-# Create a summary statistics table
+# Summary statistics
 summary_stats <- wheat_yields %>%
   summarize(
     n = n(),
@@ -258,51 +258,20 @@ knitr::kable(summary_stats,
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
                            full_width = FALSE,
                            position = "center")
-```
 
-::: {.callout-note}
-## Code Explanation
+# Code Explanation
+{{ ... }}
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+{{ ... }}
 
-This code demonstrates how to check the normality assumption for parametric tests:
-
-1. **Data Preparation**:
-   - `read_csv()` imports the crop yields dataset
-   - `filter(!is.na())` removes missing values for wheat yields
-   - `select()` extracts only the relevant columns for analysis
-   - `knitr::kable()` displays a formatted sample of the data
-
-2. **Visual Assessment of Normality**:
-   - `par(mfrow = c(1, 2))` creates a side-by-side plot layout
-   - `hist()` creates a histogram to visualize the distribution shape
-   - `qqnorm()` and `qqline()` create a Q-Q plot comparing data quantiles to theoretical normal quantiles
-   - Points following the red line in the Q-Q plot suggest normality
-
-3. **Statistical Test for Normality**:
-   - `shapiro.test()` performs the Shapiro-Wilk test for normality
-   - `sample()` is used because Shapiro-Wilk has limitations for large datasets (max 5000 observations)
-   - The null hypothesis is that the data follows a normal distribution
-   - A p-value < 0.05 suggests the data significantly deviates from normality
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The normality assessment reveals:
-
-- The **histogram** shows a right-skewed distribution of wheat yields, with most observations clustered at lower values and a long tail extending to higher values.
-
-- The **Q-Q plot** shows deviations from the red reference line, particularly at the tails, confirming the non-normal distribution.
-
-- The **Shapiro-Wilk test** yields a W-value of approximately 0.92 with a very small p-value (< 0.001), providing strong statistical evidence against normality.
-
-These results suggest that wheat yield data does not follow a normal distribution, which has important implications for statistical analysis:
-
-1. We should consider non-parametric tests (e.g., Mann-Whitney U instead of t-test) for comparing groups.
-2. Alternatively, we could apply transformations (e.g., log transformation) to normalize the data.
-3. For regression analyses, we should check residual normality rather than predictor or outcome normality.
-
-This assessment demonstrates the importance of checking assumptions before selecting statistical tests, as using parametric tests with non-normal data can lead to invalid conclusions.
-:::
+# Results Interpretation
+{{ ... }}
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+{{ ... }}
 
 ## Tests for Comparing Groups
 
@@ -373,54 +342,6 @@ knitr::kable(period_summary,
                            position = "center")
 ```
 
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates how to perform an independent samples t-test:
-
-1. **Data Preparation**:
-   - `filter()` selects only observations with non-missing wheat yields and restricts the analysis to years since 1960
-   - `mutate()` creates a new categorical variable `period` dividing the data into two time periods
-   - Each row represents a country-year combination with wheat yield measured
-
-2. **Data Visualization**:
-   - `geom_boxplot()` creates boxplots to compare the distributions of wheat yields between periods
-   - Boxplots show the median, quartiles, and potential outliers for each period
-   - This visualization helps assess differences and potential outliers before formal testing
-
-3. **Statistical Testing**:
-   - `t.test()` performs an independent samples t-test
-   - The formula notation with backticks handles column names with spaces
-   - By default, R uses Welch's t-test, which doesn't assume equal variances
-
-4. **Result Presentation**:
-   - Creates a formatted table with key statistics from the t-test
-   - Includes the mean difference between periods and its confidence interval
-   - `summarize()` calculates descriptive statistics for each period
-   - `knitr::kable()` displays the results in a well-formatted table
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The t-test results reveal:
-
-- The **mean wheat yield** increased from the early period (pre-2000) to the recent period (2000+), with a difference of approximately 0.71 tonnes per hectare.
-
-- The **t-value** (approximately -15.9) is large and negative, indicating a substantial increase in yields over time relative to the variability in the data.
-
-- The extremely small **p-value** (< 0.001) provides very strong evidence against the null hypothesis of no difference between periods.
-
-- The **95% confidence interval** for the mean difference (-0.80 to -0.63) does not include zero, confirming the statistical significance of the increase.
-
-- The **summary statistics** show that:
-  - The recent period has a higher mean yield (3.19 vs. 2.48 tonnes/hectare)
-  - Both periods have similar variability (SD ≈ 1.7)
-  - The maximum yields have increased substantially (from 10.38 to 12.67 tonnes/hectare)
-
-These results suggest significant improvements in global wheat productivity over time, likely due to advances in agricultural technology, improved crop varieties, and better farming practices. This analysis provides valuable evidence for agricultural policy and food security discussions, highlighting the positive trend in global food production capacity.
-:::
-
 #### Paired Samples t-Test
 
 Used to compare means between two related groups. Let's compare wheat and rice yields for the same countries and years:
@@ -449,8 +370,7 @@ ggplot(paired_data_long, aes(x = Crop, y = Yield, fill = Crop)) +
   labs(title = "Comparison of Wheat and Rice Yields",
        x = "Crop Type",
        y = "Yield (tonnes/hectare)") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme_minimal()
 
 # Perform paired t-test using vectors directly
 paired_t_test <- t.test(
@@ -503,62 +423,116 @@ knitr::kable(paired_summary,
                            position = "center")
 ```
 
-::: {.callout-note}
-## Code Explanation
+### Analysis of Variance (ANOVA)
 
-This code demonstrates how to perform a paired samples t-test:
+ANOVA is used to compare means among three or more independent groups. Let's compare crop yields across different continents:
 
-1. **Data Preparation**:
-   - `filter()` selects only observations with non-missing values for both wheat and rice yields
-   - `select()` extracts only the relevant columns for analysis
-   - Each row represents a country-year combination with both crop yields measured
+```{r}
+# Create a mapping of countries to continents (simplified for demonstration)
+continent_mapping <- tibble(
+  Entity = c("United States", "Canada", "Mexico", 
+             "China", "India", "Japan", 
+             "Germany", "France", "United Kingdom", 
+             "Brazil", "Argentina", "Chile",
+             "Egypt", "Nigeria", "South Africa",
+             "Australia", "New Zealand"),
+  Continent = c(rep("North America", 3), 
+                rep("Asia", 3), 
+                rep("Europe", 3), 
+                rep("South America", 3),
+                rep("Africa", 3),
+                rep("Oceania", 2))
+)
 
-2. **Data Visualization**:
-   - `pivot_longer()` restructures the data from wide to long format for visualization
-   - `geom_boxplot()` creates boxplots to compare the distributions of wheat and rice yields
-   - This visualization helps assess differences between the crops before formal testing
+# Join with crop yields data
+continental_yields <- crop_yields %>%
+  inner_join(continent_mapping, by = "Entity") %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`) & Year >= 2000)
 
-3. **Statistical Testing**:
-   - `t.test()` with `paired = TRUE` performs a paired samples t-test
-   - The paired design controls for country and year factors
-   - Tests whether the mean difference between wheat and rice yields differs from zero
+# Visualize wheat yields by continent
+ggplot(continental_yields, aes(x = Continent, y = `Wheat (tonnes per hectare)`, fill = Continent)) +
+  geom_boxplot() +
+  labs(title = "Wheat Yields by Continent (2000-present)",
+       x = "Continent",
+       y = "Wheat Yield (tonnes/hectare)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-4. **Result Presentation**:
-   - Creates a formatted table with key statistics from the t-test
-   - Calculates the mean difference between wheat and rice yields
-   - Presents the 95% confidence interval for the mean difference
-   - `summarize()` calculates descriptive statistics for both variables and their difference
-:::
+# Perform ANOVA
+anova_result <- aov(`Wheat (tonnes per hectare)` ~ Continent, data = continental_yields)
+anova_summary <- summary(anova_result)
 
-::: {.callout-important}
-## Results Interpretation
+# Create a formatted ANOVA table
+anova_df <- data.frame(
+  Source = c("Continent", "Residuals"),
+  DF = c(anova_summary[[1]][["Df"]][1], anova_summary[[1]][["Df"]][2]),
+  `Sum Sq` = c(round(anova_summary[[1]][["Sum Sq"]][1], 2), round(anova_summary[[1]][["Sum Sq"]][2], 2)),
+  `Mean Sq` = c(round(anova_summary[[1]][["Mean Sq"]][1], 2), round(anova_summary[[1]][["Mean Sq"]][2], 2)),
+  `F value` = c(round(anova_summary[[1]][["F value"]][1], 2), NA),
+  `Pr(>F)` = c(format.pval(anova_summary[[1]][["Pr(>F)"]][1], digits = 3), NA)
+)
 
-The paired t-test results reveal:
+# Display the ANOVA table
+knitr::kable(anova_df, 
+             caption = "ANOVA Results: Wheat Yields by Continent",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
-- The **mean difference** between wheat and rice yields is negative, indicating that rice yields are typically higher than wheat yields.
+# Post-hoc test to identify which groups differ
+tukey_result <- TukeyHSD(anova_result)
 
-- The **t-value** is large and negative, showing that the difference is substantial relative to its variability.
+# Convert Tukey HSD results to a data frame
+tukey_df <- as.data.frame(tukey_result$Continent)
+tukey_df$comparison <- rownames(tukey_df)
+tukey_long <- pivot_longer(tukey_df, 
+                           cols = -comparison, 
+                           names_to = "Continent2", 
+                           values_to = "p_value")
+tukey_long <- tukey_long %>%
+  filter(!is.na(p_value)) %>%
+  mutate(
+    Comparison = paste(comparison, "vs", Continent2),
+    `p adj` = format.pval(p_value, digits = 3),
+    Significant = ifelse(p_value < 0.05, "Yes", "No")
+  ) %>%
+  select(Comparison, `p adj`, Significant)
 
-- The extremely small **p-value** (< 0.001) provides very strong evidence against the null hypothesis that the distributions of wheat and rice yields are the same.
+# Display the Tukey HSD results
+knitr::kable(tukey_long, 
+             caption = "Tukey HSD Post-hoc Test Results: Pairwise Comparisons of Continents",
+             align = c("l", "c", "c"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 
-- The **95% confidence interval** for the mean difference does not include zero, confirming the statistical significance.
+# Create a summary statistics table by continent
+continent_summary <- continental_yields %>%
+  group_by(Continent) %>%
+  summarize(
+    n = n(),
+    Mean = round(mean(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    SD = round(sd(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Min = round(min(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Max = round(max(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2)
+  )
 
-- The **summary statistics** show that:
-  - Rice has a higher mean yield than wheat
-  - Rice yields also have greater variability (higher standard deviation)
-  - The consistent negative mean difference confirms rice's yield advantage
+# Display the summary statistics table
+knitr::kable(continent_summary, 
+             caption = "Summary Statistics: Wheat Yields by Continent",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+```
 
-These results have important implications for agricultural planning and food security:
+### Non-Parametric Alternatives
 
-1. Rice production systems generally achieve higher yields per hectare than wheat systems.
-2. This difference may reflect biological factors (rice's higher potential productivity) or agricultural practices.
-3. The paired design ensures this comparison controls for geographic and temporal factors.
-4. Understanding these crop-specific yield differences is crucial for optimizing land use and food production strategies.
-
-This analysis aligns with Type II ANOVA approaches recommended for agricultural research, where controlling for confounding variables is essential for valid comparisons.
-:::
-
-### Mann-Whitney U Test
+#### Mann-Whitney U Test
 
 The Mann-Whitney U test (also called Wilcoxon rank-sum test) is a non-parametric alternative to the independent samples t-test:
 
@@ -584,53 +558,6 @@ knitr::kable(wilcox_table,
                            full_width = FALSE,
                            position = "center")
 ```
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates how to perform the Mann-Whitney U test (also called Wilcoxon rank-sum test):
-
-1. **Test Selection Rationale**:
-   - Used as a non-parametric alternative to the independent samples t-test
-   - Appropriate when data violates normality assumptions or contains outliers
-   - Compares distributions rather than just means
-
-2. **Statistical Testing**:
-   - `wilcox.test()` performs the Mann-Whitney U test
-   - Uses the same formula notation as the t-test for comparing groups
-   - Tests whether one group tends to have higher values than the other
-
-3. **Result Presentation**:
-   - Creates a formatted table with the test statistic (W-value) and p-value
-   - The W-value represents the sum of ranks for one of the groups
-   - Small p-values indicate significant differences between groups
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The Mann-Whitney U test results reveal:
-
-- The large **W-value** and small **p-value** (< 0.001) provide strong evidence to reject the null hypothesis that the distributions of wheat yields are the same in both time periods.
-
-- This result aligns with the earlier t-test findings, confirming that the difference between periods is robust even when using a test that doesn't assume normality.
-
-- The consistency between parametric (t-test) and non-parametric (Mann-Whitney) results strengthens our confidence in concluding that wheat yields have significantly increased in the recent period.
-
-This non-parametric approach is particularly valuable in ecological and agricultural research for several reasons:
-
-1. Data often doesn't follow a normal distribution due to natural variability and extreme events
-2. Sample sizes may be unequal between groups (e.g., different numbers of countries per continent)
-3. The focus is on whether one group consistently outperforms another, rather than just comparing means
-
-The agreement between parametric and non-parametric tests in this case suggests that:
-
-1. The continental differences in wheat yields are substantial and not merely artifacts of statistical assumptions
-2. Both parametric and non-parametric approaches lead to similar conclusions about global patterns
-3. The findings are robust and can reliably inform agricultural policy and development strategies
-
-This demonstrates the importance of considering both parametric and non-parametric approaches in ecological research, especially when data characteristics may violate traditional assumptions.
-:::
 
 #### Kruskal-Wallis Test
 
@@ -674,11 +601,11 @@ if(requireNamespace("dunn.test", quietly = TRUE)) {
   )
   
   # Display the formatted dunn test results
-  knitr::kable(dunn_df,
+  knitr::kable(dunn_df, 
                caption = "Dunn's Post-hoc Test Results: Pairwise Comparisons of Continents",
                align = c("l", "r", "c", "c", "c"),
                format = "html") %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
                              full_width = FALSE,
                              position = "center")
 } else {
@@ -709,65 +636,11 @@ if(requireNamespace("dunn.test", quietly = TRUE)) {
                caption = "Pairwise Wilcoxon Test Results with Bonferroni Correction",
                align = c("l", "c", "c"),
                format = "html") %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
                              full_width = FALSE,
                              position = "center")
 }
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates how to perform the Kruskal-Wallis test, a non-parametric alternative to ANOVA:
-
-1. **Test Selection Rationale**:
-   - Used when comparing three or more independent groups
-   - Appropriate when data violates ANOVA assumptions (normality, homogeneity of variance)
-   - Based on ranks rather than actual values, making it robust to outliers
-
-2. **Statistical Testing**:
-   - `kruskal.test()` performs the test using the same formula notation as ANOVA
-   - Tests whether at least one group's distribution differs from the others
-   - Produces a chi-squared statistic with degrees of freedom based on the number of groups
-
-3. **Post-hoc Analysis**:
-   - If significant differences are found, post-hoc tests identify which specific groups differ
-   - Uses either Dunn's test (if the `dunn.test` package is available) or pairwise Wilcoxon tests
-   - Both approaches include p-value adjustment for multiple comparisons (Bonferroni method)
-
-4. **Result Presentation**:
-   - Creates formatted tables for the main test and post-hoc comparisons
-   - Clearly indicates which pairwise comparisons are statistically significant
-   - Z-statistics (Dunn's test) or p-values (Wilcoxon) quantify the strength of differences
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The Kruskal-Wallis test results reveal:
-
-- The large **chi-squared statistic** and small **p-value** (< 0.001) provide strong evidence to reject the null hypothesis that all continental distributions of wheat yields are the same.
-
-- This aligns with the ANOVA results, confirming that the differences between continents are robust even when using a non-parametric approach that doesn't assume normality.
-
-- The **post-hoc test results** show:
-  - Similar patterns to the parametric Tukey HSD test, with Europe and Oceania having significantly higher wheat yields than Africa and Asia
-  - The consistency between parametric and non-parametric post-hoc tests strengthens our confidence in these findings
-  - The adjusted p-values control for the family-wise error rate, reducing the risk of Type I errors
-
-This non-parametric approach is particularly valuable in ecological and agricultural research for several reasons:
-
-1. Environmental data often violates normality assumptions due to natural variability and extreme events
-2. Sample sizes may be unbalanced across groups (e.g., different numbers of countries per continent)
-3. The focus is on detecting consistent differences in distributions rather than just comparing means
-
-The agreement between ANOVA and Kruskal-Wallis results suggests that:
-
-1. The continental differences in wheat yields are substantial and not merely artifacts of statistical assumptions
-2. Both parametric and non-parametric approaches lead to similar conclusions about global patterns
-3. The findings are robust and can reliably inform agricultural policy and development strategies
-
-This demonstrates the importance of considering both parametric and non-parametric approaches in ecological research, especially when data characteristics may violate traditional assumptions.
-:::
+```
 
 ## Tests for Relationships
 
@@ -816,6 +689,45 @@ knitr::kable(cor_table,
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
                            full_width = FALSE,
                            position = "center")
+```
+
+#### Spearman Correlation
+
+Spearman correlation is a non-parametric measure of rank correlation:
+
+```{r}
+# Calculate Spearman correlation
+spearman_result <- cor.test(crop_correlation$`Wheat (tonnes per hectare)`, crop_correlation$`Maize (tonnes per hectare)`, method = "spearman")
+
+# Create a formatted table of the results
+spearman_table <- data.frame(
+  Statistic = c("Correlation Coefficient (rho)", "S-value", "p-value"),
+  Value = c(
+    round(spearman_result$estimate, 3),
+    format(spearman_result$statistic, scientific = FALSE),
+    format.pval(spearman_result$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(spearman_table, 
+             caption = "Spearman Correlation Results: Wheat and Maize Yields",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a comparison table of correlation methods
+correlation_comparison <- data.frame(
+  `Correlation Method` = c("Pearson", "Spearman"),
+  `Correlation Coefficient` = c(round(cor_result$estimate, 3), round(spearman_result$estimate, 3)),
+  `p-value` = c(format.pval(cor_result$p.value, digits = 3), format.pval(spearman_result$p.value, digits = 3)),
+  `Interpretation` = c(
+    ifelse(abs(cor_result$estimate) > 0.7, "Strong", ifelse(abs(cor_result$estimate) > 0.3, "Moderate", "Weak")),
+    ifelse(abs(spearman_result$estimate) > 0.7, "Strong", ifelse(abs(spearman_result$estimate) > 0.3, "Moderate", "Weak"))
+  )
+)
 
 # Display the comparison table
 knitr::kable(correlation_comparison, 
@@ -825,67 +737,7 @@ knitr::kable(correlation_comparison,
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
                            full_width = FALSE,
                            position = "center")
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates how to perform correlation analysis using both parametric and non-parametric methods:
-
-1. **Data Preparation**:
-   - `filter()` selects only observations with non-missing values for both wheat and maize yields
-   - `select()` extracts only the relevant columns for analysis
-   - This ensures complete pairs for valid correlation analysis
-
-2. **Data Visualization**:
-   - `geom_point()` creates a scatter plot showing the relationship between wheat and maize yields
-   - `geom_smooth()` with `method = "lm"` adds a linear regression line with confidence interval
-   - This visualization helps assess the linearity and strength of the relationship
-
-3. **Parametric Testing (Pearson)**:
-   - `cor.test()` with `method = "pearson"` calculates the Pearson correlation coefficient
-   - Tests the null hypothesis that there is no linear correlation between the variables
-   - Assumes bivariate normality and a linear relationship between variables
-
-4. **Non-parametric Testing (Spearman)**:
-   - `cor.test()` with `method = "spearman"` calculates the Spearman rank correlation
-   - Based on the ranks of the data rather than the actual values
-   - Does not assume normality or strictly linear relationships
-
-5. **Result Comparison**:
-   - Creates tables for each correlation method with relevant statistics
-   - Provides a comparison table to easily contrast the results of both methods
-   - Includes an interpretation column to classify the strength of the correlation
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The correlation analysis reveals:
-
-- Both Pearson and Spearman methods show a **positive correlation** between wheat and maize yields, indicating that countries with higher wheat yields tend to also have higher maize yields.
-
-- The **Pearson correlation coefficient** (r ≈ 0.6) indicates a moderate to strong linear relationship between the variables.
-
-- The **Spearman correlation coefficient** (rho ≈ 0.7) is slightly higher, suggesting that the monotonic relationship (when ranked) is even stronger than the strictly linear relationship.
-
-- The extremely small **p-values** (< 0.001) for both tests provide very strong evidence against the null hypothesis of no correlation between wheat and maize yields.
-
-- The **95% confidence interval** for the Pearson correlation does not include zero, confirming the statistical significance of the relationship.
-
-- The **scatter plot** visually confirms this positive relationship, with points generally following an upward trend.
-
-These findings have important implications for agricultural research and policy:
-
-1. The strong positive correlation suggests that factors that benefit wheat production often also benefit maize production (e.g., agricultural technology, infrastructure, climate conditions).
-
-2. The slightly stronger Spearman correlation indicates that the relationship may not be perfectly linear, but the general trend is consistent.
-
-3. This relationship could inform agricultural development strategies, suggesting that interventions to improve conditions for one crop may have positive spillover effects on the other.
-
-4. For ecological modeling, this correlation could be used to predict yields of one crop based on the other when data is limited.
-
-The comparison of parametric and non-parametric methods demonstrates the value of using multiple statistical approaches to strengthen confidence in findings, especially in ecological research where data may not always meet strict parametric assumptions.
-:::
+```
 
 ### Regression Analysis
 
@@ -899,126 +751,27 @@ time_series_data <- crop_yields %>%
   filter(Entity == "United States" & !is.na(`Wheat (tonnes per hectare)`)) %>%
   arrange(Year)
 
-# Visualize the trend
-ggplot(time_series_data, aes(x = Year, y = `Wheat (tonnes per hectare)`)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = TRUE, color = "blue") +
-  labs(title = "Wheat Yield Trends in the United States",
-       x = "Year",
-       y = "Wheat Yield (tonnes/hectare)") +
-  theme_minimal()
-
-# Perform linear regression
-lm_model <- lm(`Wheat (tonnes per hectare)` ~ Year, data = time_series_data)
-lm_summary <- summary(lm_model)
-
-# Create a formatted table of the regression coefficients
-coef_table <- data.frame(
-  Term = c("(Intercept)", "Year"),
-  Estimate = c(round(lm_summary$coefficients[1, 1], 3), round(lm_summary$coefficients[2, 1], 3)),
-  `Std. Error` = c(round(lm_summary$coefficients[1, 2], 3), round(lm_summary$coefficients[2, 2], 3)),
-  `t value` = c(round(lm_summary$coefficients[1, 3], 2), round(lm_summary$coefficients[2, 3], 2)),
-  `Pr(>|t|)` = c(format.pval(lm_summary$coefficients[1, 4], digits = 3), format.pval(lm_summary$coefficients[2, 4], digits = 3))
-)
-
-# Display the coefficients table
-knitr::kable(coef_table, 
-             caption = "Linear Regression Coefficients: Wheat Yield by Year",
-             align = c("l", "r", "r", "r", "r"),
-             format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
-                           full_width = FALSE,
-                           position = "center")
-
-# Create a formatted table of the model summary statistics
-model_stats <- data.frame(
-  Statistic = c("R-squared", "Adjusted R-squared", "F-statistic", "DF", "p-value", "Residual Standard Error"),
-  Value = c(
-    round(lm_summary$r.squared, 3),
-    round(lm_summary$adj.r.squared, 3),
-    round(lm_summary$fstatistic[1], 2),
-    paste(lm_summary$fstatistic[2], ",", lm_summary$fstatistic[3]),
-    format.pval(pf(lm_summary$fstatistic[1], lm_summary$fstatistic[2], lm_summary$fstatistic[3], lower.tail = FALSE), digits = 3),
-    round(lm_summary$sigma, 3)
-  )
-)
-
-# Display the model summary statistics table
-knitr::kable(model_stats, 
-             caption = "Linear Regression Model Summary Statistics",
-             align = c("l", "r"),
-             format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
-                           full_width = FALSE,
-                           position = "center")
-
-# Check assumptions
-par(mfrow = c(2, 2))
-plot(lm_model)
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates how to perform simple linear regression analysis:
-
-1. **Data Preparation**:
-   - Filters data for a single country (United States) with non-missing wheat yield values
-   - Creates a time series dataset by arranging data chronologically
-   - Focuses on a single predictor (Year) and response variable (wheat yield)
-
-2. **Data Visualization**:
-   - `geom_point()` creates a scatter plot showing the relationship between year and wheat yield
-   - `geom_smooth()` with `method = "lm"` adds a linear regression line with confidence interval
-   - This visualization helps assess the linearity of the relationship and potential outliers
-
-3. **Statistical Modeling**:
-   - `lm()` fits a linear regression model with wheat yield as the response and year as the predictor
-   - The formula notation (`y ~ x`) specifies the relationship being modeled
-   - `summary()` extracts comprehensive statistics about the model fit
-
-4. **Result Presentation**:
-   - Creates formatted tables for regression coefficients and model summary statistics
-   - Includes standard errors, t-values, and p-values for coefficient significance testing
-   - Reports R-squared, F-statistic, and other model fit metrics
-
-5. **Assumption Checking**:
-   - `plot(lm_model)` creates diagnostic plots to assess regression assumptions
-   - Includes residuals vs. fitted values (linearity), Q-Q plot (normality), scale-location (homoscedasticity)
-   - These diagnostics are crucial for validating the model's statistical validity
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The linear regression results reveal:
-
-- The **Year coefficient** is positive and highly significant (p < 0.001), indicating a clear upward trend in U.S. wheat yields over time.
-
-- The **coefficient value** (approximately 0.03) represents the average annual increase in wheat yield, measured in tonnes per hectare per year.
-
-- The **intercept** (negative value) has no practical interpretation here as it represents the theoretical yield at Year=0, which is far outside our data range.
-
-- The **R-squared value** (approximately 0.7) indicates that about 70% of the variability in wheat yields can be explained by the year alone, suggesting a strong temporal trend.
-
-- The **F-statistic** is large with a very small p-value, confirming that the model as a whole is statistically significant.
-
-- The **diagnostic plots** show:
-  - Residuals are fairly randomly distributed around zero, supporting the linearity assumption
-  - The Q-Q plot shows reasonable alignment with the diagonal line, suggesting normality
-  - Some heteroscedasticity may be present, as variance appears to increase slightly with fitted values
-
-These findings have important implications for agricultural research and policy:
-
-1. The consistent yield increase over time reflects technological advances in agriculture, including improved varieties, farming practices, and pest management.
-
-2. The model could be used to project future yields, though caution is needed as the linear trend may not continue indefinitely due to biological limits or climate change impacts.
-
-3. The relatively high R-squared value suggests that temporal factors (which year serves as a proxy for) are major drivers of yield improvements.
-
-4. For more sophisticated modeling, additional predictors like climate variables, fertilizer use, or policy changes could be incorporated to explain the remaining variability.
-
-This analysis demonstrates the value of simple linear regression for quantifying trends in ecological and agricultural data, providing a statistical foundation for understanding long-term patterns of change.
-:::
+# Convert to time series object
+if(requireNamespace("zoo", quietly = TRUE)) {
+  library(zoo)
+  wheat_ts <- zoo(time_series_data$`Wheat (tonnes per hectare)`, time_series_data$Year)
+  
+  # Plot the time series
+  plot(wheat_ts, main = "US Wheat Yields Over Time",
+       xlab = "Year", ylab = "Wheat Yield (tonnes/hectare)")
+  
+  # Add trend line
+  lines(lowess(time_series_data$Year, time_series_data$`Wheat (tonnes per hectare)`), col = "red", lwd = 2)
+} else {
+  # Basic plot if zoo package is not available
+  plot(time_series_data$Year, time_series_data$`Wheat (tonnes per hectare)`, type = "l",
+       main = "US Wheat Yields Over Time",
+       xlab = "Year", ylab = "Wheat Yield (tonnes per hectare)")
+  
+  # Add trend line
+  lines(lowess(time_series_data$Year, time_series_data$`Wheat (tonnes per hectare)`), col = "red", lwd = 2)
+}
+```
 
 #### Multiple Regression
 
@@ -1079,69 +832,6 @@ knitr::kable(multi_model_stats,
                            full_width = FALSE,
                            position = "center")
 ```
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates how to perform multiple regression analysis:
-
-1. **Data Preparation**:
-   - `filter()` selects only observations with non-missing values for all three crop yields
-   - Creates a dataset with multiple potential predictor variables (rice yield, maize yield, and year)
-   - This allows for modeling more complex relationships than simple linear regression
-
-2. **Statistical Modeling**:
-   - `lm()` fits a multiple regression model with wheat yield as the response variable
-   - The formula notation (`y ~ x1 + x2 + x3`) specifies multiple predictors
-   - Each predictor's effect is estimated while controlling for the others
-
-3. **Result Presentation**:
-   - Creates formatted tables for regression coefficients and model summary statistics
-   - Adds significance codes (*, **, ***) to quickly identify important predictors
-   - Includes standard errors, t-values, and p-values for coefficient significance testing
-   - Reports R-squared, adjusted R-squared, F-statistic, and other model fit metrics
-
-4. **Interpretation Aids**:
-   - The coefficient table shows the estimated effect of each predictor while holding others constant
-   - The footnote explains the significance code system
-   - The model statistics table provides overall measures of model performance
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The multiple regression results reveal:
-
-- **Rice yield** has a positive and significant relationship with wheat yield, suggesting that countries or regions that excel at rice production also tend to have higher wheat yields, even after controlling for other factors.
-
-- **Maize yield** shows an even stronger positive relationship with wheat yield, indicating that the factors that promote maize productivity also strongly benefit wheat production.
-
-- **Year** remains a significant predictor even after controlling for other crop yields, confirming that there is a genuine temporal trend of increasing wheat productivity independent of other crop improvements.
-
-- The **R-squared value** is substantially higher than in the simple linear regression model, indicating that this multiple predictor approach explains more of the variability in wheat yields.
-
-- The **adjusted R-squared** accounts for the number of predictors and still shows improvement over the simpler model, suggesting that the additional complexity is justified.
-
-- The **F-statistic** is large with a very small p-value, confirming that the model as a whole is highly significant.
-
-These findings have important implications for agricultural research and policy:
-
-1. The strong relationships between different crop yields suggest common underlying factors affecting agricultural productivity across crop types, such as:
-   - Overall agricultural technology and infrastructure
-   - Institutional capacity and agricultural policies
-   - General environmental conditions and management practices
-
-2. The independent effect of year indicates ongoing technological progress in wheat production specifically, beyond general agricultural improvements.
-
-3. For agricultural development programs, this suggests that:
-   - Interventions that improve conditions for multiple crops may be more cost-effective
-   - Regions that excel at one crop type may have transferable knowledge for other crops
-   - Time trends should be considered when evaluating program impacts
-
-4. For ecological modeling, this multiple regression approach demonstrates how to disentangle the effects of several related factors, a common challenge in natural systems research.
-
-This analysis showcases the power of multiple regression for understanding complex relationships in agricultural systems, where many factors simultaneously influence outcomes of interest.
-:::
 
 ## Tests for Categorical Data
 
@@ -1285,7 +975,7 @@ if(requireNamespace("zoo", quietly = TRUE)) {
   # Basic plot if zoo package is not available
   plot(us_wheat$Year, us_wheat$`Wheat (tonnes per hectare)`, type = "l",
        main = "US Wheat Yields Over Time",
-       xlab = "Year", ylab = "Wheat Yield (tonnes/hectare)")
+       xlab = "Year", ylab = "Wheat Yield (tonnes per hectare)")
   
   # Add trend line
   lines(lowess(us_wheat$Year, us_wheat$`Wheat (tonnes per hectare)`), col = "red", lwd = 2)
@@ -1361,8 +1051,4 @@ When conducting statistical tests, remember to:
 
 5. Using the animal dataset (`../data/entomology/insects.csv`), compare two groups using an appropriate statistical test.
 
-6. Create a multiple regression model to predict coffee quality scores using the coffee economics dataset (`../data/economics/economic.csv`).
-
-## Enhanced Statistical Tests Chapter
-
-The enhanced visualizations and tables for this chapter are available in a separate file to ensure compatibility with the book rendering process.
+6. Create a multiple regression model to predict coffee quality scores using the coffee economics dataset (`../data/economics/economic.csv`)

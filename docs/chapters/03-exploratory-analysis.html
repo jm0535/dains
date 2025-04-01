@@ -530,6 +530,61 @@ PROFESSIONAL TIP: Creating Reproducible EDA Workflows
 </table>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code block demonstrates how to calculate and visualize descriptive statistics:</p>
+<ol type="1">
+<li><code>library(tidyverse)</code> loads the tidyverse collection of packages for data manipulation and visualization.</li>
+<li><code>read_csv()</code> imports the crop yields dataset from a CSV file.</li>
+<li><code>head()</code> displays the first few rows to inspect the data structure.</li>
+<li>The <code>summarize()</code> function calculates key statistics for wheat yields:
+<ul>
+<li><code>Mean</code>: Average yield across all observations</li>
+<li><code>Median</code>: Middle value when yields are arranged in order</li>
+<li><code>StdDev</code>: Standard deviation, measuring data dispersion</li>
+<li><code>Min/Max</code>: Minimum and maximum values in the dataset</li>
+<li><code>Q1/Q3</code>: First and third quartiles (25th and 75th percentiles)</li>
+</ul></li>
+<li><code>knitr::kable()</code> creates a formatted table of the summary statistics.</li>
+<li><code>ggplot()</code> with <code>geom_histogram()</code> visualizes the distribution of wheat yields.</li>
+<li>The final section identifies and displays the top 10 countries by average wheat yield using:
+<ul>
+<li><code>group_by()</code> to organize data by country</li>
+<li><code>summarize()</code> to calculate average yield per country</li>
+<li><code>arrange(desc())</code> to sort in descending order</li>
+<li><code>head(10)</code> to select the top 10 entries</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The summary statistics reveal several key insights about global wheat yields:</p>
+<ul>
+<li>The mean wheat yield is higher than the median, suggesting a right-skewed distribution with some countries achieving exceptionally high yields.</li>
+<li>The standard deviation indicates substantial variability in wheat productivity across different regions.</li>
+<li>The histogram confirms this skewed distribution, with most countries clustered at lower to moderate yield levels, and fewer countries achieving very high yields.</li>
+<li>The top 10 countries table shows which nations have the most productive wheat cultivation systems, likely due to advanced agricultural practices, favorable climate conditions, or intensive farming methods.</li>
+<li>This analysis provides a foundation for investigating factors that contribute to high wheat yields and potential strategies for improving agricultural productivity in lower-yielding regions.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="frequency-tables" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="frequency-tables"><span class="header-section-number">3.3.2</span> Frequency Tables</h3>
@@ -595,6 +650,47 @@ PROFESSIONAL TIP: Creating Reproducible EDA Workflows
   Medium 0.08719445 0.12221817 0.12550164 0.20065669 0.23932871 0.22510033</code></pre>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code block demonstrates how to create and analyze frequency tables:</p>
+<ol type="1">
+<li><code>mutate()</code> with <code>case_when()</code> creates a new categorical variable <code>yield_category</code> by binning wheat yields into “Low,” “Medium,” and “High” categories.</li>
+<li><code>table()</code> produces a frequency count for each yield category.</li>
+<li><code>prop.table()</code> converts the frequency counts to proportions (relative frequencies).</li>
+<li>A new variable <code>decade</code> is created by rounding down the year to the nearest decade using <code>floor(Year / 10) * 10</code>.</li>
+<li>A two-way frequency table is created to examine the relationship between yield categories and decades.</li>
+<li><code>prop.table(yield_decade_table, margin = 1)</code> calculates row proportions, showing the distribution of decades within each yield category.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The frequency tables reveal important patterns in wheat yield categories:</p>
+<ul>
+<li>The distribution of yield categories shows which productivity levels are most common globally.</li>
+<li>The proportions table quantifies this distribution, indicating what percentage of observations fall into each yield category.</li>
+<li>The two-way table between yield categories and decades allows us to track how wheat productivity has changed over time.</li>
+<li>The row proportions reveal whether certain yield categories have become more or less common in different decades, potentially indicating technological improvements, climate effects, or changes in agricultural practices.</li>
+<li>These temporal patterns are crucial for understanding agricultural development trends and projecting future food security scenarios.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="visualizing-distributions" class="level2" data-number="3.4">
@@ -656,6 +752,60 @@ PROFESSIONAL TIP: Creating Reproducible EDA Workflows
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code block demonstrates three approaches to visualizing distributions:</p>
+<ol type="1">
+<li><strong>Histogram</strong>:
+<ul>
+<li><code>geom_histogram()</code> divides the data into bins and counts observations in each bin</li>
+<li><code>bins = 30</code> specifies the number of divisions</li>
+<li><code>na.rm = TRUE</code> removes missing values from the visualization</li>
+</ul></li>
+<li><strong>Density Plot</strong>:
+<ul>
+<li><code>geom_density()</code> creates a smoothed representation of the distribution</li>
+<li><code>fill</code> and <code>alpha</code> control the appearance and transparency</li>
+<li>Density plots show the probability density function of the data</li>
+</ul></li>
+<li><strong>Combined Visualization</strong>:
+<ul>
+<li>The histogram is converted to density scale with <code>aes(y = ..density..)</code></li>
+<li><code>geom_density()</code> overlays a smoothed curve on the histogram</li>
+<li>This combination shows both the raw data structure and the smoothed distribution</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These distribution visualizations reveal key patterns in wheat yields:</p>
+<ul>
+<li>The histogram shows the frequency of observations at different yield levels, highlighting where most countries cluster.</li>
+<li>The density plot smooths the distribution, making it easier to identify the central tendency and spread.</li>
+<li>The combined plot allows us to see both the actual data distribution (histogram) and the underlying probability density (curve).</li>
+<li>The right-skewed shape indicates that while most countries have moderate yields, a few achieve exceptionally high productivity.</li>
+<li>Multiple peaks (if present) might suggest distinct groups of countries with different agricultural technologies or growing conditions.</li>
+<li>These visualizations help identify outliers and understand the overall pattern of global wheat production efficiency.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="box-plots" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="box-plots"><span class="header-section-number">3.4.2</span> Box Plots</h3>
@@ -708,6 +858,55 @@ PROFESSIONAL TIP: Creating Reproducible EDA Workflows
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to create and enhance box plots for comparing distributions:</p>
+<ol type="1">
+<li>First, we select major wheat-producing countries for comparison and filter for recent data (since 2000).</li>
+<li>The basic box plot:
+<ul>
+<li><code>geom_boxplot()</code> creates a box-and-whisker plot for each country</li>
+<li>Each box shows the median (middle line), interquartile range (IQR, the box), and whiskers extending to 1.5 × IQR</li>
+<li>Points beyond the whiskers represent outliers</li>
+</ul></li>
+<li>The enhanced box plot adds:
+<ul>
+<li><code>geom_jitter()</code> to display individual data points with slight horizontal displacement</li>
+<li>This combination shows both the summary statistics (box plot) and the raw data distribution (points)</li>
+<li><code>angle = 45, hjust = 1</code> rotates country labels for better readability</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The box plots reveal important comparisons between major wheat-producing countries:</p>
+<ul>
+<li>The median line in each box shows the typical yield for each country, allowing direct comparison of central tendency.</li>
+<li>The height of each box (IQR) indicates the variability of yields within each country over the time period.</li>
+<li>Whisker length reflects the range of typical yields, while outlier points show exceptional years.</li>
+<li>Countries with higher boxes generally have more variable production, possibly due to climate fluctuations or changing agricultural practices.</li>
+<li>The jittered points reveal the actual distribution and density of observations for each country.</li>
+<li>These comparisons help identify which countries have the most consistent and productive wheat cultivation systems, providing insights for agricultural policy and development.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="bar-charts" class="level3" data-number="3.4.3">
 <h3 data-number="3.4.3" class="anchored" data-anchor-id="bar-charts"><span class="header-section-number">3.4.3</span> Bar Charts</h3>
@@ -738,6 +937,49 @@ PROFESSIONAL TIP: Creating Reproducible EDA Workflows
 <p><img src="03-exploratory-analysis_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to create a bar chart for visualizing categorical data:</p>
+<ol type="1">
+<li>First, we calculate the average wheat yield by country for the last decade (2010-present).</li>
+<li>We then select the top 10 countries by average yield.</li>
+<li>The bar chart:
+<ul>
+<li><code>geom_bar(stat = "identity")</code> creates a bar for each country, with height proportional to average yield</li>
+<li><code>reorder(Entity, avg_wheat_yield)</code> sorts the countries by average yield in descending order</li>
+<li><code>fill = "darkgreen"</code> sets the bar color</li>
+<li><code>theme(axis.text.x = element_text(angle = 45, hjust = 1))</code> rotates country labels for better readability</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The bar chart reveals the top 10 countries by average wheat yield:</p>
+<ul>
+<li>The height of each bar represents the average yield for each country.</li>
+<li>The countries are sorted in descending order by average yield, making it easy to identify the most productive nations.</li>
+<li>This visualization helps identify which countries have the most efficient wheat cultivation systems, providing insights for agricultural policy and development.</li>
+<li>The bar chart can also be used to compare the average yields of different countries, helping to identify potential areas for improvement.</li>
+</ul>
 </div>
 </div>
 </section>
@@ -807,6 +1049,53 @@ PROFESSIONAL TIP: Creating Reproducible EDA Workflows
 <p><img src="03-exploratory-analysis_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to create scatter plots for exploring relationships:</p>
+<ol type="1">
+<li>First, we filter the data to include only observations with non-missing values for wheat and rice yields, and only consider recent data (since 2000).</li>
+<li>The basic scatter plot:
+<ul>
+<li><code>geom_point()</code> creates a scatter plot of wheat yields vs.&nbsp;rice yields</li>
+<li><code>alpha = 0.5</code> sets the transparency of the points</li>
+<li><code>color = "darkgreen"</code> sets the color of the points</li>
+</ul></li>
+<li>The scatter plot with color by continent:
+<ul>
+<li>We create a simple mapping of countries to continents using <code>tibble()</code>.</li>
+<li>We join this mapping with our dataset using <code>inner_join()</code>.</li>
+<li>We create a scatter plot with color by continent using <code>geom_point(aes(color = Continent))</code>.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The scatter plots reveal the relationship between wheat and rice yields:</p>
+<ul>
+<li>The basic scatter plot shows the overall relationship between wheat and rice yields.</li>
+<li>The scatter plot with color by continent reveals how the relationship varies across different continents.</li>
+<li>This visualization helps identify patterns and correlations between wheat and rice yields, providing insights for agricultural policy and development.</li>
+<li>The scatter plot can also be used to identify outliers and anomalies in the data.</li>
+</ul>
 </div>
 </div>
 </section>
@@ -885,6 +1174,45 @@ Beans (tonnes per hectare)                          1.00</code></pre>
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to perform correlation analysis:</p>
+<ol type="1">
+<li>First, we select the numeric columns of interest for correlation analysis.</li>
+<li>We remove any missing values using <code>na.omit()</code>.</li>
+<li>We calculate the correlation matrix using <code>cor()</code>.</li>
+<li>We round the correlation matrix to 2 decimal places using <code>round()</code>.</li>
+<li>We visualize the correlation matrix using <code>corrplot()</code>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The correlation matrix reveals the strength and direction of relationships between variables:</p>
+<ul>
+<li>The correlation matrix shows the correlation coefficients between each pair of variables.</li>
+<li>The correlation coefficients range from -1 (perfect negative correlation) to 1 (perfect positive correlation).</li>
+<li>This visualization helps identify strong correlations between variables, providing insights for agricultural policy and development.</li>
+<li>The correlation matrix can also be used to identify potential multicollinearity issues in regression analysis.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="pair-plots" class="level3" data-number="3.5.3">
 <h3 data-number="3.5.3" class="anchored" data-anchor-id="pair-plots"><span class="header-section-number">3.5.3</span> Pair Plots</h3>
@@ -916,6 +1244,43 @@ Beans (tonnes per hectare)                          1.00</code></pre>
 <p><img src="03-exploratory-analysis_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to create pair plots:</p>
+<ol type="1">
+<li>First, we create a basic pair plot using <code>pairs()</code>.</li>
+<li>We then create an enhanced pair plot using <code>ggpairs()</code> from the GGally package.</li>
+<li>The enhanced pair plot includes histograms, scatter plots, and correlation coefficients for each pair of variables.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The pair plots reveal the relationships between multiple variables:</p>
+<ul>
+<li>The pair plots show the relationships between each pair of variables.</li>
+<li>The histograms and scatter plots provide a visual representation of the relationships.</li>
+<li>The correlation coefficients provide a quantitative measure of the strength and direction of the relationships.</li>
+<li>This visualization helps identify patterns and correlations between multiple variables, providing insights for agricultural policy and development.</li>
+</ul>
 </div>
 </div>
 </section>
@@ -977,6 +1342,43 @@ Beans (tonnes per hectare)                          1.00</code></pre>
 10 Belgium  2008                         8.76</code></pre>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to use box plots for outlier detection:</p>
+<ol type="1">
+<li>First, we create a box plot of wheat yields using <code>geom_boxplot()</code>.</li>
+<li>We then identify potential outliers using the interquartile range (IQR) method.</li>
+<li>We calculate the lower and upper bounds for outliers using <code>q1 - 1.5 * iqr</code> and <code>q3 + 1.5 * iqr</code>, respectively.</li>
+<li>We identify observations that fall outside these bounds as potential outliers.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The box plot and outlier detection reveal potential outliers:</p>
+<ul>
+<li>The box plot shows the distribution of wheat yields, with potential outliers indicated by points outside the whiskers.</li>
+<li>The outlier detection identifies observations that fall outside the lower and upper bounds.</li>
+<li>This visualization helps identify potential errors or anomalies in the data, providing insights for data cleaning and quality control.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="z-scores-for-outlier-detection" class="level3" data-number="3.6.2">
 <h3 data-number="3.6.2" class="anchored" data-anchor-id="z-scores-for-outlier-detection"><span class="header-section-number">3.6.2</span> Z-Scores for Outlier Detection</h3>
@@ -1018,6 +1420,42 @@ Beans (tonnes per hectare)                          1.00</code></pre>
 10 Belgium      2009                         9.47    4.16</code></pre>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to use z-scores for outlier detection:</p>
+<ol type="1">
+<li>First, we calculate the mean and standard deviation of wheat yields using <code>mean()</code> and <code>sd()</code>, respectively.</li>
+<li>We then calculate the z-scores for each observation using <code>(x - mean) / sd</code>.</li>
+<li>We identify observations with absolute z-scores greater than 3 as extreme values.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The z-scores reveal extreme values:</p>
+<ul>
+<li>The z-scores show the number of standard deviations from the mean for each observation.</li>
+<li>The extreme values are identified by their absolute z-scores greater than 3.</li>
+<li>This visualization helps identify potential outliers or anomalies in the data, providing insights for data cleaning and quality control.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="time-series-exploration" class="level2" data-number="3.7">
@@ -1050,6 +1488,43 @@ Beans (tonnes per hectare)                          1.00</code></pre>
 <p><img src="03-exploratory-analysis_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to create a time series plot:</p>
+<ol type="1">
+<li>First, we select a few countries for time series analysis.</li>
+<li>We filter the data for these countries and non-missing wheat yields.</li>
+<li>We create a time series plot using <code>geom_line()</code> and <code>geom_point()</code>.</li>
+<li>We add a title, x-axis label, and y-axis label using <code>labs()</code>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The time series plot reveals temporal patterns:</p>
+<ul>
+<li>The time series plot shows the trends in wheat yields over time for each country.</li>
+<li>The plot reveals patterns such as increasing or decreasing trends, seasonality, or anomalies.</li>
+<li>This visualization helps identify temporal patterns and correlations in the data, providing insights for agricultural policy and development.</li>
+</ul>
 </div>
 </div>
 </section>
@@ -1128,6 +1603,42 @@ Wheat (tonnes per hectare)                 38.04
 Rice (tonnes per hectare)                  35.21
 Bananas (tonnes per hectare)               31.86
 Potatoes (tonnes per hectare)              23.40</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code Explanation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code demonstrates how to analyze missing data:</p>
+<ol type="1">
+<li>First, we check for missing values in each column using <code>colSums(is.na())</code>.</li>
+<li>We then visualize missing data patterns using <code>gg_miss_var()</code> and <code>vis_miss()</code> from the naniar package.</li>
+<li>If the naniar package is not installed, we provide an alternative summary of missing data using <code>sapply()</code> and <code>data.frame()</code>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Results Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The missing data analysis reveals patterns of missingness:</p>
+<ul>
+<li>The summary of missing data shows the number and percentage of missing values in each column.</li>
+<li>The visualization of missing data patterns reveals the distribution of missing values across different variables.</li>
+<li>This analysis helps identify potential issues with data quality and informs strategies for handling missing data.</li>
+</ul>
 </div>
 </div>
 </section>
@@ -1709,351 +2220,654 @@ Potatoes (tonnes per hectare)              23.40</code></pre>
 <span id="cb37-85"><a href="#cb37-85" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(top_wheat_countries, <span class="at">caption =</span> <span class="st">"Top 10 Countries by Average Wheat Yield"</span>)</span>
 <span id="cb37-86"><a href="#cb37-86" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb37-87"><a href="#cb37-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-88"><a href="#cb37-88" aria-hidden="true" tabindex="-1"></a><span class="fu">### Frequency Tables</span></span>
-<span id="cb37-89"><a href="#cb37-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-90"><a href="#cb37-90" aria-hidden="true" tabindex="-1"></a>Frequency tables are useful for understanding the distribution of categorical variables:</span>
-<span id="cb37-91"><a href="#cb37-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-94"><a href="#cb37-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-95"><a href="#cb37-95" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's create a categorical variable based on wheat yield levels</span></span>
-<span id="cb37-96"><a href="#cb37-96" aria-hidden="true" tabindex="-1"></a>crop_yields_with_categories <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
-<span id="cb37-97"><a href="#cb37-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-98"><a href="#cb37-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yield_category =</span> <span class="fu">case_when</span>(</span>
-<span id="cb37-99"><a href="#cb37-99" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Low"</span>,</span>
-<span id="cb37-100"><a href="#cb37-100" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Medium"</span>,</span>
-<span id="cb37-101"><a href="#cb37-101" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"High"</span></span>
-<span id="cb37-102"><a href="#cb37-102" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb37-103"><a href="#cb37-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-104"><a href="#cb37-104" aria-hidden="true" tabindex="-1"></a><span class="co"># Frequency table for yield categories</span></span>
-<span id="cb37-105"><a href="#cb37-105" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(crop_yields_with_categories<span class="sc">$</span>yield_category)</span>
-<span id="cb37-106"><a href="#cb37-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-107"><a href="#cb37-107" aria-hidden="true" tabindex="-1"></a><span class="co"># Proportions</span></span>
-<span id="cb37-108"><a href="#cb37-108" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(crop_yields_with_categories<span class="sc">$</span>yield_category))</span>
-<span id="cb37-109"><a href="#cb37-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-110"><a href="#cb37-110" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a decade variable for temporal analysis</span></span>
-<span id="cb37-111"><a href="#cb37-111" aria-hidden="true" tabindex="-1"></a>crop_yields_with_categories <span class="ot">&lt;-</span> crop_yields_with_categories <span class="sc">%&gt;%</span></span>
-<span id="cb37-112"><a href="#cb37-112" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">decade =</span> <span class="fu">floor</span>(Year <span class="sc">/</span> <span class="dv">10</span>) <span class="sc">*</span> <span class="dv">10</span>)</span>
+<span id="cb37-88"><a href="#cb37-88" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-89"><a href="#cb37-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-90"><a href="#cb37-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-91"><a href="#cb37-91" aria-hidden="true" tabindex="-1"></a>This code block demonstrates how to calculate and visualize descriptive statistics:</span>
+<span id="cb37-92"><a href="#cb37-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-93"><a href="#cb37-93" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`library(tidyverse)`</span> loads the tidyverse collection of packages for data manipulation and visualization.</span>
+<span id="cb37-94"><a href="#cb37-94" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`read_csv()`</span> imports the crop yields dataset from a CSV file.</span>
+<span id="cb37-95"><a href="#cb37-95" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`head()`</span> displays the first few rows to inspect the data structure.</span>
+<span id="cb37-96"><a href="#cb37-96" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>The <span class="in">`summarize()`</span> function calculates key statistics for wheat yields:</span>
+<span id="cb37-97"><a href="#cb37-97" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`Mean`</span>: Average yield across all observations</span>
+<span id="cb37-98"><a href="#cb37-98" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`Median`</span>: Middle value when yields are arranged in order</span>
+<span id="cb37-99"><a href="#cb37-99" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`StdDev`</span>: Standard deviation, measuring data dispersion</span>
+<span id="cb37-100"><a href="#cb37-100" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`Min/Max`</span>: Minimum and maximum values in the dataset</span>
+<span id="cb37-101"><a href="#cb37-101" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`Q1/Q3`</span>: First and third quartiles (25th and 75th percentiles)</span>
+<span id="cb37-102"><a href="#cb37-102" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span><span class="in">`knitr::kable()`</span> creates a formatted table of the summary statistics.</span>
+<span id="cb37-103"><a href="#cb37-103" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span><span class="in">`ggplot()`</span> with <span class="in">`geom_histogram()`</span> visualizes the distribution of wheat yields.</span>
+<span id="cb37-104"><a href="#cb37-104" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>The final section identifies and displays the top 10 countries by average wheat yield using:</span>
+<span id="cb37-105"><a href="#cb37-105" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`group_by()`</span> to organize data by country</span>
+<span id="cb37-106"><a href="#cb37-106" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`summarize()`</span> to calculate average yield per country</span>
+<span id="cb37-107"><a href="#cb37-107" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`arrange(desc())`</span> to sort in descending order</span>
+<span id="cb37-108"><a href="#cb37-108" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`head(10)`</span> to select the top 10 entries</span>
+<span id="cb37-109"><a href="#cb37-109" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-110"><a href="#cb37-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-111"><a href="#cb37-111" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-112"><a href="#cb37-112" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
 <span id="cb37-113"><a href="#cb37-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-114"><a href="#cb37-114" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-way frequency table: yield category by decade</span></span>
-<span id="cb37-115"><a href="#cb37-115" aria-hidden="true" tabindex="-1"></a>yield_decade_table <span class="ot">&lt;-</span> <span class="fu">table</span>(crop_yields_with_categories<span class="sc">$</span>yield_category, </span>
-<span id="cb37-116"><a href="#cb37-116" aria-hidden="true" tabindex="-1"></a>                            crop_yields_with_categories<span class="sc">$</span>decade)</span>
-<span id="cb37-117"><a href="#cb37-117" aria-hidden="true" tabindex="-1"></a>yield_decade_table</span>
-<span id="cb37-118"><a href="#cb37-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-119"><a href="#cb37-119" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to proportions (by row)</span></span>
-<span id="cb37-120"><a href="#cb37-120" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(yield_decade_table, <span class="at">margin =</span> <span class="dv">1</span>)</span>
-<span id="cb37-121"><a href="#cb37-121" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-114"><a href="#cb37-114" aria-hidden="true" tabindex="-1"></a>The summary statistics reveal several key insights about global wheat yields:</span>
+<span id="cb37-115"><a href="#cb37-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-116"><a href="#cb37-116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The mean wheat yield is higher than the median, suggesting a right-skewed distribution with some countries achieving exceptionally high yields.</span>
+<span id="cb37-117"><a href="#cb37-117" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The standard deviation indicates substantial variability in wheat productivity across different regions.</span>
+<span id="cb37-118"><a href="#cb37-118" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The histogram confirms this skewed distribution, with most countries clustered at lower to moderate yield levels, and fewer countries achieving very high yields.</span>
+<span id="cb37-119"><a href="#cb37-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The top 10 countries table shows which nations have the most productive wheat cultivation systems, likely due to advanced agricultural practices, favorable climate conditions, or intensive farming methods.</span>
+<span id="cb37-120"><a href="#cb37-120" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This analysis provides a foundation for investigating factors that contribute to high wheat yields and potential strategies for improving agricultural productivity in lower-yielding regions.</span>
+<span id="cb37-121"><a href="#cb37-121" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb37-122"><a href="#cb37-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-123"><a href="#cb37-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## Visualizing Distributions</span></span>
+<span id="cb37-123"><a href="#cb37-123" aria-hidden="true" tabindex="-1"></a><span class="fu">### Frequency Tables</span></span>
 <span id="cb37-124"><a href="#cb37-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-125"><a href="#cb37-125" aria-hidden="true" tabindex="-1"></a><span class="fu">### Histograms and Density Plots</span></span>
+<span id="cb37-125"><a href="#cb37-125" aria-hidden="true" tabindex="-1"></a>Frequency tables are useful for understanding the distribution of categorical variables:</span>
 <span id="cb37-126"><a href="#cb37-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-127"><a href="#cb37-127" aria-hidden="true" tabindex="-1"></a>Histograms and density plots help visualize the distribution of continuous variables:</span>
-<span id="cb37-128"><a href="#cb37-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-131"><a href="#cb37-131" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-132"><a href="#cb37-132" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of wheat yields</span></span>
-<span id="cb37-133"><a href="#cb37-133" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb37-134"><a href="#cb37-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb37-135"><a href="#cb37-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Histogram of Wheat Yields"</span>, </span>
-<span id="cb37-136"><a href="#cb37-136" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
-<span id="cb37-137"><a href="#cb37-137" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb37-138"><a href="#cb37-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb37-139"><a href="#cb37-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-140"><a href="#cb37-140" aria-hidden="true" tabindex="-1"></a><span class="co"># Density plot</span></span>
-<span id="cb37-141"><a href="#cb37-141" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb37-142"><a href="#cb37-142" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb37-143"><a href="#cb37-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Density Plot of Wheat Yields"</span>, </span>
-<span id="cb37-144"><a href="#cb37-144" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
-<span id="cb37-145"><a href="#cb37-145" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb37-146"><a href="#cb37-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb37-147"><a href="#cb37-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-148"><a href="#cb37-148" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram with density overlay</span></span>
-<span id="cb37-149"><a href="#cb37-149" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb37-150"><a href="#cb37-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb37-151"><a href="#cb37-151" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="st">"darkgreen"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb37-152"><a href="#cb37-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Wheat Yields"</span>, </span>
-<span id="cb37-153"><a href="#cb37-153" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
-<span id="cb37-154"><a href="#cb37-154" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb37-155"><a href="#cb37-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb37-129"><a href="#cb37-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-130"><a href="#cb37-130" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's create a categorical variable based on wheat yield levels</span></span>
+<span id="cb37-131"><a href="#cb37-131" aria-hidden="true" tabindex="-1"></a>crop_yields_with_categories <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
+<span id="cb37-132"><a href="#cb37-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-133"><a href="#cb37-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yield_category =</span> <span class="fu">case_when</span>(</span>
+<span id="cb37-134"><a href="#cb37-134" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Low"</span>,</span>
+<span id="cb37-135"><a href="#cb37-135" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Medium"</span>,</span>
+<span id="cb37-136"><a href="#cb37-136" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"High"</span></span>
+<span id="cb37-137"><a href="#cb37-137" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb37-138"><a href="#cb37-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-139"><a href="#cb37-139" aria-hidden="true" tabindex="-1"></a><span class="co"># Frequency table for yield categories</span></span>
+<span id="cb37-140"><a href="#cb37-140" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(crop_yields_with_categories<span class="sc">$</span>yield_category)</span>
+<span id="cb37-141"><a href="#cb37-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-142"><a href="#cb37-142" aria-hidden="true" tabindex="-1"></a><span class="co"># Proportions</span></span>
+<span id="cb37-143"><a href="#cb37-143" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(crop_yields_with_categories<span class="sc">$</span>yield_category))</span>
+<span id="cb37-144"><a href="#cb37-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-145"><a href="#cb37-145" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a decade variable for temporal analysis</span></span>
+<span id="cb37-146"><a href="#cb37-146" aria-hidden="true" tabindex="-1"></a>crop_yields_with_categories <span class="ot">&lt;-</span> crop_yields_with_categories <span class="sc">%&gt;%</span></span>
+<span id="cb37-147"><a href="#cb37-147" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">decade =</span> <span class="fu">floor</span>(Year <span class="sc">/</span> <span class="dv">10</span>) <span class="sc">*</span> <span class="dv">10</span>)</span>
+<span id="cb37-148"><a href="#cb37-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-149"><a href="#cb37-149" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-way frequency table: yield category by decade</span></span>
+<span id="cb37-150"><a href="#cb37-150" aria-hidden="true" tabindex="-1"></a>yield_decade_table <span class="ot">&lt;-</span> <span class="fu">table</span>(crop_yields_with_categories<span class="sc">$</span>yield_category, </span>
+<span id="cb37-151"><a href="#cb37-151" aria-hidden="true" tabindex="-1"></a>                            crop_yields_with_categories<span class="sc">$</span>decade)</span>
+<span id="cb37-152"><a href="#cb37-152" aria-hidden="true" tabindex="-1"></a>yield_decade_table</span>
+<span id="cb37-153"><a href="#cb37-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-154"><a href="#cb37-154" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to proportions (by row)</span></span>
+<span id="cb37-155"><a href="#cb37-155" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(yield_decade_table, <span class="at">margin =</span> <span class="dv">1</span>)</span>
 <span id="cb37-156"><a href="#cb37-156" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb37-157"><a href="#cb37-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-158"><a href="#cb37-158" aria-hidden="true" tabindex="-1"></a><span class="fu">### Box Plots</span></span>
-<span id="cb37-159"><a href="#cb37-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-160"><a href="#cb37-160" aria-hidden="true" tabindex="-1"></a>Box plots are excellent for comparing distributions across groups:</span>
-<span id="cb37-161"><a href="#cb37-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-164"><a href="#cb37-164" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-165"><a href="#cb37-165" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a few major countries for comparison</span></span>
-<span id="cb37-166"><a href="#cb37-166" aria-hidden="true" tabindex="-1"></a>major_wheat_producers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"United States"</span>, <span class="st">"China"</span>, <span class="st">"India"</span>, <span class="st">"Russia"</span>, <span class="st">"France"</span>, <span class="st">"Australia"</span>)</span>
-<span id="cb37-167"><a href="#cb37-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-168"><a href="#cb37-168" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data for these countries and recent years</span></span>
-<span id="cb37-169"><a href="#cb37-169" aria-hidden="true" tabindex="-1"></a>recent_wheat_data <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
-<span id="cb37-170"><a href="#cb37-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Entity <span class="sc">%in%</span> major_wheat_producers, </span>
-<span id="cb37-171"><a href="#cb37-171" aria-hidden="true" tabindex="-1"></a>         Year <span class="sc">&gt;=</span> <span class="dv">2000</span>,</span>
-<span id="cb37-172"><a href="#cb37-172" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>))</span>
+<span id="cb37-158"><a href="#cb37-158" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-159"><a href="#cb37-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-160"><a href="#cb37-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-161"><a href="#cb37-161" aria-hidden="true" tabindex="-1"></a>This code block demonstrates how to create and analyze frequency tables:</span>
+<span id="cb37-162"><a href="#cb37-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-163"><a href="#cb37-163" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`mutate()`</span> with <span class="in">`case_when()`</span> creates a new categorical variable <span class="in">`yield_category`</span> by binning wheat yields into "Low," "Medium," and "High" categories.</span>
+<span id="cb37-164"><a href="#cb37-164" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`table()`</span> produces a frequency count for each yield category.</span>
+<span id="cb37-165"><a href="#cb37-165" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`prop.table()`</span> converts the frequency counts to proportions (relative frequencies).</span>
+<span id="cb37-166"><a href="#cb37-166" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>A new variable <span class="in">`decade`</span> is created by rounding down the year to the nearest decade using <span class="in">`floor(Year / 10) * 10`</span>.</span>
+<span id="cb37-167"><a href="#cb37-167" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>A two-way frequency table is created to examine the relationship between yield categories and decades.</span>
+<span id="cb37-168"><a href="#cb37-168" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span><span class="in">`prop.table(yield_decade_table, margin = 1)`</span> calculates row proportions, showing the distribution of decades within each yield category.</span>
+<span id="cb37-169"><a href="#cb37-169" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-170"><a href="#cb37-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-171"><a href="#cb37-171" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-172"><a href="#cb37-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
 <span id="cb37-173"><a href="#cb37-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-174"><a href="#cb37-174" aria-hidden="true" tabindex="-1"></a><span class="co"># Box plot of wheat yields by country</span></span>
-<span id="cb37-175"><a href="#cb37-175" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(recent_wheat_data, <span class="fu">aes</span>(<span class="at">x =</span> Entity, <span class="at">y =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb37-176"><a href="#cb37-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb37-177"><a href="#cb37-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Wheat Yields by Country (2000-present)"</span>, </span>
-<span id="cb37-178"><a href="#cb37-178" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Country"</span>, </span>
-<span id="cb37-179"><a href="#cb37-179" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
-<span id="cb37-180"><a href="#cb37-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb37-181"><a href="#cb37-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb37-174"><a href="#cb37-174" aria-hidden="true" tabindex="-1"></a>The frequency tables reveal important patterns in wheat yield categories:</span>
+<span id="cb37-175"><a href="#cb37-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-176"><a href="#cb37-176" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The distribution of yield categories shows which productivity levels are most common globally.</span>
+<span id="cb37-177"><a href="#cb37-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The proportions table quantifies this distribution, indicating what percentage of observations fall into each yield category.</span>
+<span id="cb37-178"><a href="#cb37-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The two-way table between yield categories and decades allows us to track how wheat productivity has changed over time.</span>
+<span id="cb37-179"><a href="#cb37-179" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The row proportions reveal whether certain yield categories have become more or less common in different decades, potentially indicating technological improvements, climate effects, or changes in agricultural practices.</span>
+<span id="cb37-180"><a href="#cb37-180" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These temporal patterns are crucial for understanding agricultural development trends and projecting future food security scenarios.</span>
+<span id="cb37-181"><a href="#cb37-181" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb37-182"><a href="#cb37-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-183"><a href="#cb37-183" aria-hidden="true" tabindex="-1"></a><span class="co"># Enhanced box plot with jittered points</span></span>
-<span id="cb37-184"><a href="#cb37-184" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(recent_wheat_data, <span class="fu">aes</span>(<span class="at">x =</span> Entity, <span class="at">y =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb37-185"><a href="#cb37-185" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb37-186"><a href="#cb37-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
-<span id="cb37-187"><a href="#cb37-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Wheat Yields by Country (2000-present)"</span>, </span>
-<span id="cb37-188"><a href="#cb37-188" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Country"</span>, </span>
-<span id="cb37-189"><a href="#cb37-189" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
-<span id="cb37-190"><a href="#cb37-190" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb37-191"><a href="#cb37-191" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
-<span id="cb37-192"><a href="#cb37-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-193"><a href="#cb37-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-194"><a href="#cb37-194" aria-hidden="true" tabindex="-1"></a><span class="fu">### Bar Charts</span></span>
-<span id="cb37-195"><a href="#cb37-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-196"><a href="#cb37-196" aria-hidden="true" tabindex="-1"></a>Bar charts are useful for visualizing categorical data:</span>
-<span id="cb37-197"><a href="#cb37-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-200"><a href="#cb37-200" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-201"><a href="#cb37-201" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average wheat yield by country for the last decade</span></span>
-<span id="cb37-202"><a href="#cb37-202" aria-hidden="true" tabindex="-1"></a>recent_avg_yields <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
-<span id="cb37-203"><a href="#cb37-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2010</span>, <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-204"><a href="#cb37-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Entity) <span class="sc">%&gt;%</span></span>
-<span id="cb37-205"><a href="#cb37-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_wheat_yield =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-206"><a href="#cb37-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_wheat_yield)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-207"><a href="#cb37-207" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)  <span class="co"># Top 10 countries</span></span>
-<span id="cb37-208"><a href="#cb37-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-209"><a href="#cb37-209" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar chart of average wheat yields</span></span>
-<span id="cb37-210"><a href="#cb37-210" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(recent_avg_yields, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Entity, avg_wheat_yield), <span class="at">y =</span> avg_wheat_yield)) <span class="sc">+</span></span>
-<span id="cb37-211"><a href="#cb37-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
-<span id="cb37-212"><a href="#cb37-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Top 10 Countries by Average Wheat Yield (2010-present)"</span>, </span>
-<span id="cb37-213"><a href="#cb37-213" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Country"</span>, </span>
-<span id="cb37-214"><a href="#cb37-214" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
-<span id="cb37-215"><a href="#cb37-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb37-216"><a href="#cb37-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
-<span id="cb37-217"><a href="#cb37-217" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-218"><a href="#cb37-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-219"><a href="#cb37-219" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exploring Relationships</span></span>
+<span id="cb37-183"><a href="#cb37-183" aria-hidden="true" tabindex="-1"></a><span class="fu">## Visualizing Distributions</span></span>
+<span id="cb37-184"><a href="#cb37-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-185"><a href="#cb37-185" aria-hidden="true" tabindex="-1"></a><span class="fu">### Histograms and Density Plots</span></span>
+<span id="cb37-186"><a href="#cb37-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-187"><a href="#cb37-187" aria-hidden="true" tabindex="-1"></a>Histograms and density plots help visualize the distribution of continuous variables:</span>
+<span id="cb37-188"><a href="#cb37-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-191"><a href="#cb37-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-192"><a href="#cb37-192" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of wheat yields</span></span>
+<span id="cb37-193"><a href="#cb37-193" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb37-194"><a href="#cb37-194" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb37-195"><a href="#cb37-195" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Histogram of Wheat Yields"</span>, </span>
+<span id="cb37-196"><a href="#cb37-196" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
+<span id="cb37-197"><a href="#cb37-197" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb37-198"><a href="#cb37-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb37-199"><a href="#cb37-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-200"><a href="#cb37-200" aria-hidden="true" tabindex="-1"></a><span class="co"># Density plot</span></span>
+<span id="cb37-201"><a href="#cb37-201" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb37-202"><a href="#cb37-202" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb37-203"><a href="#cb37-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Density Plot of Wheat Yields"</span>, </span>
+<span id="cb37-204"><a href="#cb37-204" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
+<span id="cb37-205"><a href="#cb37-205" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb37-206"><a href="#cb37-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb37-207"><a href="#cb37-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-208"><a href="#cb37-208" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram with density overlay</span></span>
+<span id="cb37-209"><a href="#cb37-209" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb37-210"><a href="#cb37-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb37-211"><a href="#cb37-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="st">"darkgreen"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb37-212"><a href="#cb37-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Wheat Yields"</span>, </span>
+<span id="cb37-213"><a href="#cb37-213" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
+<span id="cb37-214"><a href="#cb37-214" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb37-215"><a href="#cb37-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb37-216"><a href="#cb37-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-217"><a href="#cb37-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-218"><a href="#cb37-218" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-219"><a href="#cb37-219" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
 <span id="cb37-220"><a href="#cb37-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-221"><a href="#cb37-221" aria-hidden="true" tabindex="-1"></a><span class="fu">### Scatter Plots</span></span>
+<span id="cb37-221"><a href="#cb37-221" aria-hidden="true" tabindex="-1"></a>This code block demonstrates three approaches to visualizing distributions:</span>
 <span id="cb37-222"><a href="#cb37-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-223"><a href="#cb37-223" aria-hidden="true" tabindex="-1"></a>Scatter plots help visualize relationships between two continuous variables:</span>
-<span id="cb37-224"><a href="#cb37-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-227"><a href="#cb37-227" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-228"><a href="#cb37-228" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's compare wheat and rice yields</span></span>
-<span id="cb37-229"><a href="#cb37-229" aria-hidden="true" tabindex="-1"></a>crop_yields_filtered <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
-<span id="cb37-230"><a href="#cb37-230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>), <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Rice (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-231"><a href="#cb37-231" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2000</span>)</span>
+<span id="cb37-223"><a href="#cb37-223" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Histogram**: </span>
+<span id="cb37-224"><a href="#cb37-224" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`geom_histogram()`</span> divides the data into bins and counts observations in each bin</span>
+<span id="cb37-225"><a href="#cb37-225" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`bins = 30`</span> specifies the number of divisions</span>
+<span id="cb37-226"><a href="#cb37-226" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`na.rm = TRUE`</span> removes missing values from the visualization</span>
+<span id="cb37-227"><a href="#cb37-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-228"><a href="#cb37-228" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Density Plot**:</span>
+<span id="cb37-229"><a href="#cb37-229" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`geom_density()`</span> creates a smoothed representation of the distribution</span>
+<span id="cb37-230"><a href="#cb37-230" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`fill`</span> and <span class="in">`alpha`</span> control the appearance and transparency</span>
+<span id="cb37-231"><a href="#cb37-231" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Density plots show the probability density function of the data</span>
 <span id="cb37-232"><a href="#cb37-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-233"><a href="#cb37-233" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic scatter plot</span></span>
-<span id="cb37-234"><a href="#cb37-234" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields_filtered, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Rice (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb37-235"><a href="#cb37-235" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
-<span id="cb37-236"><a href="#cb37-236" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Wheat and Rice Yields"</span>,</span>
-<span id="cb37-237"><a href="#cb37-237" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
-<span id="cb37-238"><a href="#cb37-238" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Rice Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
-<span id="cb37-239"><a href="#cb37-239" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb37-240"><a href="#cb37-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-241"><a href="#cb37-241" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot with color by continent (we'll need to add continent information)</span></span>
-<span id="cb37-242"><a href="#cb37-242" aria-hidden="true" tabindex="-1"></a><span class="co"># For demonstration, let's create a simple mapping for a few countries</span></span>
-<span id="cb37-243"><a href="#cb37-243" aria-hidden="true" tabindex="-1"></a>continent_mapping <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb37-244"><a href="#cb37-244" aria-hidden="true" tabindex="-1"></a>  <span class="at">Entity =</span> <span class="fu">c</span>(<span class="st">"United States"</span>, <span class="st">"Canada"</span>, <span class="st">"Mexico"</span>, </span>
-<span id="cb37-245"><a href="#cb37-245" aria-hidden="true" tabindex="-1"></a>             <span class="st">"China"</span>, <span class="st">"India"</span>, <span class="st">"Japan"</span>, </span>
-<span id="cb37-246"><a href="#cb37-246" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Germany"</span>, <span class="st">"France"</span>, <span class="st">"United Kingdom"</span>, </span>
-<span id="cb37-247"><a href="#cb37-247" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Brazil"</span>, <span class="st">"Argentina"</span>, <span class="st">"Chile"</span>,</span>
-<span id="cb37-248"><a href="#cb37-248" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Egypt"</span>, <span class="st">"Nigeria"</span>, <span class="st">"South Africa"</span>,</span>
-<span id="cb37-249"><a href="#cb37-249" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Australia"</span>, <span class="st">"New Zealand"</span>),</span>
-<span id="cb37-250"><a href="#cb37-250" aria-hidden="true" tabindex="-1"></a>  <span class="at">Continent =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"North America"</span>, <span class="dv">3</span>), </span>
-<span id="cb37-251"><a href="#cb37-251" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"Asia"</span>, <span class="dv">3</span>), </span>
-<span id="cb37-252"><a href="#cb37-252" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"Europe"</span>, <span class="dv">3</span>), </span>
-<span id="cb37-253"><a href="#cb37-253" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"South America"</span>, <span class="dv">3</span>),</span>
-<span id="cb37-254"><a href="#cb37-254" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"Africa"</span>, <span class="dv">3</span>),</span>
-<span id="cb37-255"><a href="#cb37-255" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"Oceania"</span>, <span class="dv">2</span>))</span>
-<span id="cb37-256"><a href="#cb37-256" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb37-257"><a href="#cb37-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-258"><a href="#cb37-258" aria-hidden="true" tabindex="-1"></a><span class="co"># Join with our dataset</span></span>
-<span id="cb37-259"><a href="#cb37-259" aria-hidden="true" tabindex="-1"></a>crop_yields_with_continent <span class="ot">&lt;-</span> crop_yields_filtered <span class="sc">%&gt;%</span></span>
-<span id="cb37-260"><a href="#cb37-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(continent_mapping, <span class="at">by =</span> <span class="st">"Entity"</span>)</span>
+<span id="cb37-233"><a href="#cb37-233" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Combined Visualization**:</span>
+<span id="cb37-234"><a href="#cb37-234" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>The histogram is converted to density scale with <span class="in">`aes(y = ..density..)`</span></span>
+<span id="cb37-235"><a href="#cb37-235" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`geom_density()`</span> overlays a smoothed curve on the histogram</span>
+<span id="cb37-236"><a href="#cb37-236" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>This combination shows both the raw data structure and the smoothed distribution</span>
+<span id="cb37-237"><a href="#cb37-237" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-238"><a href="#cb37-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-239"><a href="#cb37-239" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-240"><a href="#cb37-240" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-241"><a href="#cb37-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-242"><a href="#cb37-242" aria-hidden="true" tabindex="-1"></a>These distribution visualizations reveal key patterns in wheat yields:</span>
+<span id="cb37-243"><a href="#cb37-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-244"><a href="#cb37-244" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The histogram shows the frequency of observations at different yield levels, highlighting where most countries cluster.</span>
+<span id="cb37-245"><a href="#cb37-245" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The density plot smooths the distribution, making it easier to identify the central tendency and spread.</span>
+<span id="cb37-246"><a href="#cb37-246" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The combined plot allows us to see both the actual data distribution (histogram) and the underlying probability density (curve).</span>
+<span id="cb37-247"><a href="#cb37-247" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The right-skewed shape indicates that while most countries have moderate yields, a few achieve exceptionally high productivity.</span>
+<span id="cb37-248"><a href="#cb37-248" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Multiple peaks (if present) might suggest distinct groups of countries with different agricultural technologies or growing conditions.</span>
+<span id="cb37-249"><a href="#cb37-249" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These visualizations help identify outliers and understand the overall pattern of global wheat production efficiency.</span>
+<span id="cb37-250"><a href="#cb37-250" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-251"><a href="#cb37-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-252"><a href="#cb37-252" aria-hidden="true" tabindex="-1"></a><span class="fu">### Box Plots</span></span>
+<span id="cb37-253"><a href="#cb37-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-254"><a href="#cb37-254" aria-hidden="true" tabindex="-1"></a>Box plots are excellent for comparing distributions across groups:</span>
+<span id="cb37-255"><a href="#cb37-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-258"><a href="#cb37-258" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-259"><a href="#cb37-259" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a few major countries for comparison</span></span>
+<span id="cb37-260"><a href="#cb37-260" aria-hidden="true" tabindex="-1"></a>major_wheat_producers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"United States"</span>, <span class="st">"China"</span>, <span class="st">"India"</span>, <span class="st">"Russia"</span>, <span class="st">"France"</span>, <span class="st">"Australia"</span>)</span>
 <span id="cb37-261"><a href="#cb37-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-262"><a href="#cb37-262" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot with color by continent</span></span>
-<span id="cb37-263"><a href="#cb37-263" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields_with_continent, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Rice (tonnes per hectare)</span><span class="st">`</span>, <span class="at">color =</span> Continent)) <span class="sc">+</span></span>
-<span id="cb37-264"><a href="#cb37-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb37-265"><a href="#cb37-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Wheat and Rice Yields by Continent"</span>,</span>
-<span id="cb37-266"><a href="#cb37-266" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
-<span id="cb37-267"><a href="#cb37-267" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Rice Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
-<span id="cb37-268"><a href="#cb37-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb37-269"><a href="#cb37-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-270"><a href="#cb37-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-271"><a href="#cb37-271" aria-hidden="true" tabindex="-1"></a><span class="fu">### Correlation Analysis</span></span>
-<span id="cb37-272"><a href="#cb37-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-273"><a href="#cb37-273" aria-hidden="true" tabindex="-1"></a>Correlation analysis quantifies the strength and direction of relationships between variables:</span>
-<span id="cb37-274"><a href="#cb37-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-277"><a href="#cb37-277" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-278"><a href="#cb37-278" aria-hidden="true" tabindex="-1"></a><span class="co"># Select numeric columns for correlation analysis</span></span>
-<span id="cb37-279"><a href="#cb37-279" aria-hidden="true" tabindex="-1"></a>crop_numeric <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
-<span id="cb37-280"><a href="#cb37-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Rice (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Maize (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Soybeans (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Potatoes (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Beans (tonnes per hectare)</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb37-281"><a href="#cb37-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
-<span id="cb37-282"><a href="#cb37-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-283"><a href="#cb37-283" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation matrix</span></span>
-<span id="cb37-284"><a href="#cb37-284" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(crop_numeric)</span>
-<span id="cb37-285"><a href="#cb37-285" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(cor_matrix, <span class="dv">2</span>)</span>
-<span id="cb37-286"><a href="#cb37-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-287"><a href="#cb37-287" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize correlation matrix</span></span>
-<span id="cb37-288"><a href="#cb37-288" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb37-289"><a href="#cb37-289" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">"circle"</span>, <span class="at">type =</span> <span class="st">"upper"</span>, </span>
-<span id="cb37-290"><a href="#cb37-290" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>, <span class="at">tl.srt =</span> <span class="dv">45</span>,</span>
-<span id="cb37-291"><a href="#cb37-291" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Correlation Matrix of Crop Yields"</span>)</span>
-<span id="cb37-292"><a href="#cb37-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-293"><a href="#cb37-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-294"><a href="#cb37-294" aria-hidden="true" tabindex="-1"></a><span class="fu">### Pair Plots</span></span>
-<span id="cb37-295"><a href="#cb37-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-296"><a href="#cb37-296" aria-hidden="true" tabindex="-1"></a>Pair plots provide a comprehensive view of relationships between multiple variables:</span>
-<span id="cb37-297"><a href="#cb37-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-300"><a href="#cb37-300" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-301"><a href="#cb37-301" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic pair plot</span></span>
-<span id="cb37-302"><a href="#cb37-302" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(crop_numeric, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"darkgreen"</span>)</span>
-<span id="cb37-303"><a href="#cb37-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-304"><a href="#cb37-304" aria-hidden="true" tabindex="-1"></a><span class="co"># Enhanced pair plot with GGally</span></span>
-<span id="cb37-305"><a href="#cb37-305" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb37-306"><a href="#cb37-306" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(crop_numeric) <span class="sc">+</span></span>
-<span id="cb37-307"><a href="#cb37-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb37-308"><a href="#cb37-308" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationships Between Different Crop Yields"</span>)</span>
-<span id="cb37-309"><a href="#cb37-309" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-310"><a href="#cb37-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-311"><a href="#cb37-311" aria-hidden="true" tabindex="-1"></a><span class="fu">## Identifying Outliers and Anomalies</span></span>
-<span id="cb37-312"><a href="#cb37-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-313"><a href="#cb37-313" aria-hidden="true" tabindex="-1"></a><span class="fu">### Box Plots for Outlier Detection</span></span>
-<span id="cb37-314"><a href="#cb37-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-315"><a href="#cb37-315" aria-hidden="true" tabindex="-1"></a>Box plots can help identify potential outliers:</span>
-<span id="cb37-316"><a href="#cb37-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-319"><a href="#cb37-319" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-320"><a href="#cb37-320" aria-hidden="true" tabindex="-1"></a><span class="co"># Box plot to identify outliers in wheat yield</span></span>
-<span id="cb37-321"><a href="#cb37-321" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields, <span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb37-322"><a href="#cb37-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb37-323"><a href="#cb37-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Box Plot of Wheat Yields with Potential Outliers"</span>,</span>
-<span id="cb37-324"><a href="#cb37-324" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
-<span id="cb37-325"><a href="#cb37-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb37-326"><a href="#cb37-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-327"><a href="#cb37-327" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify potential outliers</span></span>
-<span id="cb37-328"><a href="#cb37-328" aria-hidden="true" tabindex="-1"></a>wheat_outliers <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
-<span id="cb37-329"><a href="#cb37-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-330"><a href="#cb37-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb37-331"><a href="#cb37-331" aria-hidden="true" tabindex="-1"></a>    <span class="at">q1 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="fl">0.25</span>),</span>
-<span id="cb37-332"><a href="#cb37-332" aria-hidden="true" tabindex="-1"></a>    <span class="at">q3 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="fl">0.75</span>),</span>
-<span id="cb37-333"><a href="#cb37-333" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> q3 <span class="sc">-</span> q1,</span>
-<span id="cb37-334"><a href="#cb37-334" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower_bound =</span> q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr,</span>
-<span id="cb37-335"><a href="#cb37-335" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper_bound =</span> q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr,</span>
-<span id="cb37-336"><a href="#cb37-336" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_outlier =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&lt;</span> lower_bound <span class="sc">|</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&gt;</span> upper_bound</span>
-<span id="cb37-337"><a href="#cb37-337" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb37-338"><a href="#cb37-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_outlier) <span class="sc">%&gt;%</span></span>
-<span id="cb37-339"><a href="#cb37-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Entity, Year, <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)</span>
-<span id="cb37-340"><a href="#cb37-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-341"><a href="#cb37-341" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the outliers</span></span>
-<span id="cb37-342"><a href="#cb37-342" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wheat_outliers, <span class="dv">10</span>)</span>
-<span id="cb37-343"><a href="#cb37-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-344"><a href="#cb37-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-345"><a href="#cb37-345" aria-hidden="true" tabindex="-1"></a><span class="fu">### Z-Scores for Outlier Detection</span></span>
-<span id="cb37-346"><a href="#cb37-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-347"><a href="#cb37-347" aria-hidden="true" tabindex="-1"></a>Z-scores can also help identify outliers:</span>
-<span id="cb37-348"><a href="#cb37-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-351"><a href="#cb37-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-352"><a href="#cb37-352" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate z-scores for wheat yields</span></span>
-<span id="cb37-353"><a href="#cb37-353" aria-hidden="true" tabindex="-1"></a>wheat_z_scores <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
-<span id="cb37-354"><a href="#cb37-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-355"><a href="#cb37-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb37-356"><a href="#cb37-356" aria-hidden="true" tabindex="-1"></a>    <span class="at">wheat_mean =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>),</span>
-<span id="cb37-357"><a href="#cb37-357" aria-hidden="true" tabindex="-1"></a>    <span class="at">wheat_sd =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>),</span>
-<span id="cb37-358"><a href="#cb37-358" aria-hidden="true" tabindex="-1"></a>    <span class="at">z_score =</span> (<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">-</span> wheat_mean) <span class="sc">/</span> wheat_sd,</span>
-<span id="cb37-359"><a href="#cb37-359" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_extreme =</span> <span class="fu">abs</span>(z_score) <span class="sc">&gt;</span> <span class="dv">3</span></span>
-<span id="cb37-360"><a href="#cb37-360" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb37-262"><a href="#cb37-262" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data for these countries and recent years</span></span>
+<span id="cb37-263"><a href="#cb37-263" aria-hidden="true" tabindex="-1"></a>recent_wheat_data <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
+<span id="cb37-264"><a href="#cb37-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Entity <span class="sc">%in%</span> major_wheat_producers, </span>
+<span id="cb37-265"><a href="#cb37-265" aria-hidden="true" tabindex="-1"></a>         Year <span class="sc">&gt;=</span> <span class="dv">2000</span>,</span>
+<span id="cb37-266"><a href="#cb37-266" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>))</span>
+<span id="cb37-267"><a href="#cb37-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-268"><a href="#cb37-268" aria-hidden="true" tabindex="-1"></a><span class="co"># Box plot of wheat yields by country</span></span>
+<span id="cb37-269"><a href="#cb37-269" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(recent_wheat_data, <span class="fu">aes</span>(<span class="at">x =</span> Entity, <span class="at">y =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb37-270"><a href="#cb37-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb37-271"><a href="#cb37-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Wheat Yields by Country (2000-present)"</span>, </span>
+<span id="cb37-272"><a href="#cb37-272" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Country"</span>, </span>
+<span id="cb37-273"><a href="#cb37-273" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
+<span id="cb37-274"><a href="#cb37-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb37-275"><a href="#cb37-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb37-276"><a href="#cb37-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-277"><a href="#cb37-277" aria-hidden="true" tabindex="-1"></a><span class="co"># Enhanced box plot with jittered points</span></span>
+<span id="cb37-278"><a href="#cb37-278" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(recent_wheat_data, <span class="fu">aes</span>(<span class="at">x =</span> Entity, <span class="at">y =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb37-279"><a href="#cb37-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb37-280"><a href="#cb37-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb37-281"><a href="#cb37-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Wheat Yields by Country (2000-present)"</span>, </span>
+<span id="cb37-282"><a href="#cb37-282" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Country"</span>, </span>
+<span id="cb37-283"><a href="#cb37-283" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
+<span id="cb37-284"><a href="#cb37-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb37-285"><a href="#cb37-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb37-286"><a href="#cb37-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-287"><a href="#cb37-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-288"><a href="#cb37-288" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-289"><a href="#cb37-289" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-290"><a href="#cb37-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-291"><a href="#cb37-291" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to create and enhance box plots for comparing distributions:</span>
+<span id="cb37-292"><a href="#cb37-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-293"><a href="#cb37-293" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we select major wheat-producing countries for comparison and filter for recent data (since 2000).</span>
+<span id="cb37-294"><a href="#cb37-294" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>The basic box plot:</span>
+<span id="cb37-295"><a href="#cb37-295" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`geom_boxplot()`</span> creates a box-and-whisker plot for each country</span>
+<span id="cb37-296"><a href="#cb37-296" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Each box shows the median (middle line), interquartile range (IQR, the box), and whiskers extending to 1.5 × IQR</span>
+<span id="cb37-297"><a href="#cb37-297" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Points beyond the whiskers represent outliers</span>
+<span id="cb37-298"><a href="#cb37-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-299"><a href="#cb37-299" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The enhanced box plot adds:</span>
+<span id="cb37-300"><a href="#cb37-300" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`geom_jitter()`</span> to display individual data points with slight horizontal displacement</span>
+<span id="cb37-301"><a href="#cb37-301" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>This combination shows both the summary statistics (box plot) and the raw data distribution (points)</span>
+<span id="cb37-302"><a href="#cb37-302" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`angle = 45, hjust = 1`</span> rotates country labels for better readability</span>
+<span id="cb37-303"><a href="#cb37-303" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-304"><a href="#cb37-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-305"><a href="#cb37-305" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-306"><a href="#cb37-306" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-307"><a href="#cb37-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-308"><a href="#cb37-308" aria-hidden="true" tabindex="-1"></a>The box plots reveal important comparisons between major wheat-producing countries:</span>
+<span id="cb37-309"><a href="#cb37-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-310"><a href="#cb37-310" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The median line in each box shows the typical yield for each country, allowing direct comparison of central tendency.</span>
+<span id="cb37-311"><a href="#cb37-311" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The height of each box (IQR) indicates the variability of yields within each country over the time period.</span>
+<span id="cb37-312"><a href="#cb37-312" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Whisker length reflects the range of typical yields, while outlier points show exceptional years.</span>
+<span id="cb37-313"><a href="#cb37-313" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Countries with higher boxes generally have more variable production, possibly due to climate fluctuations or changing agricultural practices.</span>
+<span id="cb37-314"><a href="#cb37-314" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The jittered points reveal the actual distribution and density of observations for each country.</span>
+<span id="cb37-315"><a href="#cb37-315" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These comparisons help identify which countries have the most consistent and productive wheat cultivation systems, providing insights for agricultural policy and development.</span>
+<span id="cb37-316"><a href="#cb37-316" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-317"><a href="#cb37-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-318"><a href="#cb37-318" aria-hidden="true" tabindex="-1"></a><span class="fu">### Bar Charts</span></span>
+<span id="cb37-319"><a href="#cb37-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-320"><a href="#cb37-320" aria-hidden="true" tabindex="-1"></a>Bar charts are useful for visualizing categorical data:</span>
+<span id="cb37-321"><a href="#cb37-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-324"><a href="#cb37-324" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-325"><a href="#cb37-325" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average wheat yield by country for the last decade</span></span>
+<span id="cb37-326"><a href="#cb37-326" aria-hidden="true" tabindex="-1"></a>recent_avg_yields <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
+<span id="cb37-327"><a href="#cb37-327" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2010</span>, <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-328"><a href="#cb37-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Entity) <span class="sc">%&gt;%</span></span>
+<span id="cb37-329"><a href="#cb37-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_wheat_yield =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-330"><a href="#cb37-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_wheat_yield)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-331"><a href="#cb37-331" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)  <span class="co"># Top 10 countries</span></span>
+<span id="cb37-332"><a href="#cb37-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-333"><a href="#cb37-333" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar chart of average wheat yields</span></span>
+<span id="cb37-334"><a href="#cb37-334" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(recent_avg_yields, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Entity, avg_wheat_yield), <span class="at">y =</span> avg_wheat_yield)) <span class="sc">+</span></span>
+<span id="cb37-335"><a href="#cb37-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb37-336"><a href="#cb37-336" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Top 10 Countries by Average Wheat Yield (2010-present)"</span>, </span>
+<span id="cb37-337"><a href="#cb37-337" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Country"</span>, </span>
+<span id="cb37-338"><a href="#cb37-338" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
+<span id="cb37-339"><a href="#cb37-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb37-340"><a href="#cb37-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb37-341"><a href="#cb37-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-342"><a href="#cb37-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-343"><a href="#cb37-343" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-344"><a href="#cb37-344" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-345"><a href="#cb37-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-346"><a href="#cb37-346" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to create a bar chart for visualizing categorical data:</span>
+<span id="cb37-347"><a href="#cb37-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-348"><a href="#cb37-348" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we calculate the average wheat yield by country for the last decade (2010-present).</span>
+<span id="cb37-349"><a href="#cb37-349" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We then select the top 10 countries by average yield.</span>
+<span id="cb37-350"><a href="#cb37-350" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The bar chart:</span>
+<span id="cb37-351"><a href="#cb37-351" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`geom_bar(stat = "identity")`</span> creates a bar for each country, with height proportional to average yield</span>
+<span id="cb37-352"><a href="#cb37-352" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`reorder(Entity, avg_wheat_yield)`</span> sorts the countries by average yield in descending order</span>
+<span id="cb37-353"><a href="#cb37-353" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`fill = "darkgreen"`</span> sets the bar color</span>
+<span id="cb37-354"><a href="#cb37-354" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`theme(axis.text.x = element_text(angle = 45, hjust = 1))`</span> rotates country labels for better readability</span>
+<span id="cb37-355"><a href="#cb37-355" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-356"><a href="#cb37-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-357"><a href="#cb37-357" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-358"><a href="#cb37-358" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-359"><a href="#cb37-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-360"><a href="#cb37-360" aria-hidden="true" tabindex="-1"></a>The bar chart reveals the top 10 countries by average wheat yield:</span>
 <span id="cb37-361"><a href="#cb37-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-362"><a href="#cb37-362" aria-hidden="true" tabindex="-1"></a><span class="co"># Display extreme values (z-score &gt; 3 or &lt; -3)</span></span>
-<span id="cb37-363"><a href="#cb37-363" aria-hidden="true" tabindex="-1"></a>wheat_extremes <span class="ot">&lt;-</span> wheat_z_scores <span class="sc">%&gt;%</span></span>
-<span id="cb37-364"><a href="#cb37-364" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_extreme) <span class="sc">%&gt;%</span></span>
-<span id="cb37-365"><a href="#cb37-365" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Entity, Year, <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, z_score) <span class="sc">%&gt;%</span></span>
-<span id="cb37-366"><a href="#cb37-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="fu">abs</span>(z_score)))</span>
+<span id="cb37-362"><a href="#cb37-362" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The height of each bar represents the average yield for each country.</span>
+<span id="cb37-363"><a href="#cb37-363" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The countries are sorted in descending order by average yield, making it easy to identify the most productive nations.</span>
+<span id="cb37-364"><a href="#cb37-364" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This visualization helps identify which countries have the most efficient wheat cultivation systems, providing insights for agricultural policy and development.</span>
+<span id="cb37-365"><a href="#cb37-365" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The bar chart can also be used to compare the average yields of different countries, helping to identify potential areas for improvement.</span>
+<span id="cb37-366"><a href="#cb37-366" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb37-367"><a href="#cb37-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-368"><a href="#cb37-368" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wheat_extremes, <span class="dv">10</span>)</span>
-<span id="cb37-369"><a href="#cb37-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-370"><a href="#cb37-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-371"><a href="#cb37-371" aria-hidden="true" tabindex="-1"></a><span class="fu">## Time Series Exploration</span></span>
-<span id="cb37-372"><a href="#cb37-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-373"><a href="#cb37-373" aria-hidden="true" tabindex="-1"></a>Agricultural data often contains important temporal patterns:</span>
-<span id="cb37-374"><a href="#cb37-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-377"><a href="#cb37-377" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-378"><a href="#cb37-378" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a few countries for time series analysis</span></span>
-<span id="cb37-379"><a href="#cb37-379" aria-hidden="true" tabindex="-1"></a>countries_for_ts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"United States"</span>, <span class="st">"China"</span>, <span class="st">"India"</span>, <span class="st">"France"</span>)</span>
-<span id="cb37-380"><a href="#cb37-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-381"><a href="#cb37-381" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data for these countries</span></span>
-<span id="cb37-382"><a href="#cb37-382" aria-hidden="true" tabindex="-1"></a>wheat_ts_data <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
-<span id="cb37-383"><a href="#cb37-383" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Entity <span class="sc">%in%</span> countries_for_ts, <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-384"><a href="#cb37-384" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">1960</span>)</span>
-<span id="cb37-385"><a href="#cb37-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-386"><a href="#cb37-386" aria-hidden="true" tabindex="-1"></a><span class="co"># Time series plot</span></span>
-<span id="cb37-387"><a href="#cb37-387" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(wheat_ts_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">color =</span> Entity)) <span class="sc">+</span></span>
-<span id="cb37-388"><a href="#cb37-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb37-389"><a href="#cb37-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb37-390"><a href="#cb37-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Wheat Yield Trends Over Time"</span>,</span>
-<span id="cb37-391"><a href="#cb37-391" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb37-392"><a href="#cb37-392" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
-<span id="cb37-393"><a href="#cb37-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb37-394"><a href="#cb37-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
-<span id="cb37-395"><a href="#cb37-395" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-396"><a href="#cb37-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-397"><a href="#cb37-397" aria-hidden="true" tabindex="-1"></a><span class="fu">## Missing Data Analysis</span></span>
-<span id="cb37-398"><a href="#cb37-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-399"><a href="#cb37-399" aria-hidden="true" tabindex="-1"></a>Understanding patterns of missing data is crucial:</span>
-<span id="cb37-400"><a href="#cb37-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-403"><a href="#cb37-403" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-404"><a href="#cb37-404" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values in each column</span></span>
-<span id="cb37-405"><a href="#cb37-405" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(crop_yields))</span>
+<span id="cb37-368"><a href="#cb37-368" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exploring Relationships</span></span>
+<span id="cb37-369"><a href="#cb37-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-370"><a href="#cb37-370" aria-hidden="true" tabindex="-1"></a><span class="fu">### Scatter Plots</span></span>
+<span id="cb37-371"><a href="#cb37-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-372"><a href="#cb37-372" aria-hidden="true" tabindex="-1"></a>Scatter plots help visualize relationships between two continuous variables:</span>
+<span id="cb37-373"><a href="#cb37-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-376"><a href="#cb37-376" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-377"><a href="#cb37-377" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's compare wheat and rice yields</span></span>
+<span id="cb37-378"><a href="#cb37-378" aria-hidden="true" tabindex="-1"></a>crop_yields_filtered <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
+<span id="cb37-379"><a href="#cb37-379" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>), <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Rice (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-380"><a href="#cb37-380" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2000</span>)</span>
+<span id="cb37-381"><a href="#cb37-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-382"><a href="#cb37-382" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic scatter plot</span></span>
+<span id="cb37-383"><a href="#cb37-383" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields_filtered, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Rice (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb37-384"><a href="#cb37-384" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb37-385"><a href="#cb37-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Wheat and Rice Yields"</span>,</span>
+<span id="cb37-386"><a href="#cb37-386" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
+<span id="cb37-387"><a href="#cb37-387" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Rice Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
+<span id="cb37-388"><a href="#cb37-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb37-389"><a href="#cb37-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-390"><a href="#cb37-390" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot with color by continent (we'll need to add continent information)</span></span>
+<span id="cb37-391"><a href="#cb37-391" aria-hidden="true" tabindex="-1"></a><span class="co"># For demonstration, let's create a simple mapping for a few countries</span></span>
+<span id="cb37-392"><a href="#cb37-392" aria-hidden="true" tabindex="-1"></a>continent_mapping <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb37-393"><a href="#cb37-393" aria-hidden="true" tabindex="-1"></a>  <span class="at">Entity =</span> <span class="fu">c</span>(<span class="st">"United States"</span>, <span class="st">"Canada"</span>, <span class="st">"Mexico"</span>, </span>
+<span id="cb37-394"><a href="#cb37-394" aria-hidden="true" tabindex="-1"></a>             <span class="st">"China"</span>, <span class="st">"India"</span>, <span class="st">"Japan"</span>, </span>
+<span id="cb37-395"><a href="#cb37-395" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Germany"</span>, <span class="st">"France"</span>, <span class="st">"United Kingdom"</span>, </span>
+<span id="cb37-396"><a href="#cb37-396" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Brazil"</span>, <span class="st">"Argentina"</span>, <span class="st">"Chile"</span>,</span>
+<span id="cb37-397"><a href="#cb37-397" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Egypt"</span>, <span class="st">"Nigeria"</span>, <span class="st">"South Africa"</span>,</span>
+<span id="cb37-398"><a href="#cb37-398" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Australia"</span>, <span class="st">"New Zealand"</span>),</span>
+<span id="cb37-399"><a href="#cb37-399" aria-hidden="true" tabindex="-1"></a>  <span class="at">Continent =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"North America"</span>, <span class="dv">3</span>), </span>
+<span id="cb37-400"><a href="#cb37-400" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"Asia"</span>, <span class="dv">3</span>), </span>
+<span id="cb37-401"><a href="#cb37-401" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"Europe"</span>, <span class="dv">3</span>), </span>
+<span id="cb37-402"><a href="#cb37-402" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"South America"</span>, <span class="dv">3</span>),</span>
+<span id="cb37-403"><a href="#cb37-403" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"Africa"</span>, <span class="dv">3</span>),</span>
+<span id="cb37-404"><a href="#cb37-404" aria-hidden="true" tabindex="-1"></a>                <span class="fu">rep</span>(<span class="st">"Oceania"</span>, <span class="dv">2</span>))</span>
+<span id="cb37-405"><a href="#cb37-405" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb37-406"><a href="#cb37-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-407"><a href="#cb37-407" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize missing data patterns</span></span>
-<span id="cb37-408"><a href="#cb37-408" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">requireNamespace</span>(<span class="st">"naniar"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb37-409"><a href="#cb37-409" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(naniar)</span>
-<span id="cb37-410"><a href="#cb37-410" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb37-411"><a href="#cb37-411" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a visualization of missing data</span></span>
-<span id="cb37-412"><a href="#cb37-412" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gg_miss_var</span>(crop_yields)</span>
-<span id="cb37-413"><a href="#cb37-413" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb37-414"><a href="#cb37-414" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a matrix showing missing data patterns</span></span>
-<span id="cb37-415"><a href="#cb37-415" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vis_miss</span>(crop_yields[, <span class="fu">c</span>(<span class="st">"Entity"</span>, <span class="st">"Year"</span>, <span class="st">"Wheat (tonnes per hectare)"</span>, <span class="st">"Rice (tonnes per hectare)"</span>, <span class="st">"Maize (tonnes per hectare)"</span>)])</span>
-<span id="cb37-416"><a href="#cb37-416" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb37-417"><a href="#cb37-417" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"The 'naniar' package is not installed. Install it with install.packages('naniar') to visualize missing data patterns."</span>)</span>
-<span id="cb37-418"><a href="#cb37-418" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb37-419"><a href="#cb37-419" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Alternative: simple summary of missing data</span></span>
-<span id="cb37-420"><a href="#cb37-420" aria-hidden="true" tabindex="-1"></a>  missing_summary <span class="ot">&lt;-</span> <span class="fu">sapply</span>(crop_yields, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span>
-<span id="cb37-421"><a href="#cb37-421" aria-hidden="true" tabindex="-1"></a>  missing_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb37-422"><a href="#cb37-422" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="fu">names</span>(missing_summary),</span>
-<span id="cb37-423"><a href="#cb37-423" aria-hidden="true" tabindex="-1"></a>    <span class="at">Missing_Count =</span> missing_summary,</span>
-<span id="cb37-424"><a href="#cb37-424" aria-hidden="true" tabindex="-1"></a>    <span class="at">Missing_Percent =</span> <span class="fu">round</span>(missing_summary <span class="sc">/</span> <span class="fu">nrow</span>(crop_yields) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
-<span id="cb37-425"><a href="#cb37-425" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb37-426"><a href="#cb37-426" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb37-427"><a href="#cb37-427" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Display the summary</span></span>
-<span id="cb37-428"><a href="#cb37-428" aria-hidden="true" tabindex="-1"></a>  missing_df <span class="ot">&lt;-</span> missing_df[<span class="fu">order</span>(<span class="sc">-</span>missing_df<span class="sc">$</span>Missing_Count), ]</span>
-<span id="cb37-429"><a href="#cb37-429" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(missing_df, <span class="dv">10</span>)</span>
-<span id="cb37-430"><a href="#cb37-430" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb37-431"><a href="#cb37-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-432"><a href="#cb37-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-433"><a href="#cb37-433" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
-<span id="cb37-434"><a href="#cb37-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-435"><a href="#cb37-435" aria-hidden="true" tabindex="-1"></a>This chapter has demonstrated various techniques for exploratory data analysis using a real agricultural dataset. We've covered:</span>
+<span id="cb37-407"><a href="#cb37-407" aria-hidden="true" tabindex="-1"></a><span class="co"># Join with our dataset</span></span>
+<span id="cb37-408"><a href="#cb37-408" aria-hidden="true" tabindex="-1"></a>crop_yields_with_continent <span class="ot">&lt;-</span> crop_yields_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb37-409"><a href="#cb37-409" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(continent_mapping, <span class="at">by =</span> <span class="st">"Entity"</span>)</span>
+<span id="cb37-410"><a href="#cb37-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-411"><a href="#cb37-411" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot with color by continent</span></span>
+<span id="cb37-412"><a href="#cb37-412" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields_with_continent, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Rice (tonnes per hectare)</span><span class="st">`</span>, <span class="at">color =</span> Continent)) <span class="sc">+</span></span>
+<span id="cb37-413"><a href="#cb37-413" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb37-414"><a href="#cb37-414" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Wheat and Rice Yields by Continent"</span>,</span>
+<span id="cb37-415"><a href="#cb37-415" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>, </span>
+<span id="cb37-416"><a href="#cb37-416" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Rice Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
+<span id="cb37-417"><a href="#cb37-417" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb37-418"><a href="#cb37-418" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-419"><a href="#cb37-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-420"><a href="#cb37-420" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-421"><a href="#cb37-421" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-422"><a href="#cb37-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-423"><a href="#cb37-423" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to create scatter plots for exploring relationships:</span>
+<span id="cb37-424"><a href="#cb37-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-425"><a href="#cb37-425" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we filter the data to include only observations with non-missing values for wheat and rice yields, and only consider recent data (since 2000).</span>
+<span id="cb37-426"><a href="#cb37-426" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>The basic scatter plot:</span>
+<span id="cb37-427"><a href="#cb37-427" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`geom_point()`</span> creates a scatter plot of wheat yields vs. rice yields</span>
+<span id="cb37-428"><a href="#cb37-428" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`alpha = 0.5`</span> sets the transparency of the points</span>
+<span id="cb37-429"><a href="#cb37-429" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span><span class="in">`color = "darkgreen"`</span> sets the color of the points</span>
+<span id="cb37-430"><a href="#cb37-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-431"><a href="#cb37-431" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The scatter plot with color by continent:</span>
+<span id="cb37-432"><a href="#cb37-432" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>We create a simple mapping of countries to continents using <span class="in">`tibble()`</span>.</span>
+<span id="cb37-433"><a href="#cb37-433" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>We join this mapping with our dataset using <span class="in">`inner_join()`</span>.</span>
+<span id="cb37-434"><a href="#cb37-434" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>We create a scatter plot with color by continent using <span class="in">`geom_point(aes(color = Continent))`</span>.</span>
+<span id="cb37-435"><a href="#cb37-435" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb37-436"><a href="#cb37-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-437"><a href="#cb37-437" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Computing and interpreting descriptive statistics</span>
-<span id="cb37-438"><a href="#cb37-438" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Creating and analyzing frequency tables</span>
-<span id="cb37-439"><a href="#cb37-439" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Visualizing distributions with histograms, density plots, and box plots</span>
-<span id="cb37-440"><a href="#cb37-440" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Exploring relationships with scatter plots and correlation analysis</span>
-<span id="cb37-441"><a href="#cb37-441" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Identifying outliers and anomalies</span>
-<span id="cb37-442"><a href="#cb37-442" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Analyzing time series patterns</span>
-<span id="cb37-443"><a href="#cb37-443" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Examining missing data</span>
-<span id="cb37-444"><a href="#cb37-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-445"><a href="#cb37-445" aria-hidden="true" tabindex="-1"></a>These techniques provide a foundation for understanding your data before proceeding to more advanced analyses. By thoroughly exploring your data, you can make informed decisions about appropriate statistical methods and generate meaningful hypotheses for testing.</span>
-<span id="cb37-446"><a href="#cb37-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-447"><a href="#cb37-447" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
-<span id="cb37-448"><a href="#cb37-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-449"><a href="#cb37-449" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load the plant biodiversity dataset from <span class="in">`docs/data/ecology/biodiversity.csv`</span> and perform a comprehensive exploratory analysis.</span>
-<span id="cb37-450"><a href="#cb37-450" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Create a histogram and density plot for another crop in the dataset. How does its distribution compare to wheat?</span>
-<span id="cb37-451"><a href="#cb37-451" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Investigate the relationship between potato yields and latitude (you'll need to find or create a dataset with latitude information).</span>
-<span id="cb37-452"><a href="#cb37-452" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Identify countries with the most significant improvement in crop yields over time.</span>
-<span id="cb37-453"><a href="#cb37-453" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Create a time series plot showing the ratio of wheat to rice yields over time for major producing countries.</span>
-<span id="cb37-454"><a href="#cb37-454" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Perform the same exploratory analyses in R for the spatial dataset in <span class="in">`docs/data/geography/spatial.csv`</span>.</span>
+<span id="cb37-437"><a href="#cb37-437" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-438"><a href="#cb37-438" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-439"><a href="#cb37-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-440"><a href="#cb37-440" aria-hidden="true" tabindex="-1"></a>The scatter plots reveal the relationship between wheat and rice yields:</span>
+<span id="cb37-441"><a href="#cb37-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-442"><a href="#cb37-442" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The basic scatter plot shows the overall relationship between wheat and rice yields.</span>
+<span id="cb37-443"><a href="#cb37-443" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The scatter plot with color by continent reveals how the relationship varies across different continents.</span>
+<span id="cb37-444"><a href="#cb37-444" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This visualization helps identify patterns and correlations between wheat and rice yields, providing insights for agricultural policy and development.</span>
+<span id="cb37-445"><a href="#cb37-445" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The scatter plot can also be used to identify outliers and anomalies in the data.</span>
+<span id="cb37-446"><a href="#cb37-446" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-447"><a href="#cb37-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-448"><a href="#cb37-448" aria-hidden="true" tabindex="-1"></a><span class="fu">### Correlation Analysis</span></span>
+<span id="cb37-449"><a href="#cb37-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-450"><a href="#cb37-450" aria-hidden="true" tabindex="-1"></a>Correlation analysis quantifies the strength and direction of relationships between variables:</span>
+<span id="cb37-451"><a href="#cb37-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-454"><a href="#cb37-454" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-455"><a href="#cb37-455" aria-hidden="true" tabindex="-1"></a><span class="co"># Select numeric columns for correlation analysis</span></span>
+<span id="cb37-456"><a href="#cb37-456" aria-hidden="true" tabindex="-1"></a>crop_numeric <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
+<span id="cb37-457"><a href="#cb37-457" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Rice (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Maize (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Soybeans (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Potatoes (tonnes per hectare)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Beans (tonnes per hectare)</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-458"><a href="#cb37-458" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb37-459"><a href="#cb37-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-460"><a href="#cb37-460" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation matrix</span></span>
+<span id="cb37-461"><a href="#cb37-461" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(crop_numeric)</span>
+<span id="cb37-462"><a href="#cb37-462" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(cor_matrix, <span class="dv">2</span>)</span>
+<span id="cb37-463"><a href="#cb37-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-464"><a href="#cb37-464" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize correlation matrix</span></span>
+<span id="cb37-465"><a href="#cb37-465" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb37-466"><a href="#cb37-466" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">"circle"</span>, <span class="at">type =</span> <span class="st">"upper"</span>, </span>
+<span id="cb37-467"><a href="#cb37-467" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>, <span class="at">tl.srt =</span> <span class="dv">45</span>,</span>
+<span id="cb37-468"><a href="#cb37-468" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Correlation Matrix of Crop Yields"</span>)</span>
+<span id="cb37-469"><a href="#cb37-469" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-470"><a href="#cb37-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-471"><a href="#cb37-471" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-472"><a href="#cb37-472" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-473"><a href="#cb37-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-474"><a href="#cb37-474" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to perform correlation analysis:</span>
+<span id="cb37-475"><a href="#cb37-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-476"><a href="#cb37-476" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we select the numeric columns of interest for correlation analysis.</span>
+<span id="cb37-477"><a href="#cb37-477" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We remove any missing values using <span class="in">`na.omit()`</span>.</span>
+<span id="cb37-478"><a href="#cb37-478" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>We calculate the correlation matrix using <span class="in">`cor()`</span>.</span>
+<span id="cb37-479"><a href="#cb37-479" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>We round the correlation matrix to 2 decimal places using <span class="in">`round()`</span>.</span>
+<span id="cb37-480"><a href="#cb37-480" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>We visualize the correlation matrix using <span class="in">`corrplot()`</span>.</span>
+<span id="cb37-481"><a href="#cb37-481" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-482"><a href="#cb37-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-483"><a href="#cb37-483" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-484"><a href="#cb37-484" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-485"><a href="#cb37-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-486"><a href="#cb37-486" aria-hidden="true" tabindex="-1"></a>The correlation matrix reveals the strength and direction of relationships between variables:</span>
+<span id="cb37-487"><a href="#cb37-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-488"><a href="#cb37-488" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The correlation matrix shows the correlation coefficients between each pair of variables.</span>
+<span id="cb37-489"><a href="#cb37-489" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The correlation coefficients range from -1 (perfect negative correlation) to 1 (perfect positive correlation).</span>
+<span id="cb37-490"><a href="#cb37-490" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This visualization helps identify strong correlations between variables, providing insights for agricultural policy and development.</span>
+<span id="cb37-491"><a href="#cb37-491" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The correlation matrix can also be used to identify potential multicollinearity issues in regression analysis.</span>
+<span id="cb37-492"><a href="#cb37-492" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-493"><a href="#cb37-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-494"><a href="#cb37-494" aria-hidden="true" tabindex="-1"></a><span class="fu">### Pair Plots</span></span>
+<span id="cb37-495"><a href="#cb37-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-496"><a href="#cb37-496" aria-hidden="true" tabindex="-1"></a>Pair plots provide a comprehensive view of relationships between multiple variables:</span>
+<span id="cb37-497"><a href="#cb37-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-500"><a href="#cb37-500" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-501"><a href="#cb37-501" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic pair plot</span></span>
+<span id="cb37-502"><a href="#cb37-502" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(crop_numeric, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"darkgreen"</span>)</span>
+<span id="cb37-503"><a href="#cb37-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-504"><a href="#cb37-504" aria-hidden="true" tabindex="-1"></a><span class="co"># Enhanced pair plot with GGally</span></span>
+<span id="cb37-505"><a href="#cb37-505" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb37-506"><a href="#cb37-506" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(crop_numeric) <span class="sc">+</span></span>
+<span id="cb37-507"><a href="#cb37-507" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb37-508"><a href="#cb37-508" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationships Between Different Crop Yields"</span>)</span>
+<span id="cb37-509"><a href="#cb37-509" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-510"><a href="#cb37-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-511"><a href="#cb37-511" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-512"><a href="#cb37-512" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-513"><a href="#cb37-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-514"><a href="#cb37-514" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to create pair plots:</span>
+<span id="cb37-515"><a href="#cb37-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-516"><a href="#cb37-516" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we create a basic pair plot using <span class="in">`pairs()`</span>.</span>
+<span id="cb37-517"><a href="#cb37-517" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We then create an enhanced pair plot using <span class="in">`ggpairs()`</span> from the GGally package.</span>
+<span id="cb37-518"><a href="#cb37-518" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The enhanced pair plot includes histograms, scatter plots, and correlation coefficients for each pair of variables.</span>
+<span id="cb37-519"><a href="#cb37-519" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-520"><a href="#cb37-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-521"><a href="#cb37-521" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-522"><a href="#cb37-522" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-523"><a href="#cb37-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-524"><a href="#cb37-524" aria-hidden="true" tabindex="-1"></a>The pair plots reveal the relationships between multiple variables:</span>
+<span id="cb37-525"><a href="#cb37-525" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-526"><a href="#cb37-526" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The pair plots show the relationships between each pair of variables.</span>
+<span id="cb37-527"><a href="#cb37-527" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The histograms and scatter plots provide a visual representation of the relationships.</span>
+<span id="cb37-528"><a href="#cb37-528" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The correlation coefficients provide a quantitative measure of the strength and direction of the relationships.</span>
+<span id="cb37-529"><a href="#cb37-529" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This visualization helps identify patterns and correlations between multiple variables, providing insights for agricultural policy and development.</span>
+<span id="cb37-530"><a href="#cb37-530" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-531"><a href="#cb37-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-532"><a href="#cb37-532" aria-hidden="true" tabindex="-1"></a><span class="fu">## Identifying Outliers and Anomalies</span></span>
+<span id="cb37-533"><a href="#cb37-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-534"><a href="#cb37-534" aria-hidden="true" tabindex="-1"></a><span class="fu">### Box Plots for Outlier Detection</span></span>
+<span id="cb37-535"><a href="#cb37-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-536"><a href="#cb37-536" aria-hidden="true" tabindex="-1"></a>Box plots can help identify potential outliers:</span>
+<span id="cb37-537"><a href="#cb37-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-540"><a href="#cb37-540" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-541"><a href="#cb37-541" aria-hidden="true" tabindex="-1"></a><span class="co"># Box plot to identify outliers in wheat yield</span></span>
+<span id="cb37-542"><a href="#cb37-542" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop_yields, <span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb37-543"><a href="#cb37-543" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb37-544"><a href="#cb37-544" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Box Plot of Wheat Yields with Potential Outliers"</span>,</span>
+<span id="cb37-545"><a href="#cb37-545" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
+<span id="cb37-546"><a href="#cb37-546" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb37-547"><a href="#cb37-547" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-548"><a href="#cb37-548" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify potential outliers</span></span>
+<span id="cb37-549"><a href="#cb37-549" aria-hidden="true" tabindex="-1"></a>wheat_outliers <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
+<span id="cb37-550"><a href="#cb37-550" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-551"><a href="#cb37-551" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-552"><a href="#cb37-552" aria-hidden="true" tabindex="-1"></a>    <span class="at">q1 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="fl">0.25</span>),</span>
+<span id="cb37-553"><a href="#cb37-553" aria-hidden="true" tabindex="-1"></a>    <span class="at">q3 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="fl">0.75</span>),</span>
+<span id="cb37-554"><a href="#cb37-554" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> q3 <span class="sc">-</span> q1,</span>
+<span id="cb37-555"><a href="#cb37-555" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower_bound =</span> q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr,</span>
+<span id="cb37-556"><a href="#cb37-556" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper_bound =</span> q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr,</span>
+<span id="cb37-557"><a href="#cb37-557" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_outlier =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&lt;</span> lower_bound <span class="sc">|</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">&gt;</span> upper_bound</span>
+<span id="cb37-558"><a href="#cb37-558" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb37-559"><a href="#cb37-559" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_outlier) <span class="sc">%&gt;%</span></span>
+<span id="cb37-560"><a href="#cb37-560" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Entity, Year, <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)</span>
+<span id="cb37-561"><a href="#cb37-561" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-562"><a href="#cb37-562" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the outliers</span></span>
+<span id="cb37-563"><a href="#cb37-563" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wheat_outliers, <span class="dv">10</span>)</span>
+<span id="cb37-564"><a href="#cb37-564" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-565"><a href="#cb37-565" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-566"><a href="#cb37-566" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-567"><a href="#cb37-567" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-568"><a href="#cb37-568" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-569"><a href="#cb37-569" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to use box plots for outlier detection:</span>
+<span id="cb37-570"><a href="#cb37-570" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-571"><a href="#cb37-571" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we create a box plot of wheat yields using <span class="in">`geom_boxplot()`</span>.</span>
+<span id="cb37-572"><a href="#cb37-572" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We then identify potential outliers using the interquartile range (IQR) method.</span>
+<span id="cb37-573"><a href="#cb37-573" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>We calculate the lower and upper bounds for outliers using <span class="in">`q1 - 1.5 * iqr`</span> and <span class="in">`q3 + 1.5 * iqr`</span>, respectively.</span>
+<span id="cb37-574"><a href="#cb37-574" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>We identify observations that fall outside these bounds as potential outliers.</span>
+<span id="cb37-575"><a href="#cb37-575" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-576"><a href="#cb37-576" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-577"><a href="#cb37-577" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-578"><a href="#cb37-578" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-579"><a href="#cb37-579" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-580"><a href="#cb37-580" aria-hidden="true" tabindex="-1"></a>The box plot and outlier detection reveal potential outliers:</span>
+<span id="cb37-581"><a href="#cb37-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-582"><a href="#cb37-582" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The box plot shows the distribution of wheat yields, with potential outliers indicated by points outside the whiskers.</span>
+<span id="cb37-583"><a href="#cb37-583" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The outlier detection identifies observations that fall outside the lower and upper bounds.</span>
+<span id="cb37-584"><a href="#cb37-584" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This visualization helps identify potential errors or anomalies in the data, providing insights for data cleaning and quality control.</span>
+<span id="cb37-585"><a href="#cb37-585" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-586"><a href="#cb37-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-587"><a href="#cb37-587" aria-hidden="true" tabindex="-1"></a><span class="fu">### Z-Scores for Outlier Detection</span></span>
+<span id="cb37-588"><a href="#cb37-588" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-589"><a href="#cb37-589" aria-hidden="true" tabindex="-1"></a>Z-scores can also help identify outliers:</span>
+<span id="cb37-590"><a href="#cb37-590" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-593"><a href="#cb37-593" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-594"><a href="#cb37-594" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate z-scores for wheat yields</span></span>
+<span id="cb37-595"><a href="#cb37-595" aria-hidden="true" tabindex="-1"></a>wheat_z_scores <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
+<span id="cb37-596"><a href="#cb37-596" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-597"><a href="#cb37-597" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-598"><a href="#cb37-598" aria-hidden="true" tabindex="-1"></a>    <span class="at">wheat_mean =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>),</span>
+<span id="cb37-599"><a href="#cb37-599" aria-hidden="true" tabindex="-1"></a>    <span class="at">wheat_sd =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>),</span>
+<span id="cb37-600"><a href="#cb37-600" aria-hidden="true" tabindex="-1"></a>    <span class="at">z_score =</span> (<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span> <span class="sc">-</span> wheat_mean) <span class="sc">/</span> wheat_sd,</span>
+<span id="cb37-601"><a href="#cb37-601" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_extreme =</span> <span class="fu">abs</span>(z_score) <span class="sc">&gt;</span> <span class="dv">3</span></span>
+<span id="cb37-602"><a href="#cb37-602" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb37-603"><a href="#cb37-603" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-604"><a href="#cb37-604" aria-hidden="true" tabindex="-1"></a><span class="co"># Display extreme values (z-score &gt; 3 or &lt; -3)</span></span>
+<span id="cb37-605"><a href="#cb37-605" aria-hidden="true" tabindex="-1"></a>wheat_extremes <span class="ot">&lt;-</span> wheat_z_scores <span class="sc">%&gt;%</span></span>
+<span id="cb37-606"><a href="#cb37-606" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_extreme) <span class="sc">%&gt;%</span></span>
+<span id="cb37-607"><a href="#cb37-607" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Entity, Year, <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, z_score) <span class="sc">%&gt;%</span></span>
+<span id="cb37-608"><a href="#cb37-608" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="fu">abs</span>(z_score)))</span>
+<span id="cb37-609"><a href="#cb37-609" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-610"><a href="#cb37-610" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wheat_extremes, <span class="dv">10</span>)</span>
+<span id="cb37-611"><a href="#cb37-611" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-612"><a href="#cb37-612" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-613"><a href="#cb37-613" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-614"><a href="#cb37-614" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-615"><a href="#cb37-615" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-616"><a href="#cb37-616" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to use z-scores for outlier detection:</span>
+<span id="cb37-617"><a href="#cb37-617" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-618"><a href="#cb37-618" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we calculate the mean and standard deviation of wheat yields using <span class="in">`mean()`</span> and <span class="in">`sd()`</span>, respectively.</span>
+<span id="cb37-619"><a href="#cb37-619" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We then calculate the z-scores for each observation using <span class="in">`(x - mean) / sd`</span>.</span>
+<span id="cb37-620"><a href="#cb37-620" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>We identify observations with absolute z-scores greater than 3 as extreme values.</span>
+<span id="cb37-621"><a href="#cb37-621" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-622"><a href="#cb37-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-623"><a href="#cb37-623" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-624"><a href="#cb37-624" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-625"><a href="#cb37-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-626"><a href="#cb37-626" aria-hidden="true" tabindex="-1"></a>The z-scores reveal extreme values:</span>
+<span id="cb37-627"><a href="#cb37-627" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-628"><a href="#cb37-628" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The z-scores show the number of standard deviations from the mean for each observation.</span>
+<span id="cb37-629"><a href="#cb37-629" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The extreme values are identified by their absolute z-scores greater than 3.</span>
+<span id="cb37-630"><a href="#cb37-630" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This visualization helps identify potential outliers or anomalies in the data, providing insights for data cleaning and quality control.</span>
+<span id="cb37-631"><a href="#cb37-631" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-632"><a href="#cb37-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-633"><a href="#cb37-633" aria-hidden="true" tabindex="-1"></a><span class="fu">## Time Series Exploration</span></span>
+<span id="cb37-634"><a href="#cb37-634" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-635"><a href="#cb37-635" aria-hidden="true" tabindex="-1"></a>Agricultural data often contains important temporal patterns:</span>
+<span id="cb37-636"><a href="#cb37-636" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-639"><a href="#cb37-639" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-640"><a href="#cb37-640" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a few countries for time series analysis</span></span>
+<span id="cb37-641"><a href="#cb37-641" aria-hidden="true" tabindex="-1"></a>countries_for_ts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"United States"</span>, <span class="st">"China"</span>, <span class="st">"India"</span>, <span class="st">"France"</span>)</span>
+<span id="cb37-642"><a href="#cb37-642" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-643"><a href="#cb37-643" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data for these countries</span></span>
+<span id="cb37-644"><a href="#cb37-644" aria-hidden="true" tabindex="-1"></a>wheat_ts_data <span class="ot">&lt;-</span> crop_yields <span class="sc">%&gt;%</span></span>
+<span id="cb37-645"><a href="#cb37-645" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Entity <span class="sc">%in%</span> countries_for_ts, <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-646"><a href="#cb37-646" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">1960</span>)</span>
+<span id="cb37-647"><a href="#cb37-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-648"><a href="#cb37-648" aria-hidden="true" tabindex="-1"></a><span class="co"># Time series plot</span></span>
+<span id="cb37-649"><a href="#cb37-649" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(wheat_ts_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> <span class="st">`</span><span class="at">Wheat (tonnes per hectare)</span><span class="st">`</span>, <span class="at">color =</span> Entity)) <span class="sc">+</span></span>
+<span id="cb37-650"><a href="#cb37-650" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb37-651"><a href="#cb37-651" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb37-652"><a href="#cb37-652" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Wheat Yield Trends Over Time"</span>,</span>
+<span id="cb37-653"><a href="#cb37-653" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb37-654"><a href="#cb37-654" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Wheat Yield (tonnes per hectare)"</span>) <span class="sc">+</span></span>
+<span id="cb37-655"><a href="#cb37-655" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb37-656"><a href="#cb37-656" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
+<span id="cb37-657"><a href="#cb37-657" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-658"><a href="#cb37-658" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-659"><a href="#cb37-659" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-660"><a href="#cb37-660" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-661"><a href="#cb37-661" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-662"><a href="#cb37-662" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to create a time series plot:</span>
+<span id="cb37-663"><a href="#cb37-663" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-664"><a href="#cb37-664" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we select a few countries for time series analysis.</span>
+<span id="cb37-665"><a href="#cb37-665" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We filter the data for these countries and non-missing wheat yields.</span>
+<span id="cb37-666"><a href="#cb37-666" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>We create a time series plot using <span class="in">`geom_line()`</span> and <span class="in">`geom_point()`</span>.</span>
+<span id="cb37-667"><a href="#cb37-667" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>We add a title, x-axis label, and y-axis label using <span class="in">`labs()`</span>.</span>
+<span id="cb37-668"><a href="#cb37-668" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-669"><a href="#cb37-669" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-670"><a href="#cb37-670" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-671"><a href="#cb37-671" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-672"><a href="#cb37-672" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-673"><a href="#cb37-673" aria-hidden="true" tabindex="-1"></a>The time series plot reveals temporal patterns:</span>
+<span id="cb37-674"><a href="#cb37-674" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-675"><a href="#cb37-675" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The time series plot shows the trends in wheat yields over time for each country.</span>
+<span id="cb37-676"><a href="#cb37-676" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The plot reveals patterns such as increasing or decreasing trends, seasonality, or anomalies.</span>
+<span id="cb37-677"><a href="#cb37-677" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This visualization helps identify temporal patterns and correlations in the data, providing insights for agricultural policy and development.</span>
+<span id="cb37-678"><a href="#cb37-678" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-679"><a href="#cb37-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-680"><a href="#cb37-680" aria-hidden="true" tabindex="-1"></a><span class="fu">## Missing Data Analysis</span></span>
+<span id="cb37-681"><a href="#cb37-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-682"><a href="#cb37-682" aria-hidden="true" tabindex="-1"></a>Understanding patterns of missing data is crucial:</span>
+<span id="cb37-683"><a href="#cb37-683" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-686"><a href="#cb37-686" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-687"><a href="#cb37-687" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values in each column</span></span>
+<span id="cb37-688"><a href="#cb37-688" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(crop_yields))</span>
+<span id="cb37-689"><a href="#cb37-689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-690"><a href="#cb37-690" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize missing data patterns</span></span>
+<span id="cb37-691"><a href="#cb37-691" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">requireNamespace</span>(<span class="st">"naniar"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb37-692"><a href="#cb37-692" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(naniar)</span>
+<span id="cb37-693"><a href="#cb37-693" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-694"><a href="#cb37-694" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a visualization of missing data</span></span>
+<span id="cb37-695"><a href="#cb37-695" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gg_miss_var</span>(crop_yields)</span>
+<span id="cb37-696"><a href="#cb37-696" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-697"><a href="#cb37-697" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a matrix showing missing data patterns</span></span>
+<span id="cb37-698"><a href="#cb37-698" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vis_miss</span>(crop_yields[, <span class="fu">c</span>(<span class="st">"Entity"</span>, <span class="st">"Year"</span>, <span class="st">"Wheat (tonnes per hectare)"</span>, <span class="st">"Rice (tonnes per hectare)"</span>, <span class="st">"Maize (tonnes per hectare)"</span>)])</span>
+<span id="cb37-699"><a href="#cb37-699" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb37-700"><a href="#cb37-700" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"The 'naniar' package is not installed. Install it with install.packages('naniar') to visualize missing data patterns."</span>)</span>
+<span id="cb37-701"><a href="#cb37-701" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-702"><a href="#cb37-702" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Alternative: simple summary of missing data</span></span>
+<span id="cb37-703"><a href="#cb37-703" aria-hidden="true" tabindex="-1"></a>  missing_summary <span class="ot">&lt;-</span> <span class="fu">sapply</span>(crop_yields, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span>
+<span id="cb37-704"><a href="#cb37-704" aria-hidden="true" tabindex="-1"></a>  missing_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb37-705"><a href="#cb37-705" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="fu">names</span>(missing_summary),</span>
+<span id="cb37-706"><a href="#cb37-706" aria-hidden="true" tabindex="-1"></a>    <span class="at">Missing_Count =</span> missing_summary,</span>
+<span id="cb37-707"><a href="#cb37-707" aria-hidden="true" tabindex="-1"></a>    <span class="at">Missing_Percent =</span> <span class="fu">round</span>(missing_summary <span class="sc">/</span> <span class="fu">nrow</span>(crop_yields) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
+<span id="cb37-708"><a href="#cb37-708" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb37-709"><a href="#cb37-709" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-710"><a href="#cb37-710" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Display the summary</span></span>
+<span id="cb37-711"><a href="#cb37-711" aria-hidden="true" tabindex="-1"></a>  missing_df <span class="ot">&lt;-</span> missing_df[<span class="fu">order</span>(<span class="sc">-</span>missing_df<span class="sc">$</span>Missing_Count), ]</span>
+<span id="cb37-712"><a href="#cb37-712" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(missing_df, <span class="dv">10</span>)</span>
+<span id="cb37-713"><a href="#cb37-713" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-714"><a href="#cb37-714" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb37-715"><a href="#cb37-715" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-716"><a href="#cb37-716" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb37-717"><a href="#cb37-717" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code Explanation</span></span>
+<span id="cb37-718"><a href="#cb37-718" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-719"><a href="#cb37-719" aria-hidden="true" tabindex="-1"></a>This code demonstrates how to analyze missing data:</span>
+<span id="cb37-720"><a href="#cb37-720" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-721"><a href="#cb37-721" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First, we check for missing values in each column using <span class="in">`colSums(is.na())`</span>.</span>
+<span id="cb37-722"><a href="#cb37-722" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We then visualize missing data patterns using <span class="in">`gg_miss_var()`</span> and <span class="in">`vis_miss()`</span> from the naniar package.</span>
+<span id="cb37-723"><a href="#cb37-723" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>If the naniar package is not installed, we provide an alternative summary of missing data using <span class="in">`sapply()`</span> and <span class="in">`data.frame()`</span>.</span>
+<span id="cb37-724"><a href="#cb37-724" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-725"><a href="#cb37-725" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-726"><a href="#cb37-726" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb37-727"><a href="#cb37-727" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Interpretation</span></span>
+<span id="cb37-728"><a href="#cb37-728" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-729"><a href="#cb37-729" aria-hidden="true" tabindex="-1"></a>The missing data analysis reveals patterns of missingness:</span>
+<span id="cb37-730"><a href="#cb37-730" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-731"><a href="#cb37-731" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The summary of missing data shows the number and percentage of missing values in each column.</span>
+<span id="cb37-732"><a href="#cb37-732" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The visualization of missing data patterns reveals the distribution of missing values across different variables.</span>
+<span id="cb37-733"><a href="#cb37-733" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This analysis helps identify potential issues with data quality and informs strategies for handling missing data.</span>
+<span id="cb37-734"><a href="#cb37-734" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb37-735"><a href="#cb37-735" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-736"><a href="#cb37-736" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb37-737"><a href="#cb37-737" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-738"><a href="#cb37-738" aria-hidden="true" tabindex="-1"></a>This chapter has demonstrated various techniques for exploratory data analysis using a real agricultural dataset. We've covered:</span>
+<span id="cb37-739"><a href="#cb37-739" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-740"><a href="#cb37-740" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Computing and interpreting descriptive statistics</span>
+<span id="cb37-741"><a href="#cb37-741" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Creating and analyzing frequency tables</span>
+<span id="cb37-742"><a href="#cb37-742" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Visualizing distributions with histograms, density plots, and box plots</span>
+<span id="cb37-743"><a href="#cb37-743" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Exploring relationships with scatter plots and correlation analysis</span>
+<span id="cb37-744"><a href="#cb37-744" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Identifying outliers and anomalies</span>
+<span id="cb37-745"><a href="#cb37-745" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Analyzing time series patterns</span>
+<span id="cb37-746"><a href="#cb37-746" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Examining missing data</span>
+<span id="cb37-747"><a href="#cb37-747" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-748"><a href="#cb37-748" aria-hidden="true" tabindex="-1"></a>These techniques provide a foundation for understanding your data before proceeding to more advanced analyses. By thoroughly exploring your data, you can make informed decisions about appropriate statistical methods and generate meaningful hypotheses for testing.</span>
+<span id="cb37-749"><a href="#cb37-749" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-750"><a href="#cb37-750" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
+<span id="cb37-751"><a href="#cb37-751" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-752"><a href="#cb37-752" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load the plant biodiversity dataset from <span class="in">`docs/data/ecology/biodiversity.csv`</span> and perform a comprehensive exploratory analysis.</span>
+<span id="cb37-753"><a href="#cb37-753" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Create a histogram and density plot for another crop in the dataset. How does its distribution compare to wheat?</span>
+<span id="cb37-754"><a href="#cb37-754" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Investigate the relationship between potato yields and latitude (you'll need to find or create a dataset with latitude information).</span>
+<span id="cb37-755"><a href="#cb37-755" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Identify countries with the most significant improvement in crop yields over time.</span>
+<span id="cb37-756"><a href="#cb37-756" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Create a time series plot showing the ratio of wheat to rice yields over time for major producing countries.</span>
+<span id="cb37-757"><a href="#cb37-757" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Perform the same exploratory analyses in R for the spatial dataset in <span class="in">`docs/data/geography/spatial.csv`</span>.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

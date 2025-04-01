@@ -1,1 +1,1 @@
-Sitemap: https://jm0535.github.io/data-analysis-book/sitemap.xml
+Sitemap: https://jm0535.github.io/Data-Analysis-in-Natural-Sciences/sitemap.xml

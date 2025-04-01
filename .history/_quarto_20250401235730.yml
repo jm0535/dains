@@ -7,7 +7,7 @@ project:
 book:
   title: "Data Analysis in Natural Sciences: An R-Based Approach"
   subtitle: "From Field to Figures: Essential Methods for Environmental and Life Sciences"
-  author: "Jimmy Moses"
+  author: "Jimmy Moses (PhD)"
   date: "2025-03-27"
   cover-image: "images/dans_coverpage_final.png"
   site-url: https://jm0535.github.io/Data-Analysis-in-Natural-Sciences/

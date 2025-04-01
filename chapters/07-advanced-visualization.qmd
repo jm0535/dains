@@ -15,39 +15,111 @@ Building on the visualization techniques covered in Chapter 6, this chapter expl
 The ggplot2 package allows extensive customization of plot appearance:
 
 ```{r}
+# Load necessary packages
 library(ggplot2)
 library(dplyr)
 
-# Load data
-data(iris)
-
 # Create a basic scatter plot
 base_plot <- ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
-  geom_point(size = 3, alpha = 0.7) +
-  labs(title = "Relationship between Sepal Length and Petal Length",
-       subtitle = "Iris Dataset",
-       x = "Sepal Length (cm)",
-       y = "Petal Length (cm)",
-       caption = "Source: Anderson's Iris dataset")
+  geom_point(size = 3, alpha = 0.8) +
+  labs(
+    title = "Relationship Between Sepal and Petal Length",
+    subtitle = "Comparison across three Iris species",
+    x = "Sepal Length (cm)",
+    y = "Petal Length (cm)",
+    caption = "Data source: Anderson's Iris dataset"
+  )
 
-# Display the base plot
-base_plot
-
-# Create a customized theme
+# Create a custom theme
 custom_theme <- theme_minimal() +
   theme(
+    # Text elements
     plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12, color = "gray50"),
+    plot.subtitle = element_text(size = 12, color = "gray40"),
     axis.title = element_text(face = "bold"),
-    legend.title = element_text(face = "bold"),
+
+    # Legend position
     legend.position = "bottom",
+
+    # Grid lines and panel
     panel.grid.minor = element_blank(),
-    panel.border = element_rect(color = "gray80", fill = NA)
+    panel.border = element_rect(color = "gray80", fill = NA, size = 0.5)
   )
 
 # Apply the custom theme
 base_plot + custom_theme
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates advanced visualization customization:
+
+1. **Base Plot Creation**:
+   - Uses `ggplot()` for the foundation
+   - Maps variables to aesthetics
+   - Adds points with transparency
+   - Includes comprehensive labels
+
+2. **Theme Customization**:
+   - Creates a custom theme object
+   - Modifies text elements
+   - Adjusts legend position
+   - Customizes grid and panel appearance
+
+3. **Visual Elements**:
+   - Point size and transparency
+   - Color coding by species
+   - Axis labels and titles
+   - Caption with data source
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The visualization reveals several key insights:
+
+1. **Species Differentiation**:
+   - Clear clustering of species
+   - Distinct morphological patterns
+   - Overlap between some species
+
+2. **Morphological Relationships**:
+   - Positive correlation between sepal and petal length
+   - Different scaling relationships by species
+   - Species-specific size ranges
+
+3. **Visual Effectiveness**:
+   - Clear species separation
+   - Readable labels and legend
+   - Professional appearance
+:::
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Advanced Visualization Techniques
+
+When creating publication-quality visualizations:
+
+1. **Theme Design**:
+   - Create consistent themes
+   - Use appropriate font sizes
+   - Balance white space
+   - Consider journal requirements
+
+2. **Aesthetic Choices**:
+   - Select meaningful colors
+   - Use appropriate point sizes
+   - Consider transparency
+   - Balance visual elements
+
+3. **Labeling Strategy**:
+   - Include clear titles
+   - Use informative subtitles
+   - Provide data sources
+   - Consider audience needs
+:::
+
+In ecological research, you might create different custom themes for field guides, scientific publications, presentations, interactive dashboards, or reports for non-scientific audiences, each with design elements optimized for their specific purpose and audience.
 
 ### Color Palettes for Ecological Data
 
@@ -66,12 +138,12 @@ display.brewer.pal(11, "RdYlBu")
 scales::show_col(viridis(8))
 
 # Apply different color palettes to our plot
-plot1 <- base_plot + 
+plot1 <- base_plot +
   scale_color_brewer(palette = "Set1") +
   custom_theme +
   ggtitle("Color Brewer 'Set1' Palette")
 
-plot2 <- base_plot + 
+plot2 <- base_plot +
   scale_color_viridis_d() +
   custom_theme +
   ggtitle("Viridis Discrete Palette")
@@ -79,7 +151,76 @@ plot2 <- base_plot +
 # Display the plots
 plot1
 plot2
+
+# Create a plot with a sequential color palette for a continuous variable
+ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Petal.Width)) +
+  geom_point(size = 3, alpha = 0.8) +
+  scale_color_viridis_c() +
+  custom_theme +
+  labs(title = "Iris Dataset with Continuous Color Scale",
+       subtitle = "Petal Width mapped to color",
+       x = "Sepal Length (cm)",
+       y = "Petal Length (cm)",
+       color = "Petal Width (cm)")
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to use and apply different color palettes for ecological data visualization. Let's break down the key components:
+
+1. **Loading Color Palette Packages**
+   - We load `RColorBrewer`, which provides a set of carefully designed color palettes.
+   - We also load `viridis`, which offers perceptually uniform and colorblind-friendly palettes.
+
+2. **Displaying Color Palettes**
+   - We use `par(mfrow = c(4, 1))` to set up a 4-row panel for displaying multiple palettes.
+   - We display three ColorBrewer palettes that are particularly useful for ecological data:
+     - "YlGn" (Yellow-Green): A sequential palette good for representing intensity (e.g., vegetation density)
+     - "BrBG" (Brown-Blue-Green): A diverging palette useful for showing deviations from a midpoint (e.g., temperature anomalies)
+     - "RdYlBu" (Red-Yellow-Blue): Another diverging palette good for environmental gradients
+   - We also display the Viridis palette, which is designed to be perceptually uniform and colorblind-friendly.
+
+3. **Applying Palettes to Plots**
+   - We create two versions of our scatter plot with different color schemes:
+     - One using ColorBrewer's "Set1" palette with `scale_color_brewer()`
+     - Another using the Viridis discrete palette with `scale_color_viridis_d()`
+   - We add our custom theme and appropriate titles to each plot.
+
+4. **Continuous Color Mapping**
+   - We create a third plot that maps a continuous variable (Petal Width) to color.
+   - We use `scale_color_viridis_c()` for a continuous color scale that is perceptually uniform.
+   - This demonstrates how to use color to represent a third dimension in your data.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+Choosing appropriate color palettes is crucial for effective ecological data visualization:
+
+1. **Types of Color Palettes**:
+   - **Sequential palettes** (like YlGn) are ideal for representing ordered data where values progress from low to high (e.g., species abundance, elevation).
+   - **Diverging palettes** (like BrBG, RdYlBu) are best for data with a meaningful midpoint (e.g., temperature anomalies, pH deviations from neutral).
+   - **Qualitative palettes** (like Set1) are designed for categorical data with no inherent order (e.g., species, habitat types).
+
+2. **Colorblind Accessibility**:
+   - The Viridis palettes are specifically designed to be perceptually uniform and accessible to people with color vision deficiencies.
+   - This is particularly important in scientific publications where accurate interpretation of colors is crucial.
+
+3. **Ecological Applications**:
+   - **Habitat mapping**: Sequential green palettes for vegetation density
+   - **Climate data**: Diverging palettes for temperature or precipitation anomalies
+   - **Species distribution**: Qualitative palettes for different species
+   - **Environmental gradients**: Sequential or diverging palettes for pH, elevation, or pollution levels
+
+4. **Practical Considerations**:
+   - Consider how your visualization will be used (digital display, print, presentation)
+   - Test your visualizations with colorblind simulation tools
+   - Ensure sufficient contrast between categories for clear differentiation
+   - Use complementary visual cues (shapes, sizes) alongside color when possible
+:::
+
+By thoughtfully selecting color palettes, you can enhance the interpretability of your ecological visualizations while ensuring they remain accessible to all audiences.
 
 ### Arranging Multiple Plots
 
@@ -120,7 +261,7 @@ p4 <- ggplot(iris, aes(x = Petal.Length, fill = Species)) +
   theme_minimal()
 
 # Arrange the plots
-(p1 + p2) / (p3 + p4) + 
+(p1 + p2) / (p3 + p4) +
   plot_annotation(
     title = "Iris Morphology by Species",
     caption = "Source: Anderson's Iris dataset"
@@ -129,15 +270,16 @@ p4 <- ggplot(iris, aes(x = Petal.Length, fill = Species)) +
 
 ## Interactive Visualizations
 
-### Creating Interactive Plots with plotly
+Interactive visualizations allow users to explore data in more depth than static plots. In R, packages like `plotly` and `leaflet` make it easy to create interactive graphics.
 
-Interactive plots allow users to explore data more deeply:
+### Interactive Plots with plotly
 
-```{r interactive-plotly, fig.width=8, fig.height=6, fig.cap="Relationship between Sepal Length and Petal Length across different Iris species. In the HTML version, this plot is interactive and allows zooming, panning, and hovering for details."}
+The `plotly` package allows you to convert ggplot2 graphics to interactive versions:
+
+```{r interactive-plotly, fig.width=8, fig.height=6, fig.cap="Interactive scatter plot of iris dataset. In the HTML version, you can hover over points to see details, zoom, and pan."}
 library(plotly)
-library(knitr)
 
-# Create a ggplot visualization
+# Create a ggplot object
 p <- ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
   geom_point(size = 3, alpha = 0.7) +
   labs(title = "Relationship between Sepal Length and Petal Length",
@@ -152,11 +294,92 @@ if (knitr::is_html_output()) {
   ggplotly(p)
 } else {
   # For PDF output, use the static ggplot version
-  p + annotate("text", x = 6, y = 6, 
-               label = "Note: Interactive version available in HTML output", 
+  p + annotate("text", x = 6, y = 6,
+               label = "Note: Interactive version available in HTML output",
                fontface = "italic", size = 3)
 }
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to create an interactive scatter plot using the `plotly` package. Let's break down the key components:
+
+1. **Creating the Base ggplot2 Plot**
+   - We start by creating a standard ggplot2 scatter plot of the iris dataset, mapping Sepal Length to the x-axis, Petal Length to the y-axis, and Species to the color aesthetic.
+   - We add styling elements like point size, transparency, informative labels, and a clean theme.
+   - We use the Viridis color palette for better accessibility.
+
+2. **Converting to an Interactive Plot**
+   - We use the `ggplotly()` function to convert our ggplot2 object into an interactive plotly visualization.
+   - This simple conversion adds several interactive features automatically:
+     - Hover tooltips showing data values
+     - Zoom and pan capabilities
+     - Ability to toggle legend items
+     - Download options for saving the plot
+
+3. **Output Format Handling**
+   - We use `knitr::is_html_output()` to check if we're rendering to HTML format.
+   - For HTML output, we display the interactive plotly version.
+   - For other formats (like PDF), we display the static ggplot2 version with a note about the interactive version.
+   - This ensures the document works well in all output formats.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+Interactive plots offer several advantages for ecological data exploration:
+
+1. **Data Exploration Benefits**:
+   - **Detail on demand**: Users can hover over points to see exact values without cluttering the visualization.
+   - **Selective viewing**: Legend items can be clicked to show/hide specific groups (e.g., different species).
+   - **Focus on regions of interest**: Zoom functionality allows detailed examination of specific data regions.
+
+2. **Ecological Applications**:
+   - **Species trait analysis**: Explore relationships between multiple morphological traits.
+   - **Environmental gradients**: Investigate how species respond to environmental variables.
+   - **Outlier identification**: Easily identify and examine unusual data points.
+   - **Data quality control**: Interactive features help spot potential errors or anomalies.
+
+3. **Communication Advantages**:
+   - **Engagement**: Interactive plots engage readers more effectively than static images.
+   - **Self-guided exploration**: Readers can investigate aspects of the data that interest them most.
+   - **Reduced complexity**: Complex datasets can be presented more clearly when users can focus on specific elements.
+
+4. **Practical Considerations**:
+   - Interactive plots are only available in HTML output formats.
+   - They may require more computational resources to render.
+   - Always provide alternative static versions for PDF outputs or publications.
+   - Consider accessibility for users who may rely on keyboard navigation.
+:::
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Creating Effective Interactive Visualizations
+
+When using interactive plots in scientific communication:
+
+1. **Purpose-Driven Interactivity**:
+   - Add interactive elements with clear purpose, not just for novelty
+   - Include only interactions that reveal meaningful patterns or details
+   - Consider what specific questions users might want to answer through interaction
+
+2. **Performance and Compatibility**:
+   - Test interactive visualizations on different devices and browsers
+   - Optimize for reasonable file sizes (especially for web deployment)
+   - Provide static fallbacks for non-HTML formats and accessibility
+
+3. **Tooltip Design**:
+   - Include units of measurement in tooltips
+   - Format numeric values appropriately (proper decimal places)
+   - Include contextual information beyond just the raw values
+   - Consider hierarchical information display (most important first)
+
+4. **Scientific Rigor**:
+   - Ensure interactive features don't mislead or obscure statistical significance
+   - Maintain appropriate axis scales during zooming
+   - Include uncertainty or confidence intervals where applicable
+   - Document interactive capabilities in figure captions or methods sections
+:::
 
 ### Interactive Maps with leaflet
 
@@ -169,7 +392,7 @@ library(knitr)
 
 # Create sample ecological site data
 sites <- data.frame(
-  name = c("Forest Reserve", "Wetland Study Area", "Grassland Transect", 
+  name = c("Forest Reserve", "Wetland Study Area", "Grassland Transect",
            "Mountain Research Station", "Coastal Monitoring Site"),
   lat = c(37.7749, 37.8, 37.75, 37.85, 37.7),
   lng = c(-122.4194, -122.45, -122.5, -122.4, -122.3),
@@ -187,243 +410,131 @@ if (knitr::is_html_output()) {
     palette = habitat_colors,
     domain = sites$habitat
   )
-  
+
   # Create an interactive map
   leaflet(sites) %>%
-    addTiles() %>%  # Add default OpenStreetMap tiles
+    addProviderTiles("Esri.WorldTopoMap") %>%
     addCircleMarkers(
       ~lng, ~lat,
       color = ~habitat_pal(habitat),
       radius = ~sqrt(species_count) * 1.5,
+      fillOpacity = 0.7,
+      stroke = TRUE,
+      weight = 1,
       popup = ~paste("<b>", name, "</b><br>",
-                     "Habitat: ", habitat, "<br>",
-                     "Species Count: ", species_count),
-      label = ~name,
-      fillOpacity = 0.7
+                    "Habitat: ", habitat, "<br>",
+                    "Species Count: ", species_count)
     ) %>%
     addLegend(
       position = "bottomright",
       pal = habitat_pal,
       values = ~habitat,
-      title = "Habitat Type",
-      opacity = 0.7
+      title = "Habitat Type"
     )
 } else {
-  # For PDF output, create a static ggplot map
-  world <- map_data("world")
-  
-  ggplot() +
-    geom_polygon(data = world, aes(x = long, y = lat, group = group), 
-                 fill = "lightgray", color = "darkgray", size = 0.2) +
-    geom_point(data = sites, aes(x = lng, y = lat, color = habitat, size = species_count),
-               alpha = 0.7) +
+  # For non-HTML output, create a static ggplot map
+  ggplot(sites, aes(x = lng, y = lat, color = habitat, size = species_count)) +
+    borders("world", regions = "USA", fill = "gray90") +
+    geom_point(alpha = 0.7) +
     scale_color_manual(values = habitat_colors) +
-    scale_size_continuous(range = c(3, 8), name = "Species Count") +
-    coord_fixed(xlim = c(-123, -122), ylim = c(37.6, 37.9)) +
-    labs(title = "Ecological Study Sites",
-         subtitle = "Note: Interactive version available in HTML output",
-         x = "Longitude", y = "Latitude", color = "Habitat Type") +
+    scale_size_continuous(range = c(3, 8)) +
+    coord_fixed(1.3) +
     theme_minimal() +
-    theme(legend.position = "right")
+    labs(
+      title = "Ecological Study Sites",
+      subtitle = "Note: Interactive version available in HTML output",
+      x = "Longitude",
+      y = "Latitude",
+      color = "Habitat Type",
+      size = "Species Count"
+    )
 }
 ```
 
-## Specialized Ecological Visualizations
+::: {.callout-note}
+## Code Explanation
 
-### Ordination Plots
+This code creates an interactive map of ecological study sites using the `leaflet` package. Let's break down the key components:
 
-Ordination techniques like PCA and NMDS are common in ecological studies:
+1. **Data Preparation**
+   - We create a sample dataset of ecological study sites with location coordinates (latitude and longitude), habitat types, and species counts.
+   - We define a custom color palette that maps habitat types to ecologically intuitive colors (e.g., green for forest, blue for wetland).
 
-```{r}
-# Perform PCA on iris dataset
-pca_result <- prcomp(iris[, 1:4], scale. = TRUE)
-pca_data <- as.data.frame(pca_result$x)
-pca_data$Species <- iris$Species
+2. **Creating the Interactive Map**
+   - We use the `leaflet()` function to initialize a map with our site data.
+   - We add a topographic base map with `addProviderTiles("Esri.WorldTopoMap")`.
+   - We represent each study site with a circle marker using `addCircleMarkers()`:
+     - The marker color corresponds to the habitat type.
+     - The marker size is proportional to the square root of the species count (a common transformation for visual scaling).
+     - We add popups that display site details when a marker is clicked.
+   - We include a legend with `addLegend()` to explain the habitat type colors.
 
-# Create a PCA biplot
-ggplot(pca_data, aes(x = PC1, y = PC2, color = Species)) +
-  geom_point(size = 3, alpha = 0.7) +
-  stat_ellipse(level = 0.95) +
-  labs(title = "PCA of Iris Dataset",
-       x = paste0("PC1 (", round(summary(pca_result)$importance[2, 1] * 100, 1), "%)"),
-       y = paste0("PC2 (", round(summary(pca_result)$importance[2, 2] * 100, 1), "%)")) +
-  theme_minimal()
+3. **Output Format Handling**
+   - Similar to the previous example, we check if we're rendering to HTML.
+   - For non-HTML formats, we create a static map using ggplot2 as a fallback.
+   - This ensures the document is useful in all output formats.
+:::
 
-# Create a loadings plot
-loadings <- as.data.frame(pca_result$rotation)
-loadings$variable <- rownames(loadings)
+::: {.callout-important}
+## Results Interpretation
 
-ggplot(loadings, aes(x = PC1, y = PC2)) +
-  geom_segment(aes(x = 0, y = 0, xend = PC1 * 5, yend = PC2 * 5),
-               arrow = arrow(length = unit(0.2, "cm")), color = "gray50") +
-  geom_text(aes(label = variable), nudge_x = sign(loadings$PC1) * 0.05,
-            nudge_y = sign(loadings$PC2) * 0.05) +
-  labs(title = "PCA Loadings",
-       x = "PC1",
-       y = "PC2") +
-  theme_minimal() +
-  xlim(-0.7, 0.7) +
-  ylim(-0.7, 0.7)
-```
+Interactive maps offer powerful capabilities for ecological spatial data visualization:
 
-### Heatmaps for Community Data
+1. **Spatial Data Exploration**:
+   - **Context awareness**: Base maps provide geographical context (topography, water bodies, urban areas).
+   - **Multi-scale examination**: Zoom functionality allows viewing patterns at different spatial scales.
+   - **Detailed information**: Popups provide detailed site-specific information without cluttering the map.
 
-Heatmaps are useful for visualizing species-by-site matrices:
+2. **Ecological Applications**:
+   - **Field site selection**: Visualize potential study locations based on habitat types and existing data.
+   - **Biodiversity hotspots**: Map species richness across different locations.
+   - **Sampling design**: Plan spatially balanced sampling strategies.
+   - **Stakeholder engagement**: Create accessible maps for communicating with non-specialists.
 
-```{r}
-# Create a simulated species-by-site matrix
-set.seed(123)
-n_sites <- 10
-n_species <- 15
-community_matrix <- matrix(rpois(n_sites * n_species, lambda = 2), 
-                          nrow = n_sites, ncol = n_species)
-rownames(community_matrix) <- paste0("Site", 1:n_sites)
-colnames(community_matrix) <- paste0("Sp", 1:n_species)
+3. **Analytical Advantages**:
+   - **Spatial pattern recognition**: Identify clustering or dispersion of ecological phenomena.
+   - **Environmental correlations**: Overlay ecological data with environmental features.
+   - **Accessibility**: Make complex spatial data accessible to broader audiences.
+   - **Data integration**: Combine multiple spatial datasets in a single interactive interface.
 
-# Convert to long format for ggplot
-community_data <- as.data.frame(as.table(community_matrix))
-names(community_data) <- c("Site", "Species", "Abundance")
+4. **Practical Considerations**:
+   - Interactive maps require HTML output format.
+   - Consider data privacy when mapping sensitive locations (e.g., endangered species).
+   - Ensure color choices are meaningful and accessible.
+   - Balance information density with clarity.
+:::
 
-# Create a heatmap
-ggplot(community_data, aes(x = Species, y = Site, fill = Abundance)) +
-  geom_tile() +
-  scale_fill_viridis_c() +
-  labs(title = "Species Abundance by Site",
-       x = "Species",
-       y = "Site",
-       fill = "Abundance") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
+::: {.callout-tip}
+## PROFESSIONAL TIP: Best Practices for Ecological Mapping
 
-### Network Diagrams for Ecological Interactions
+When creating interactive maps for ecological data:
 
-Network diagrams can visualize species interactions:
+1. **Base Map Selection**:
+   - Choose base maps appropriate to your ecological context (topographic for terrestrial studies, bathymetric for marine)
+   - Consider offline capability for field use with packages like `mapview`
+   - Be aware of licensing issues for base maps in publications
 
-```{r}
-library(igraph)
-library(ggraph)
+2. **Data Representation**:
+   - Use ecologically intuitive color schemes (greens for forests, blues for aquatic)
+   - Scale markers appropriately (√n transformation for count data often works well)
+   - Consider using multiple layers for different data types (species, environmental variables)
+   - Add scale bars and north arrows for static versions
 
-# Create a simulated interaction network
-set.seed(456)
-n_species <- 10
-interaction_matrix <- matrix(rbinom(n_species^2, 1, 0.2), 
-                            nrow = n_species, ncol = n_species)
-diag(interaction_matrix) <- 0  # No self-interactions
-species_names <- paste0("Species", 1:n_species)
-rownames(interaction_matrix) <- species_names
-colnames(interaction_matrix) <- species_names
+3. **Sensitive Location Handling**:
+   - Deliberately obscure precise locations of endangered species or sensitive habitats
+   - Consider using grid cells, jittering, or reduced precision for protected species
+   - Include appropriate disclaimers about location precision
+   - Follow relevant regulations (e.g., IUCN guidelines for endangered species)
 
-# Convert to igraph object
-g <- graph_from_adjacency_matrix(interaction_matrix, mode = "directed")
-V(g)$type <- sample(c("Plant", "Pollinator", "Herbivore"), n_species, replace = TRUE)
+4. **Technical Considerations**:
+   - Test on mobile devices when field use is anticipated
+   - Optimize popup content for readability on small screens
+   - Include data download capabilities when appropriate
+   - Document the coordinate reference system (CRS) used
+:::
 
-# Create a network diagram
-ggraph(g, layout = "fr") +
-  geom_edge_link(arrow = arrow(length = unit(2, "mm")), 
-                end_cap = circle(2, "mm"),
-                color = "gray50") +
-  geom_node_point(aes(color = type), size = 5) +
-  geom_node_text(aes(label = name), repel = TRUE) +
-  scale_color_brewer(palette = "Set1") +
-  labs(title = "Ecological Interaction Network",
-       color = "Species Type") +
-  theme_void()
-```
+Interactive visualizations transform static ecological data into explorable resources, allowing readers to engage more deeply with your research findings and discover patterns that might otherwise remain hidden.
 
-## Visualizing Spatial Data
+## Network Visualizations
 
-### Creating Maps with ggplot2
-
-Spatial visualization is crucial for ecological data:
-
-```{r spatial-map, fig.width=8, fig.height=6, fig.cap="Distribution of sample species occurrences across Europe. The map shows the spatial patterns of three different species."}
-library(ggplot2)
-library(maps)
-library(knitr)
-
-# Get world map data
-world <- map_data("world")
-
-# Create sample species occurrence data
-set.seed(789)
-n_points <- 100
-occurrences <- data.frame(
-  species = sample(c("Species A", "Species B", "Species C"), n_points, replace = TRUE),
-  longitude = runif(n_points, -10, 40),
-  latitude = runif(n_points, 35, 60)
-)
-
-# Create a map
-ggplot() +
-  geom_polygon(data = world, aes(x = long, y = lat, group = group), 
-               fill = "white", color = "gray70", size = 0.2) +
-  geom_point(data = occurrences, 
-             aes(x = longitude, y = latitude, color = species),
-             alpha = 0.7, size = 2) +
-  coord_fixed(xlim = c(-10, 40), ylim = c(35, 60)) +
-  scale_color_viridis_d(option = "plasma", end = 0.8) +
-  labs(title = "Species Distribution Map",
-       subtitle = "Sample occurrences across Europe",
-       x = "Longitude", y = "Latitude", color = "Species") +
-  theme_minimal() +
-  theme(panel.grid.major = element_line(color = "gray90", size = 0.2))
-```
-
-### Visualizing Raster Data
-
-Environmental raster data is common in ecological studies:
-
-```{r raster-map, fig.width=8, fig.height=6, fig.cap="Environmental variable visualization across Europe. The raster data shows a simulated environmental gradient overlaid with country boundaries."}
-library(raster)
-library(ggplot2)
-library(viridis)
-library(maps)
-
-# Create a sample raster
-r <- raster(ncol = 100, nrow = 100)
-extent(r) <- c(-10, 40, 35, 60)  # Same extent as our map
-values(r) <- runif(ncell(r)) * 10  # Random values
-
-# Convert to data frame for ggplot
-r_df <- as.data.frame(r, xy = TRUE)
-colnames(r_df) <- c("longitude", "latitude", "value")
-
-# Get world map data
-world <- map_data("world")
-
-# Create a raster map
-ggplot() +
-  geom_raster(data = r_df, aes(x = longitude, y = latitude, fill = value)) +
-  geom_polygon(data = world, aes(x = long, y = lat, group = group), 
-               fill = NA, color = "gray30", size = 0.2) +
-  scale_fill_viridis_c(option = "plasma", name = "Value") +
-  coord_fixed(xlim = c(-10, 40), ylim = c(35, 60)) +
-  labs(title = "Environmental Variable Distribution",
-       subtitle = "Simulated environmental gradient across Europe",
-       x = "Longitude", y = "Latitude") +
-  theme_minimal() +
-  theme(panel.grid = element_blank())
-```
-
-## Summary
-
-In this chapter, we've explored advanced visualization techniques in R that go beyond basic plots. These techniques allow researchers to create more informative, interactive, and publication-quality visualizations for ecological and forestry data.
-
-Key points covered include:
-
-- Creating complex multi-panel visualizations
-- Developing interactive plots for exploration
-- Designing effective spatial visualizations
-- Implementing animation for temporal data
-- Customizing visualizations for publication
-
-As you continue to develop your data visualization skills, remember that effective visualization is both an art and a science. The goal is not just to make visually appealing graphics, but to create visualizations that accurately and clearly communicate your findings to your audience.
-
-## Exercises
-
-1. Create a faceted plot showing the relationship between two variables across different categories in one of the datasets.
-2. Develop an interactive plot that allows users to explore relationships in ecological data.
-3. Create a custom theme for ggplot2 that matches the style guidelines of a scientific journal in your field.
-4. Design a spatial visualization showing the distribution of a species or environmental variable.
-5. Create an animated plot showing changes in an ecological variable over time.
+{{ ... }}

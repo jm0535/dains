@@ -28,7 +28,7 @@ R has several basic data types:
 numeric_example <- 25.4  # Temperature in Celsius
 character_example <- "Adelie"  # Penguin species
 logical_example <- TRUE  # Presence/absence data
-factor_example <- factor(c("Control", "Treatment", "Control"), 
+factor_example <- factor(c("Control", "Treatment", "Control"),
                          levels = c("Control", "Treatment"))
 date_example <- as.Date("2020-07-15")  # Sampling date
 
@@ -39,6 +39,60 @@ print(logical_example)
 print(factor_example)
 print(date_example)
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates the fundamental data types in R:
+
+1. **Numeric Data**:
+   - Created a decimal value representing temperature in Celsius
+   - Common for environmental measurements and continuous data
+
+2. **Character Data**:
+   - Created a text string for a penguin species name
+   - Used for categorical variables like species names or site descriptions
+
+3. **Logical Data**:
+   - Created a TRUE value representing presence/absence
+   - Used for binary data or conditions in analyses
+
+4. **Factor Data**:
+   - Created an ordered categorical variable with two levels
+   - Explicitly defined factor levels ("Control" and "Treatment")
+   - Essential for statistical analyses and proper plotting order
+
+5. **Date Data**:
+   - Created a date object using the `as.Date()` function
+   - Used for temporal data in ecological studies
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The output shows how R stores and displays different data types:
+
+1. **Numeric Data**:
+   - Displayed as 25.4 without type indication
+   - R treats this as a continuous numeric value for calculations
+
+2. **Character Data**:
+   - Displayed as "Adelie" with quotation marks indicating text
+   - Cannot be used for numerical operations
+
+3. **Logical Data**:
+   - Displayed as TRUE (without quotation marks)
+   - Can be used in conditional operations and converts to 1 (TRUE) or 0 (FALSE) in calculations
+
+4. **Factor Data**:
+   - Displayed with levels information: Control, Treatment, Control
+   - Internally stored as integers with labels
+   - Order of levels is preserved as specified
+
+5. **Date Data**:
+   - Displayed in standardized YYYY-MM-DD format
+   - Allows for time-based calculations and comparisons
+:::
 
 ::: {.callout-tip}
 ## PROFESSIONAL TIP: Data Management Best Practices
@@ -89,6 +143,64 @@ penguin_summary <- list(
 print(penguin_summary)
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates the main data structures in R using real ecological datasets:
+
+1. **Data Loading**:
+   - Uses `readr::read_csv()` to import real datasets on penguins and crop yields
+   - Loads data with proper data types and handling
+
+2. **Vector Creation**:
+   - Creates a numeric vector of bill lengths
+   - Uses `na.omit()` to remove missing values
+   - Subsets only the first 10 values with `[1:10]`
+
+3. **Matrix Construction**:
+   - Creates a numeric matrix from penguin measurements
+   - Uses `as.matrix()` to convert data frame columns to matrix
+   - Selects rows 1-5 and columns 3-6 using indexing
+
+4. **Data Frame Handling**:
+   - Demonstrates a data frame (the most common data structure)
+   - Shows how to subset rows while keeping all columns
+
+5. **List Creation**:
+   - Creates a list to store heterogeneous data elements
+   - Contains different data types: character vector, numeric value, and integer
+   - Demonstrates how lists can store complex, nested information
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The output reveals the structure and properties of different R data types:
+
+1. **Vector Output**:
+   - Shows a one-dimensional array of bill length measurements
+   - All elements are of the same type (numeric)
+   - Suitable for storing a single variable's values
+
+2. **Matrix Output**:
+   - Displays a two-dimensional array of measurements
+   - All values must be of the same type (converted to numeric)
+   - Row and column indices are shown
+   - Efficient for mathematical operations but less flexible than data frames
+
+3. **Data Frame Output**:
+   - Shows a tabular structure with different variable types
+   - Preserves column names and data types
+   - The foundation of most data analysis in R
+   - Each column can have a different data type
+
+4. **List Output**:
+   - Displays a collection of disparate elements
+   - Shows the flexibility of lists for storing mixed data
+   - Demonstrates named elements for easy access
+   - Ideal for storing complex results and heterogeneous data
+:::
+
 ## Importing Data
 
 ### Reading Data Files
@@ -109,6 +221,52 @@ head(penguins_tidy, 3)
 crops_csv <- read.csv("../data/agriculture/crop_yields.csv")
 head(crops_csv, 3)
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates different methods for importing data in R:
+
+1. **Base R Import**:
+   - Uses `read.csv()` from base R to import the penguin dataset
+   - Simple approach that works without additional packages
+   - Generally slower for large datasets and less flexible with column types
+
+2. **Tidyverse Import**:
+   - Uses `readr::read_csv()` from the tidyverse ecosystem
+   - More efficient for large datasets and better type inference
+   - Maintains consistent column types and handles problematic values better
+
+3. **Data Preview**:
+   - Uses `head()` with argument `3` to display just the first three rows
+   - Allows quick inspection of data structure without overwhelming output
+   - Essential first step to verify successful import and correct structure
+
+4. **Multiple Datasets**:
+   - Demonstrates importing different datasets (penguins and crop yields)
+   - Shows the same approach works across various data sources
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The output reveals differences between import methods and gives insight into the datasets:
+
+1. **Data Structure Visibility**:
+   - Both datasets show proper column names and values
+   - The tidyverse import (readr) provides cleaner output with column types
+   - Types are indicated (<dbl> for numeric, <chr> for character, etc.)
+
+2. **Import Method Comparison**:
+   - Base R (`read.csv()`) and tidyverse (`read_csv()`) produce similar results
+   - Tidyverse version provides more metadata about column types
+   - Both successfully imported the data with proper structure
+
+3. **Data Content Preview**:
+   - Penguin data contains morphological measurements and categorical variables
+   - Crop yield data includes countries, years, and production statistics
+   - Both datasets appear properly formatted for analysis
+:::
 
 ### Exploring Real-World Datasets
 
@@ -146,14 +304,84 @@ print(paste("Complete cases rows:", nrow(penguins_complete)))
 
 # Replace missing values with the mean for numeric columns
 penguins_imputed <- penguins
-penguins_imputed$bill_length_mm[is.na(penguins_imputed$bill_length_mm)] <- 
+penguins_imputed$bill_length_mm[is.na(penguins_imputed$bill_length_mm)] <-
   mean(penguins_imputed$bill_length_mm, na.rm = TRUE)
-penguins_imputed$bill_depth_mm[is.na(penguins_imputed$bill_depth_mm)] <- 
+penguins_imputed$bill_depth_mm[is.na(penguins_imputed$bill_depth_mm)] <-
   mean(penguins_imputed$bill_depth_mm, na.rm = TRUE)
 
 # Check if missing values were replaced
 sum(is.na(penguins_imputed$bill_length_mm))
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates essential techniques for handling missing values in ecological data:
+
+1. **Missing Value Detection**:
+   - Uses `is.na()` to identify missing values in the dataset
+   - `sum(is.na())` counts the total number of missing values
+   - `colSums(is.na())` reports missing values per column
+   - Critical first step in data cleaning
+
+2. **Complete Case Analysis**:
+   - Uses `na.omit()` to remove rows with any missing values
+   - Creates a new dataset (`penguins_complete`) with only complete rows
+   - Compares the row count before and after removal
+   - Simple but can lead to significant data loss
+
+3. **Mean Imputation**:
+   - Creates a copy of the original dataset (`penguins_imputed`)
+   - Replaces missing values with column means
+   - Uses logical indexing with `is.na()` to target only missing values
+   - Calculates means with `na.rm = TRUE` to ignore missing values
+   - Verifies imputation success with another missing value check
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The output reveals the extent and impact of missing data:
+
+1. **Missing Data Quantity**:
+   - The total number of missing values in the dataset
+   - The distribution of missing values across columns
+   - Some columns (like bill measurements) have more missing values than others
+
+2. **Data Loss Impact**:
+   - The original dataset has more rows than the complete cases dataset
+   - The difference represents the number of incomplete observations
+   - In ecological studies, this data loss can introduce bias if missingness isn't random
+
+3. **Imputation Effectiveness**:
+   - After imputation, specific columns no longer contain missing values
+   - The final check (showing 0) confirms successful imputation
+   - This approach preserves sample size but may reduce variability
+:::
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Handling Missing Values in Ecological Data
+
+When dealing with missing values in ecological datasets:
+
+1. **Understand Missing Data Mechanisms**:
+   - **MCAR (Missing Completely At Random)**: Missingness unrelated to any variables (e.g., equipment failure)
+   - **MAR (Missing At Random)**: Missingness related to observed variables (e.g., more missing values in certain species)
+   - **MNAR (Missing Not At Random)**: Missingness related to the missing values themselves (e.g., very small values not detected)
+
+2. **Select Appropriate Handling Methods**:
+   - **Complete case analysis**: Appropriate for MCAR data with few missing values
+   - **Mean/median imputation**: Simple but can underestimate variance
+   - **Multiple imputation**: Creates several imputed datasets to account for uncertainty
+   - **Model-based imputation**: Uses relationships between variables to predict missing values
+   - **Maximum likelihood**: Estimates parameters directly from available data
+
+3. **Document and Report**:
+   - Always report the extent of missing data
+   - Document your handling approach and rationale
+   - Consider sensitivity analyses with different approaches
+   - Acknowledge potential biases introduced by missing data handling
+:::
 
 ### Data Transformation
 
@@ -167,7 +395,7 @@ glimpse(biodiversity)
 # Log transformation of a skewed variable (if available)
 if("n" %in% colnames(biodiversity)) {
   biodiversity$log_n <- log(biodiversity$n + 1)  # Add 1 to handle zeros
-  
+
   # Compare original and transformed
   summary(biodiversity$n)
   summary(biodiversity$log_n)
@@ -182,7 +410,7 @@ penguins_std <- penguins %>%
   )
 
 # View the first few rows of the transformed data
-head(select(penguins_std, species, bill_length_mm, bill_length_std, 
+head(select(penguins_std, species, bill_length_mm, bill_length_std,
              flipper_length_mm, flipper_length_std), 5)
 ```
 
@@ -204,7 +432,7 @@ penguins_derived <- penguins %>%
   )
 
 # View the new variables
-head(select(penguins_derived, species, bill_length_mm, bill_depth_mm, 
+head(select(penguins_derived, species, bill_length_mm, bill_depth_mm,
              bill_ratio, body_mass_g, size_category), 5)
 ```
 
@@ -272,7 +500,7 @@ summary(penguins$body_mass_g)
 
 # Correlation between variables
 cor_matrix <- cor(
-  penguins %>% 
+  penguins %>%
     select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g),
   use = "complete.obs"
 )
@@ -304,6 +532,71 @@ ggplot(penguins, aes(x = flipper_length_mm, y = bill_length_mm, color = species)
        y = "Bill Length (mm)") +
   theme_minimal()
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates several key data analysis and visualization techniques:
+
+1. **Summary Statistics**:
+   - `summary()` provides descriptive statistics for each variable
+   - Includes min, max, quartiles, mean, and missing values
+
+2. **Correlation Analysis**:
+   - `cor()` calculates correlation coefficients between variables
+   - `select()` chooses specific columns for analysis
+   - `use = "complete.obs"` handles missing values
+
+3. **Visualization Components**:
+   - `ggplot()` creates the base plot
+   - `aes()` defines aesthetic mappings
+   - `geom_*()` functions add different plot types
+   - `theme_minimal()` applies a clean theme
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The analysis reveals several important insights:
+
+1. **Variable Distributions**:
+   - Bill lengths show a roughly normal distribution
+   - Body mass varies significantly between species
+   - Some variables have missing values that need attention
+
+2. **Species Differences**:
+   - The boxplot shows clear species-specific body mass patterns
+   - Some species show more variation than others
+   - Potential outliers are visible in the body mass data
+
+3. **Morphological Relationships**:
+   - The scatterplot reveals correlations between bill and flipper lengths
+   - Species clusters are visible in the morphological space
+   - Some species show distinct morphological patterns
+:::
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Exploratory Data Analysis Best Practices
+
+When conducting exploratory data analysis:
+
+1. **Data Quality**:
+   - Always check for missing values first
+   - Look for outliers and potential errors
+   - Verify data types and ranges
+
+2. **Visualization Strategy**:
+   - Start with simple plots (histograms, boxplots)
+   - Progress to more complex visualizations
+   - Use appropriate plot types for your data
+   - Consider colorblind-friendly palettes
+
+3. **Statistical Summary**:
+   - Calculate both descriptive and inferential statistics
+   - Consider the distribution of your data
+   - Look for patterns and relationships
+   - Document any unusual findings
+:::
 
 ## Summary
 

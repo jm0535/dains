@@ -68,6 +68,66 @@ head(penguins)
 summary(penguins$bill_length_mm)
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates basic data loading and exploration in R:
+
+1. **Data Loading**:
+   - `read.csv()` imports data from a CSV file
+   - The path "../data/environmental/climate_data.csv" points to the data file
+
+2. **Data Exploration**:
+   - `head()` displays the first 6 rows of the dataset
+   - `summary()` provides statistical summaries of the bill length measurements
+
+3. **Variable Access**:
+   - The `$` operator accesses the bill_length_mm column from the penguins data frame
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The output shows:
+
+1. **Data Structure**:
+   - The dataset contains multiple columns including species, island, bill measurements, and body mass
+   - Each row represents a single penguin measurement
+
+2. **Bill Length Statistics**:
+   - Minimum: 32.10 mm
+   - Maximum: 59.60 mm
+   - Mean: 43.92 mm
+   - Median: 44.45 mm
+   - 2 missing values (NA's)
+
+3. **Data Quality**:
+   - The presence of missing values suggests the need for data cleaning
+   - The range of values appears reasonable for penguin bill measurements
+:::
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Data Loading Best Practices
+
+When loading data in R:
+
+1. **File Organization**:
+   - Keep data files in a dedicated directory (e.g., "data/")
+   - Use clear, descriptive file names
+   - Maintain consistent file naming conventions
+
+2. **Data Import**:
+   - Always check file paths are correct
+   - Verify data format matches expectations
+   - Consider using `readr` package for more robust data import
+
+3. **Initial Checks**:
+   - Examine data structure with `str()`
+   - Check for missing values
+   - Verify data types are correct
+   - Look for obvious errors or outliers
+:::
+
 ## Setting Up Your Environment
 
 ### Installing R and RStudio

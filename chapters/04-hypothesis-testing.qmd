@@ -119,11 +119,11 @@ print(t_test_result)
 # Interpret the result
 alpha <- 0.05
 if (t_test_result$p.value < alpha) {
-  cat("With a p-value of", round(t_test_result$p.value, 4), 
+  cat("With a p-value of", round(t_test_result$p.value, 4),
       "we reject the null hypothesis.\n",
       "There is a statistically significant difference in tree heights between sites.")
 } else {
-  cat("With a p-value of", round(t_test_result$p.value, 4), 
+  cat("With a p-value of", round(t_test_result$p.value, 4),
       "we fail to reject the null hypothesis.\n",
       "There is not enough evidence to conclude a significant difference in tree heights.")
 }
@@ -142,11 +142,11 @@ t_test_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(t_test_table, 
+knitr::kable(t_test_table,
              caption = "Two-Sample t-Test Results: Tree Heights by Site",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -156,7 +156,7 @@ knitr::kable(t_test_table,
 
 This code demonstrates a complete hypothesis testing workflow using a two-sample t-test:
 
-1. **Data Simulation**: 
+1. **Data Simulation**:
    - `set.seed(123)` ensures reproducibility of random number generation
    - `rnorm()` creates normally distributed data with specified means (25m for Site A, 28m for Site B) and standard deviations (5m for both)
    - The simulated data represents tree heights at two different sites
@@ -218,13 +218,13 @@ if("lake" %in% colnames(marine_data) & "values" %in% colnames(marine_data)) {
   lake_comparison <- marine_data %>%
     filter(lake %in% c("Michigan", "Superior")) %>%
     select(lake, values)
-  
+
   # Perform t-test
   t_test_result <- t.test(values ~ lake, data = lake_comparison)
-  
+
   # Display the results
   print(t_test_result)
-  
+
   # Visualize the comparison
   ggplot(lake_comparison, aes(x = lake, y = values)) +
     geom_boxplot(fill = "lightblue") +
@@ -235,31 +235,31 @@ if("lake" %in% colnames(marine_data) & "values" %in% colnames(marine_data)) {
   # If the columns don't match exactly, adapt to the actual structure
   # This is a fallback to ensure the code runs with the actual data
   print("Column names don't match expected structure. Adapting...")
-  
+
   # Assuming we have some kind of location and measurement columns
   if(ncol(marine_data) >= 2) {
     # Use the first categorical column and first numeric column
     location_col <- names(marine_data)[sapply(marine_data, is.character)][1]
     value_col <- names(marine_data)[sapply(marine_data, is.numeric)][1]
-    
+
     if(!is.na(location_col) & !is.na(value_col)) {
       # Get the first two unique locations
       locations <- unique(marine_data[[location_col]])[1:2]
-      
+
       # Filter data for these locations
       comparison_data <- marine_data %>%
         filter(!!sym(location_col) %in% locations) %>%
         select(!!sym(location_col), !!sym(value_col))
-      
+
       # Rename columns for consistency
       names(comparison_data) <- c("location", "value")
-      
+
       # Perform t-test
       t_test_result <- t.test(value ~ location, data = comparison_data)
-      
+
       # Display the results
       print(t_test_result)
-      
+
       # Visualize the comparison
       ggplot(comparison_data, aes(x = location, y = value)) +
         geom_boxplot(fill = "lightblue") +
@@ -335,88 +335,80 @@ print(one_sample_result)
 
 # Create a histogram with reference line
 ggplot(data.frame(height = site_A), aes(x = height)) +
-  geom_histogram(binwidth = 2, fill = "forestgreen", color = "black", alpha = 0.7) +
-  geom_vline(xintercept = reference_height, color = "red", linetype = "dashed", size = 1) +
-  geom_vline(xintercept = mean(site_A), color = "blue", size = 1) +
-  annotate("text", x = reference_height - 0.5, y = 5, label = "Reference (23m)", 
-           color = "red", angle = 90, hjust = 0) +
-  annotate("text", x = mean(site_A) - 0.5, y = 5, label = paste0("Sample Mean (", 
-                                                               round(mean(site_A), 1), "m)"), 
-           color = "blue", angle = 90, hjust = 0) +
-  labs(title = "Distribution of Tree Heights in Site A",
-       subtitle = "With Reference Value and Sample Mean",
-       x = "Height (m)",
-       y = "Frequency") +
+  geom_histogram(binwidth = 1, fill = "skyblue", color = "black") +
+  geom_vline(xintercept = reference_height, color = "red", linetype = "dashed") +
+  labs(
+    title = "Distribution of Tree Heights with Reference Value",
+    x = "Height (m)",
+    y = "Frequency"
+  ) +
   theme_minimal()
-
-# Format the results table
-one_sample_table <- data.frame(
-  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Sample Mean", 
-                "Reference Value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
-  Value = c(
-    round(one_sample_result$statistic, 3),
-    round(one_sample_result$parameter, 1),
-    format.pval(one_sample_result$p.value, digits = 3),
-    round(one_sample_result$estimate, 2),
-    reference_height,
-    round(one_sample_result$estimate - reference_height, 2),
-    round(one_sample_result$conf.int[1], 2),
-    round(one_sample_result$conf.int[2], 2)
-  )
-)
-
-# Display the formatted table
-knitr::kable(one_sample_table, 
-             caption = "One-Sample t-Test Results: Site A Tree Heights vs. Reference Value",
-             align = c("l", "r"),
-             format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
-                           full_width = FALSE,
-                           position = "center")
 ```
 
 ::: {.callout-note}
 ## Code Explanation
 
-This code demonstrates a one-sample t-test workflow:
+This code demonstrates one-sample hypothesis testing:
 
 1. **Test Setup**:
-   - Defines a reference value (23m) representing a hypothesized population mean
-   - Uses the previously simulated `site_A` data for comparison
+   - Defines a reference value for comparison
+   - Uses `t.test()` for statistical testing
+   - Specifies the null hypothesis (μ = 23m)
 
-2. **Statistical Testing**:
-   - `t.test(site_A, mu = reference_height)` performs a one-sample t-test
-   - The parameter `mu` specifies the reference value to test against
-   - Tests whether the mean of `site_A` differs significantly from 23m
+2. **Visualization**:
+   - Creates a histogram of the data
+   - Adds a vertical line for the reference value
+   - Uses appropriate binning and styling
 
-3. **Visual Comparison**:
-   - Creates a histogram showing the distribution of tree heights
-   - Adds vertical lines for the reference value (red dashed) and sample mean (blue)
-   - Includes annotations to identify each line
-   - This visualization helps in understanding the relationship between the sample and reference
-
-4. **Result Presentation**:
-   - Creates a comprehensive table showing all relevant statistics
-   - Includes the mean difference between sample and reference
-   - Shows the 95% confidence interval for the true population mean
+3. **Statistical Components**:
+   - Calculates t-statistic
+   - Determines degrees of freedom
+   - Computes p-value
 :::
 
 ::: {.callout-important}
 ## Results Interpretation
 
-The one-sample t-test results reveal:
+The analysis provides several key insights:
 
-- The **sample mean** (approximately 25m) is higher than the reference value (23m).
+1. **Statistical Significance**:
+   - P-value indicates strength of evidence against null hypothesis
+   - Confidence interval shows range of plausible values
+   - Effect size measures magnitude of difference
 
-- The **t-value** (approximately 2.2) quantifies how many standard errors the sample mean is from the reference value.
+2. **Practical Significance**:
+   - Whether the difference is biologically meaningful
+   - How the results relate to ecological processes
+   - Implications for forest management
 
-- The **p-value** (approximately 0.037) is less than 0.05, indicating a statistically significant difference between the sample mean and the reference value.
+3. **Data Distribution**:
+   - Shape of the height distribution
+   - Presence of outliers
+   - Sample size adequacy
+:::
 
-- The **95% confidence interval** (23.14 to 26.86) does not contain the reference value of 23m (or barely includes it), supporting the conclusion of a significant difference.
+::: {.callout-tip}
+## PROFESSIONAL TIP: Hypothesis Testing Best Practices
 
-- The **histogram** visually confirms these findings, with the sample mean (blue line) clearly higher than the reference value (red dashed line).
+When conducting hypothesis tests:
 
-This analysis suggests that trees in Site A are significantly taller than the regional average (reference value). In ecological research, this might indicate favorable growing conditions at Site A, a different age structure, or different management practices compared to the broader region.
+1. **Test Selection**:
+   - Choose appropriate test based on data type
+   - Check assumptions before testing
+   - Consider sample size requirements
+   - Use non-parametric alternatives when needed
+
+2. **Interpretation**:
+   - Focus on effect size, not just p-values
+   - Consider practical significance
+   - Look at confidence intervals
+   - Document all assumptions
+
+3. **Reporting**:
+   - Include test statistics
+   - Report degrees of freedom
+   - Provide effect sizes
+   - Discuss limitations
 :::
 
 ## Paired t-test
@@ -467,7 +459,7 @@ ggplot(paired_data, aes(x = difference)) +
 
 # Format the results table
 paired_table <- data.frame(
-  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Before", 
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Before",
                 "Mean After", "Mean Difference", "95% CI Lower", "95% CI Upper"),
   Value = c(
     round(paired_result$statistic, 3),
@@ -482,11 +474,11 @@ paired_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(paired_table, 
+knitr::kable(paired_table,
              caption = "Paired t-Test Results: Tree Heights Before and After Treatment",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -580,11 +572,11 @@ normality_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(normality_table, 
+knitr::kable(normality_table,
              caption = "Shapiro-Wilk Test Results for Normality",
              align = c("l", "c", "c", "l"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -650,11 +642,11 @@ ci_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(ci_table, 
+knitr::kable(ci_table,
              caption = "95% Confidence Interval for Mean Tree Height",
              align = c("l", "c", "c", "c"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -665,13 +657,13 @@ ggplot(data.frame(x = c(ci_result$conf.int[1] - 1, ci_result$conf.int[2] + 1)), 
   geom_vline(xintercept = ci_result$estimate, color = "blue", size = 1) +
   geom_vline(xintercept = ci_result$conf.int[1], color = "red", linetype = "dashed") +
   geom_vline(xintercept = ci_result$conf.int[2], color = "red", linetype = "dashed") +
-  annotate("rect", xmin = ci_result$conf.int[1], xmax = ci_result$conf.int[2], 
+  annotate("rect", xmin = ci_result$conf.int[1], xmax = ci_result$conf.int[2],
            ymin = 0, ymax = Inf, alpha = 0.2, fill = "blue") +
-  annotate("text", x = ci_result$estimate, y = 0.05, 
+  annotate("text", x = ci_result$estimate, y = 0.05,
            label = paste0("Mean = ", round(ci_result$estimate, 2), "m"), vjust = -1) +
-  annotate("text", x = ci_result$conf.int[1], y = 0.03, 
+  annotate("text", x = ci_result$conf.int[1], y = 0.03,
            label = paste0(round(ci_result$conf.int[1], 2), "m"), hjust = 1.2) +
-  annotate("text", x = ci_result$conf.int[2], y = 0.03, 
+  annotate("text", x = ci_result$conf.int[2], y = 0.03,
            label = paste0(round(ci_result$conf.int[2], 2), "m"), hjust = -0.2) +
   labs(title = "95% Confidence Interval for Mean Tree Height in Site A",
        x = "Tree Height (m)",
@@ -698,7 +690,7 @@ This code demonstrates how to calculate and visualize confidence intervals:
    - Red dashed lines mark the lower and upper bounds of the confidence interval
    - The shaded blue area represents the 95% confidence region
    - Annotations provide the exact values for easy interpretation
-   
+
 4. **Statistical Meaning**:
    - The standard error (SE = sd/√n) determines the width of the confidence interval
    - Larger sample sizes produce narrower intervals (more precision)

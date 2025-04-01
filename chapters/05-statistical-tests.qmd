@@ -55,24 +55,24 @@ grViz("
 digraph test_selection {
   # Node definitions
   node [shape = rectangle, fontname = 'Arial', fontsize = 10, style = filled, fillcolor = lightblue]
-  
+
   start [label = 'Research Question', fillcolor = lightgreen]
-  
+
   # First level: Number of variables
   one_var [label = 'One Variable']
   two_var [label = 'Two Variables']
   multi_var [label = 'Multiple Variables']
-  
+
   # Second level for one variable
   one_sample [label = 'One Sample']
   two_sample [label = 'Two Samples']
   multi_sample [label = 'Multiple Samples']
-  
+
   # Tests for one variable
   t_test [label = 'One-Sample t-Test\\n(Normal, Continuous)']
   wilcox [label = 'Wilcoxon Signed-Rank\\n(Non-normal, Continuous)']
   binom [label = 'Binomial Test\\n(Categorical)']
-  
+
   # Tests for two variables - two samples
   ind_t [label = 'Independent t-Test\\n(Normal, Continuous)']
   paired_t [label = 'Paired t-Test\\n(Normal, Continuous, Related)']
@@ -80,89 +80,109 @@ digraph test_selection {
   wilcox_paired [label = 'Wilcoxon Signed-Rank\\n(Non-normal, Continuous, Related)']
   chi_sq [label = 'Chi-Square Test\\n(Categorical)']
   mcnemar [label = 'McNemar Test\\n(Categorical, Related)']
-  
+
   # Tests for multiple samples
   anova [label = 'ANOVA\\n(Normal, Continuous)']
   rm_anova [label = 'Repeated Measures ANOVA\\n(Normal, Continuous, Related)']
   kruskal [label = 'Kruskal-Wallis\\n(Non-normal, Continuous)']
   friedman [label = 'Friedman Test\\n(Non-normal, Continuous, Related)']
   chi_sq_multi [label = 'Chi-Square Test\\n(Categorical)']
-  
+
   # Tests for relationships
   pearson [label = 'Pearson Correlation\\n(Normal, Continuous)']
   spearman [label = 'Spearman Correlation\\n(Non-normal or Ordinal)']
   linear_reg [label = 'Linear Regression\\n(Continuous Predictor & Outcome)']
   logistic [label = 'Logistic Regression\\n(Continuous Predictor, Binary Outcome)']
-  
+
   # Multiple variables
   manova [label = 'MANOVA\\n(Multiple Continuous Outcomes)']
   pca [label = 'Principal Component Analysis\\n(Dimension Reduction)']
   cluster [label = 'Cluster Analysis\\n(Grouping)']
-  
+
   # Connections
   start -> {one_var two_var multi_var}
-  
+
   one_var -> {one_sample two_sample multi_sample}
-  
+
   one_sample -> {t_test wilcox binom}
-  
+
   two_sample -> {ind_t paired_t mann wilcox_paired chi_sq mcnemar}
-  
+
   multi_sample -> {anova rm_anova kruskal friedman chi_sq_multi}
-  
+
   two_var -> {pearson spearman linear_reg logistic}
-  
+
   multi_var -> {manova pca cluster}
 }
 ")
 ```
 
-**Decision Tree for Selecting Statistical Tests:**
+::: {.callout-note}
+## Code Explanation
 
-1. **For One Variable:**
-   - **One Sample:**
-     - Normal, Continuous → One-Sample t-Test
-     - Non-normal, Continuous → Wilcoxon Signed-Rank Test
-     - Categorical → Binomial Test
-   
-   - **Two Samples:**
-     - Normal, Continuous, Independent → Independent t-Test
-     - Normal, Continuous, Related → Paired t-Test
-     - Non-normal, Continuous, Independent → Mann-Whitney U Test
-     - Non-normal, Continuous, Related → Wilcoxon Signed-Rank Test
-     - Categorical, Independent → Chi-Square Test
-     - Categorical, Related → McNemar Test
-   
-   - **Multiple Samples:**
-     - Normal, Continuous, Independent → ANOVA
-     - Normal, Continuous, Related → Repeated Measures ANOVA
-     - Non-normal, Continuous, Independent → Kruskal-Wallis Test
-     - Non-normal, Continuous, Related → Friedman Test
-     - Categorical → Chi-Square Test
+This code creates a decision tree for statistical test selection:
 
-2. **For Two Variables:**
-   - Normal, Continuous → Pearson Correlation
-   - Non-normal or Ordinal → Spearman Correlation
-   - Continuous Predictor & Outcome → Linear Regression
-   - Continuous Predictor, Binary Outcome → Logistic Regression
+1. **Package Setup**:
+   - Uses `DiagrammeR` for creating flowcharts
+   - Defines node styles and attributes
+   - Sets up the graph structure
 
-3. **For Multiple Variables:**
-   - Multiple Continuous Outcomes → MANOVA
-   - Dimension Reduction → Principal Component Analysis
-   - Grouping → Cluster Analysis
+2. **Node Structure**:
+   - Main categories: One Variable, Two Variables, Multiple Variables
+   - Subcategories for different data types
+   - Specific tests for each scenario
+
+3. **Connections**:
+   - Shows logical flow between decisions
+   - Links tests to appropriate scenarios
+   - Guides test selection process
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The decision tree provides a systematic approach to test selection:
+
+1. **Test Categories**:
+   - Parametric vs. non-parametric tests
+   - Tests for different data types
+   - Tests for different sample sizes
+
+2. **Selection Criteria**:
+   - Data distribution (normal vs. non-normal)
+   - Number of variables
+   - Type of variables (continuous vs. categorical)
+   - Sample independence
+
+3. **Test Properties**:
+   - Assumptions of each test
+   - Appropriate use cases
+   - Limitations and considerations
+:::
 
 ::: {.callout-tip}
-## PROFESSIONAL TIP: Selecting and Reporting Statistical Tests
+## PROFESSIONAL TIP: Statistical Test Selection
 
-When selecting and reporting statistical tests in your research:
+When choosing statistical tests:
 
-- **Verify assumptions**: Always check if your data meets the assumptions of the test (normality, homogeneity of variance, independence)
-- **Report assumption tests**: Include results of normality tests or variance tests when presenting your findings
-- **Consider transformations**: If data violates assumptions, consider appropriate transformations (log, square root, etc.) before switching to non-parametric tests
-- **Effect sizes matter**: Always report effect sizes (Cohen's d, r, η²) alongside p-values
-- **Use consistent formatting**: Present similar tests in the same format throughout your paper
-- **Justify your choices**: Briefly explain why you selected a particular test, especially for complex analyses
-- **Consult statisticians early**: For complex study designs, consult with a statistician during the planning phase, not after data collection
+1. **Data Characteristics**:
+   - Check data distribution
+   - Verify assumptions
+   - Consider sample size
+   - Evaluate data types
+
+2. **Research Design**:
+   - Match test to research question
+   - Consider experimental design
+   - Account for dependencies
+   - Plan for multiple comparisons
+
+3. **Test Selection Process**:
+   - Start with research question
+   - Identify data characteristics
+   - Choose appropriate test
+   - Verify assumptions
+   - Consider alternatives
 :::
 
 ## Parametric vs. Non-Parametric Tests
@@ -205,11 +225,11 @@ wheat_yields <- crop_yields %>%
   select(Entity, Year, `Wheat (tonnes per hectare)`)
 
 # View the first few rows
-knitr::kable(head(wheat_yields), 
+knitr::kable(head(wheat_yields),
              caption = "Sample of Wheat Yield Data",
              align = c("l", "c", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -232,11 +252,11 @@ shapiro_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(shapiro_table, 
+knitr::kable(shapiro_table,
              caption = "Shapiro-Wilk Normality Test Results: Wheat Yields",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -251,11 +271,11 @@ summary_stats <- wheat_yields %>%
   )
 
 # Display the summary statistics table
-knitr::kable(summary_stats, 
+knitr::kable(summary_stats,
              caption = "Summary Statistics: Wheat Yields",
              align = c("l", "c", "r", "r", "r", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -315,11 +335,11 @@ t_test_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(t_test_table, 
+knitr::kable(t_test_table,
              caption = "Independent Samples t-Test Results: Wheat Yields by Time Period",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -335,11 +355,11 @@ period_summary <- crop_yields_grouped %>%
   )
 
 # Display the summary statistics table
-knitr::kable(period_summary, 
+knitr::kable(period_summary,
              caption = "Summary Statistics: Wheat Yields by Time Period",
              align = c("l", "c", "r", "r", "r", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -372,11 +392,11 @@ paired_data <- crop_yields %>%
   select(Entity, Year, `Wheat (tonnes per hectare)`, `Rice (tonnes per hectare)`)
 
 # View the first few rows
-knitr::kable(head(paired_data), 
+knitr::kable(head(paired_data),
              caption = "Sample of Paired Crop Yield Data",
              align = c("l", "c", "r", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -393,8 +413,8 @@ ggplot(paired_data_long, aes(x = Crop, y = Yield, fill = Crop)) +
 
 # Perform paired t-test using vectors directly
 paired_t_test <- t.test(
-  paired_data$`Wheat (tonnes per hectare)`, 
-  paired_data$`Rice (tonnes per hectare)`, 
+  paired_data$`Wheat (tonnes per hectare)`,
+  paired_data$`Rice (tonnes per hectare)`,
   paired = TRUE
 )
 
@@ -412,11 +432,11 @@ paired_t_test_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(paired_t_test_table, 
+knitr::kable(paired_t_test_table,
              caption = "Paired Samples t-Test Results: Wheat vs. Rice Yields",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -433,11 +453,11 @@ paired_summary <- paired_data %>%
   )
 
 # Display the summary statistics table
-knitr::kable(paired_summary, 
+knitr::kable(paired_summary,
              caption = "Summary Statistics: Wheat vs. Rice Yields",
              align = rep("r", 7),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -466,15 +486,15 @@ ANOVA is used to compare means among three or more independent groups. Let's com
 ```{r}
 # Create a mapping of countries to continents (simplified for demonstration)
 continent_mapping <- tibble(
-  Entity = c("United States", "Canada", "Mexico", 
-             "China", "India", "Japan", 
-             "Germany", "France", "United Kingdom", 
+  Entity = c("United States", "Canada", "Mexico",
+             "China", "India", "Japan",
+             "Germany", "France", "United Kingdom",
              "Brazil", "Argentina", "Chile",
              "Egypt", "Nigeria", "South Africa",
              "Australia", "New Zealand"),
-  Continent = c(rep("North America", 3), 
-                rep("Asia", 3), 
-                rep("Europe", 3), 
+  Continent = c(rep("North America", 3),
+                rep("Asia", 3),
+                rep("Europe", 3),
                 rep("South America", 3),
                 rep("Africa", 3),
                 rep("Oceania", 2))
@@ -509,11 +529,11 @@ anova_df <- data.frame(
 )
 
 # Display the ANOVA table
-knitr::kable(anova_df, 
+knitr::kable(anova_df,
              caption = "ANOVA Results: Wheat Yields by Continent",
              align = c("l", "c", "r", "r", "r", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -523,9 +543,9 @@ tukey_result <- TukeyHSD(anova_result)
 # Convert Tukey HSD results to a data frame
 tukey_df <- as.data.frame(tukey_result$Continent)
 tukey_df$comparison <- rownames(tukey_df)
-tukey_long <- pivot_longer(tukey_df, 
-                           cols = -comparison, 
-                           names_to = "Continent2", 
+tukey_long <- pivot_longer(tukey_df,
+                           cols = -comparison,
+                           names_to = "Continent2",
                            values_to = "p_value")
 tukey_long <- tukey_long %>%
   filter(!is.na(p_value)) %>%
@@ -537,11 +557,11 @@ tukey_long <- tukey_long %>%
   select(Comparison, `p adj`, Significant)
 
 # Display the Tukey HSD results
-knitr::kable(tukey_long, 
+knitr::kable(tukey_long,
              caption = "Tukey HSD Post-hoc Test Results: Pairwise Comparisons of Continents",
              align = c("l", "c", "c"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -557,11 +577,11 @@ continent_summary <- continental_yields %>%
   )
 
 # Display the summary statistics table
-knitr::kable(continent_summary, 
+knitr::kable(continent_summary,
              caption = "Summary Statistics: Wheat Yields by Continent",
              align = c("l", "c", "r", "r", "r", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -611,11 +631,11 @@ wilcox_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(wilcox_table, 
+knitr::kable(wilcox_table,
              caption = "Mann-Whitney U Test Results: Wheat Yields by Time Period",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -637,11 +657,11 @@ kruskal_table <- data.frame(
 )
 
 # Display the Kruskal-Wallis test results
-knitr::kable(kruskal_table, 
+knitr::kable(kruskal_table,
              caption = "Kruskal-Wallis Test Results: Wheat Yields by Continent",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -649,7 +669,7 @@ knitr::kable(kruskal_table,
 if(requireNamespace("dunn.test", quietly = TRUE)) {
   library(dunn.test)
   dunn_result <- dunn.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent, method = "bonferroni", kw = TRUE)
-  
+
   # Create a data frame from the dunn test results
   dunn_df <- data.frame(
     Comparison = dunn_result$comparisons,
@@ -658,7 +678,7 @@ if(requireNamespace("dunn.test", quietly = TRUE)) {
     `Adjusted P` = format.pval(dunn_result$P.adjusted, digits = 3),
     Significant = ifelse(dunn_result$P.adjusted < 0.05, "Yes", "No")
   )
-  
+
   # Display the dunn test results
   knitr::kable(dunn_df,
                caption = "Dunn's Post-hoc Test Results: Pairwise Comparisons of Continents",
@@ -669,17 +689,17 @@ if(requireNamespace("dunn.test", quietly = TRUE)) {
                              position = "center")
 } else {
   # Alternative: pairwise Wilcoxon tests
-  pairwise_result <- pairwise.wilcox.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent, 
+  pairwise_result <- pairwise.wilcox.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent,
                                          p.adjust.method = "bonferroni")
-  
+
   # Convert matrix to data frame
   pairwise_df <- as.data.frame(pairwise_result$p.value)
   pairwise_df$Continent1 <- rownames(pairwise_df)
-  pairwise_long <- pivot_longer(pairwise_df, 
-                               cols = -Continent1, 
-                               names_to = "Continent2", 
+  pairwise_long <- pivot_longer(pairwise_df,
+                               cols = -Continent1,
+                               names_to = "Continent2",
                                values_to = "p_value")
-  
+
   # Filter out NA values and format
   pairwise_long <- pairwise_long %>%
     filter(!is.na(p_value)) %>%
@@ -689,9 +709,9 @@ if(requireNamespace("dunn.test", quietly = TRUE)) {
       Significant = ifelse(p_value < 0.05, "Yes", "No")
     ) %>%
     select(Comparison, `P value`, Significant)
-  
+
   # Display the pairwise Wilcoxon test results
-  knitr::kable(pairwise_long, 
+  knitr::kable(pairwise_long,
                caption = "Pairwise Wilcoxon Test Results with Bonferroni Correction",
                align = c("l", "c", "c"),
                format = "html") %>%
@@ -741,11 +761,11 @@ cor_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(cor_table, 
+knitr::kable(cor_table,
              caption = "Pearson Correlation Results: Wheat and Maize Yields",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -791,11 +811,11 @@ spearman_table <- data.frame(
 )
 
 # Display the formatted table
-knitr::kable(spearman_table, 
+knitr::kable(spearman_table,
              caption = "Spearman Correlation Results: Wheat and Maize Yields",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -811,11 +831,11 @@ correlation_comparison <- data.frame(
 )
 
 # Display the comparison table
-knitr::kable(correlation_comparison, 
+knitr::kable(correlation_comparison,
              caption = "Comparison of Correlation Methods",
              align = c("l", "c", "c", "c"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -876,11 +896,11 @@ coef_table <- data.frame(
 )
 
 # Display the coefficients table
-knitr::kable(coef_table, 
+knitr::kable(coef_table,
              caption = "Linear Regression Coefficients: Wheat Yield by Year",
              align = c("l", "r", "r", "r", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -898,11 +918,11 @@ model_stats <- data.frame(
 )
 
 # Display the model summary statistics table
-knitr::kable(model_stats, 
+knitr::kable(model_stats,
              caption = "Linear Regression Model Summary Statistics",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 
@@ -955,18 +975,18 @@ multi_coef_table <- data.frame(
   `Std. Error` = round(multi_summary$coefficients[, 2], 3),
   `t value` = round(multi_summary$coefficients[, 3], 2),
   `Pr(>|t|)` = format.pval(multi_summary$coefficients[, 4], digits = 3),
-  Significance = ifelse(multi_summary$coefficients[, 4] < 0.001, "***", 
-                       ifelse(multi_summary$coefficients[, 4] < 0.01, "**", 
-                              ifelse(multi_summary$coefficients[, 4] < 0.05, "*", 
+  Significance = ifelse(multi_summary$coefficients[, 4] < 0.001, "***",
+                       ifelse(multi_summary$coefficients[, 4] < 0.01, "**",
+                              ifelse(multi_summary$coefficients[, 4] < 0.05, "*",
                                      ifelse(multi_summary$coefficients[, 4] < 0.1, ".", ""))))
 )
 
 # Display the coefficients table
-knitr::kable(multi_coef_table, 
+knitr::kable(multi_coef_table,
              caption = "Multiple Regression Coefficients: Predicting Wheat Yield",
              align = c("l", "r", "r", "r", "r", "c"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center") %>%
   kableExtra::add_footnote("Significance codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", notation = "none")
@@ -985,11 +1005,11 @@ multi_model_stats <- data.frame(
 )
 
 # Display the model summary statistics table
-knitr::kable(multi_model_stats, 
+knitr::kable(multi_model_stats,
              caption = "Multiple Regression Model Summary Statistics",
              align = c("l", "r"),
              format = "html") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
 ```
@@ -1036,16 +1056,16 @@ plants <- read_csv("../data/ecology/biodiversity.csv")
 if("red_list_category" %in% colnames(plants) & "group" %in% colnames(plants)) {
   # Create a contingency table
   contingency_table <- table(plants$red_list_category, plants$group)
-  
+
   # View the table
-  knitr::kable(contingency_table, 
+  knitr::kable(contingency_table,
                caption = "Contingency Table: Red List Categories by Plant Group",
                align = rep("r", ncol(contingency_table) + 1),
                format = "html") %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                              full_width = FALSE,
                              position = "center")
-  
+
   # Perform Chi-Square test
   chi_sq_result <- chisq.test(contingency_table)
   chi_sq_table <- data.frame(
@@ -1056,25 +1076,25 @@ if("red_list_category" %in% colnames(plants) & "group" %in% colnames(plants)) {
       format.pval(chi_sq_result$p.value, digits = 3)
     )
   )
-  
+
   # Display the Chi-Square test results
-  knitr::kable(chi_sq_table, 
+  knitr::kable(chi_sq_table,
                caption = "Chi-Square Test Results: Association Between Red List Categories and Plant Groups",
                align = c("l", "r"),
                format = "html") %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                              full_width = FALSE,
                              position = "center")
-  
+
   # Examine residuals to understand the pattern of association
   chi_sq_residuals <- chi_sq_result$residuals
-  
+
   # Create a data frame with the residuals in a more suitable format for display
   residuals_matrix <- as.matrix(chi_sq_residuals)
   residuals_df <- as.data.frame.table(residuals_matrix)
   colnames(residuals_df) <- c("Category", "Group", "Residual")
   residuals_df$Residual <- round(residuals_df$Residual, 2)
-  
+
   # Display the residuals table
   knitr::kable(residuals_df,
                caption = "Standardized Residuals: Association Between Red List Categories and Plant Groups",
@@ -1086,28 +1106,28 @@ if("red_list_category" %in% colnames(plants) & "group" %in% colnames(plants)) {
 } else {
   # If the expected columns don't exist, create a demonstration with available data
   message("Required columns not found. Creating a demonstration with available columns.")
-  
+
   # Identify categorical columns
   categorical_cols <- sapply(plants, function(x) is.character(x) || is.factor(x))
   cat_col_names <- names(plants)[categorical_cols]
-  
+
   if(length(cat_col_names) >= 2) {
     # Select the first two categorical columns
     col1 <- cat_col_names[1]
     col2 <- cat_col_names[2]
-    
+
     # Create a contingency table
     contingency_table <- table(plants[[col1]], plants[[col2]])
-    
+
     # View the table
-    knitr::kable(contingency_table, 
+    knitr::kable(contingency_table,
                  caption = paste("Contingency Table:", col1, "by", col2),
                  align = rep("r", ncol(contingency_table) + 1),
                  format = "html") %>%
-      kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+      kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                                full_width = FALSE,
                                position = "center")
-    
+
     # Perform Chi-Square test if appropriate
     if(min(dim(contingency_table)) > 1 && sum(contingency_table) > 0) {
       chi_sq_result <- chisq.test(contingency_table, simulate.p.value = TRUE)
@@ -1119,13 +1139,13 @@ if("red_list_category" %in% colnames(plants) & "group" %in% colnames(plants)) {
           format.pval(chi_sq_result$p.value, digits = 3)
         )
       )
-      
+
       # Display the Chi-Square test results
-      knitr::kable(chi_sq_table, 
+      knitr::kable(chi_sq_table,
                    caption = paste("Chi-Square Test Results: Association Between", col1, "and", col2),
                    align = c("l", "r"),
                    format = "html") %>%
-        kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+        kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                                  full_width = FALSE,
                                  position = "center")
     } else {
@@ -1180,11 +1200,11 @@ us_wheat <- crop_yields %>%
 if(requireNamespace("zoo", quietly = TRUE)) {
   library(zoo)
   wheat_ts <- zoo(us_wheat$`Wheat (tonnes per hectare)`, us_wheat$Year)
-  
+
   # Plot the time series
   plot(wheat_ts, main = "US Wheat Yields Over Time",
        xlab = "Year", ylab = "Wheat Yield (tonnes/hectare)")
-  
+
   # Add trend line
   lines(lowess(us_wheat$Year, us_wheat$`Wheat (tonnes per hectare)`), col = "red", lwd = 2)
 } else {
@@ -1192,7 +1212,7 @@ if(requireNamespace("zoo", quietly = TRUE)) {
   plot(us_wheat$Year, us_wheat$`Wheat (tonnes per hectare)`, type = "l",
        main = "US Wheat Yields Over Time",
        xlab = "Year", ylab = "Wheat Yield (tonnes per hectare)")
-  
+
   # Add trend line
   lines(lowess(us_wheat$Year, us_wheat$`Wheat (tonnes per hectare)`), col = "red", lwd = 2)
 }
@@ -1241,13 +1261,13 @@ if(requireNamespace("Kendall", quietly = TRUE)) {
       format.pval(mk_test$p.value, digits = 3)
     )
   )
-  
+
   # Display the Mann-Kendall test results
-  knitr::kable(mk_table, 
+  knitr::kable(mk_table,
                caption = "Mann-Kendall Trend Test Results: US Wheat Yields",
                align = c("l", "r"),
                format = "html") %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                              full_width = FALSE,
                              position = "center")
 } else {

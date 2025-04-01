@@ -21,7 +21,7 @@ book:
       chapters:
         - chapters/03-exploratory-analysis.qmd
         - chapters/04-hypothesis-testing.qmd
-        - chapters/05-statistical-tests.qmd
+        - chapters/05-statistical-tests-enhanced.qmd
     - part: "Data Visualization"
       chapters:
         - chapters/06-visualization.qmd

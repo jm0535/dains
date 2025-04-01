@@ -44,10 +44,14 @@ format:
     fig-format: "png"
     fig-cap-location: bottom
     tbl-cap-location: top
+    css: styles.css
     crossref:
       fig-title: "Figure"
       tbl-title: "Table"
-    
+    footer-text: "DRAFT - Edition 1 - This book is currently in development. Content may change before final publication."
+  pdf:
+    documentclass: scrreprt
+
 bibliography: references.bib
 csl: apa.csl
 

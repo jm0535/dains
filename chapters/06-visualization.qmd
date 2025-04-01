@@ -408,10 +408,10 @@ threat_labels <- c(
 
 # Replace the threat codes with readable labels
 threat_cor_long$Threat1 <- factor(threat_cor_long$Threat1,
-                               levels = names(threat_labels),
+                                 levels = names(threat_labels),
                                labels = threat_labels[names(threat_labels) %in% unique(threat_cor_long$Threat1)])
 threat_cor_long$Threat2 <- factor(threat_cor_long$Threat2,
-                               levels = names(threat_labels),
+                                 levels = names(threat_labels),
                                labels = threat_labels[names(threat_labels) %in% unique(threat_cor_long$Threat2)])
 
 # Create a publication-quality heatmap

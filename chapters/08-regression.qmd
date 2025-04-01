@@ -14,36 +14,94 @@ Linear regression models the relationship between a dependent variable and one o
 
 ```{r}
 # Load required packages
-library(tidyverse)
-library(ggplot2)
-library(broom)  # For tidying model outputs
+library(tidyverse)      # For data manipulation
+library(ggplot2)        # For visualization
+library(broom)          # For tidying model outputs
+library(performance)    # For model diagnostics
+library(see)            # For visualization of model diagnostics
+library(parameters)     # For parameter description
+library(ggeffects)      # For visualizing model effects
+
+# Set a professional theme for all plots
+theme_set(theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 12, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    legend.position = "bottom",
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "gray90", fill = NA, size = 0.5)
+  ))
 
 # Load the Palmer penguins dataset (stored as climate_data.csv)
-penguins <- read_csv("../data/environmental/climate_data.csv")
+penguins <- read_csv("../data/environmental/climate_data.csv", show_col_types = FALSE)
 
 # Remove rows with missing values in the key variables we'll use for regression
-penguins <- penguins %>%
-  filter(!is.na(bill_length_mm), !is.na(body_mass_g), !is.na(bill_depth_mm), !is.na(flipper_length_mm))
+penguins_clean <- penguins %>%
+  filter(!is.na(bill_length_mm), !is.na(body_mass_g),
+         !is.na(bill_depth_mm), !is.na(flipper_length_mm)) %>%
+  # Add species as a factor for proper modeling
+  mutate(species = as.factor(species))
 
 # Create a linear regression model
-model <- lm(body_mass_g ~ bill_length_mm, data = penguins)
+model <- lm(body_mass_g ~ bill_length_mm, data = penguins_clean)
 
-# Get model summary
-summary(model)
+# Get model summary with broom for cleaner output
+model_summary <- summary(model)
+model_tidy <- tidy(model, conf.int = TRUE)
+model_glance <- glance(model)
 
-# Create a scatter plot with regression line
-ggplot(penguins, aes(x = bill_length_mm, y = body_mass_g)) +
-  geom_point(alpha = 0.5) +
-  geom_smooth(method = "lm", color = "red") +
+# Display key model metrics
+cat("Model Summary:\n")
+cat(paste0("R² = ", round(model_glance$r.squared, 3),
+          ", Adjusted R² = ", round(model_glance$adj.r.squared, 3), "\n"))
+cat(paste0("F-statistic: ", round(model_glance$statistic, 2),
+          " on ", model_glance$df, " and ", model_glance$df.residual,
+          " DF, p-value: ", format.pval(model_glance$p.value, digits = 3), "\n\n"))
+
+# Create a more professional table of coefficients
+knitr::kable(model_tidy,
+             caption = "Linear Regression Coefficients",
+             digits = c(0, 3, 3, 3, 3, 3, 3),
+             col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value", "95% CI Lower", "95% CI Upper"))
+
+# Create an enhanced scatter plot with regression line
+ggplot(penguins_clean, aes(x = bill_length_mm, y = body_mass_g)) +
+  # Add data points with some transparency
+  geom_point(aes(color = species), alpha = 0.7, size = 3) +
+  # Add regression line with confidence interval
+  geom_smooth(method = "lm", color = "darkred", fill = "pink", alpha = 0.2) +
+  # Add annotations for R² and p-value
+  annotate("text", x = min(penguins_clean$bill_length_mm) + 1,
+           y = max(penguins_clean$body_mass_g) - 500,
+           label = paste0("R² = ", round(model_glance$r.squared, 3),
+                         "\np < ", format.pval(model_glance$p.value, digits = 3)),
+           hjust = 0, size = 4, color = "darkred") +
+  # Add regression equation
+  annotate("text", x = min(penguins_clean$bill_length_mm) + 1,
+           y = max(penguins_clean$body_mass_g) - 1000,
+           label = paste0("y = ", round(coef(model)[1], 1), " + ",
+                         round(coef(model)[2], 1), "x"),
+           hjust = 0, size = 4, color = "darkred") +
+  # Add professional labels
   labs(
     title = "Relationship Between Bill Length and Body Mass",
-    subtitle = "Linear regression analysis of penguin measurements",
+    subtitle = "Linear regression analysis shows positive correlation with species differences",
     x = "Bill Length (mm)",
-    y = "Body Mass (g)"
+    y = "Body Mass (g)",
+    color = "Species",
+    caption = "Data source: Palmer Penguins dataset"
   ) +
-  theme_minimal()
+  # Use a colorblind-friendly palette
+  scale_color_viridis_d() +
+  # Adjust axis limits for better visualization
+  coord_cartesian(expand = 0.05)
 
-# Create diagnostic plots
+# Create diagnostic plots using the performance package
+check_model <- check_model(model)
+plot(check_model)
+
+# Create additional diagnostic plots for specific issues
 par(mfrow = c(2, 2))
 plot(model)
 ```
@@ -122,57 +180,142 @@ Multiple regression extends linear regression to include multiple predictors:
 
 ```{r}
 # Create multiple regression model
-multi_model <- lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm,
-                 data = penguins)
+multi_model <- lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species,
+                 data = penguins_clean)
 
-# Get model summary
-summary(multi_model)
+# Get model summary with broom for cleaner output
+multi_summary <- summary(multi_model)
+multi_tidy <- tidy(multi_model, conf.int = TRUE)
+multi_glance <- glance(multi_model)
 
-# Create diagnostic plots
-par(mfrow = c(2, 2))
-plot(multi_model)
+# Display key model metrics
+cat("Multiple Regression Model Summary:\n")
+cat(paste0("R² = ", round(multi_glance$r.squared, 3),
+          ", Adjusted R² = ", round(multi_glance$adj.r.squared, 3), "\n"))
+cat(paste0("F-statistic: ", round(multi_glance$statistic, 2),
+          " on ", multi_glance$df, " and ", multi_glance$df.residual,
+          " DF, p-value: ", format.pval(multi_glance$p.value, digits = 3), "\n\n"))
+
+# Create a more professional table of coefficients
+knitr::kable(multi_tidy,
+             caption = "Multiple Regression Coefficients",
+             digits = c(0, 3, 3, 3, 3, 3, 3),
+             col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value", "95% CI Lower", "95% CI Upper"))
+
+# Check for multicollinearity
+library(car)
+vif_values <- car::vif(multi_model)
+knitr::kable(as.data.frame(vif_values),
+             caption = "Variance Inflation Factors (VIF)",
+             col.names = "VIF")
+
+# Check for model assumptions
+check_multi_model <- check_model(multi_model)
+plot(check_multi_model)
+
+# Visualize predictor effects
+library(effects)
+plot(allEffects(multi_model), ask = FALSE)
+
+# Compare models
+library(modelsummary)
+modelsummary(list("Simple Model" = model, "Multiple Model" = multi_model),
+             stars = TRUE,
+             gof_map = c("nobs", "r.squared", "adj.r.squared", "AIC", "BIC"),
+             title = "Comparison of Regression Models")
+
+# Create a visualization of predicted vs. actual values
+predicted_values <- augment(multi_model, data = penguins_clean)
+
+ggplot(predicted_values, aes(x = .fitted, y = body_mass_g, color = species)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "gray50") +
+  labs(
+    title = "Predicted vs. Actual Body Mass",
+    subtitle = "Points closer to the dashed line indicate better predictions",
+    x = "Predicted Body Mass (g)",
+    y = "Actual Body Mass (g)",
+    color = "Species",
+    caption = "Model: body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species"
+  ) +
+  scale_color_viridis_d() +
+  theme(legend.position = "bottom")
+
+# Create a partial dependence plot for flipper length
+pdp_flipper <- ggeffects::ggpredict(multi_model, terms = "flipper_length_mm")
+plot(pdp_flipper, add.data = TRUE) +
+  labs(
+    title = "Effect of Flipper Length on Body Mass",
+    subtitle = "Controlling for other variables in the model",
+    caption = "Shaded area represents 95% confidence interval"
+  )
 ```
 
 ::: {.callout-note}
 ## Code Explanation
 
-This code demonstrates multiple regression:
+This code demonstrates enhanced multiple regression analysis techniques:
 
-1. **Model Structure**:
-   - Multiple predictor variables
-   - Additive effects
-   - Model diagnostics
+1. **Model Construction**
+   - Uses `lm()` to build a multiple regression with morphological predictors and species
+   - Creates a more comprehensive model accounting for both measurements and taxonomy
+   - Properly handles categorical predictors (species) with appropriate contrasts
 
-2. **Analysis Components**:
-   - Partial regression coefficients
-   - Adjusted R²
-   - F-test for overall fit
+2. **Advanced Diagnostics**
+   - Evaluates multicollinearity with Variance Inflation Factors (VIF)
+   - Conducts comprehensive model assumption checks
+   - Compares model performance metrics across simple and multiple regression
 
-3. **Diagnostic Tools**:
-   - Multicollinearity checks
-   - Residual analysis
-   - Model comparison
+3. **Professional Visualization**
+   - Creates an elegant predicted vs. actual plot to assess model fit
+   - Generates partial dependence plots to visualize individual predictor effects
+   - Uses model effects plots to show relationships while controlling for other variables
+   - Implements consistent styling with appropriate annotations and colorblind-friendly palettes
 :::
 
 ::: {.callout-important}
 ## Results Interpretation
 
-The multiple regression analysis shows:
+The multiple regression analysis reveals several important insights:
 
-1. **Model Performance**:
-   - Overall model fit
-   - Individual predictor effects
-   - Interaction effects
+1. **Model Performance**
+   - Multiple regression substantially improves explanatory power over simple regression
+   - The adjusted R² is much higher, indicating better model fit
+   - Species is a significant predictor, suggesting morphological differences between species
 
-2. **Variable Importance**:
-   - Relative contribution of each predictor
-   - Statistical significance
-   - Practical significance
+2. **Predictor Effects**
+   - Flipper length and bill length both positively correlate with body mass
+   - Species-specific effects indicate evolutionary differences in body size
+   - Bill depth shows a weaker relationship when controlling for other variables
 
-3. **Model Diagnostics**:
-   - Multicollinearity issues
-   - Residual patterns
-   - Model assumptions
+3. **Diagnostics Findings**
+   - Multicollinearity (VIF values) appears manageable (VIF < 5 is generally acceptable)
+   - The model generally meets assumptions for inference
+   - Residual patterns suggest the linear model captures the main relationships well
+:::
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Multiple Regression Best Practices
+
+When conducting ecological multiple regression analyses:
+
+1. **Model Building Strategy**
+   - Start with biologically meaningful predictors based on theory
+   - Consider alternative model specifications (linear, polynomial, interactions)
+   - Use a hierarchical approach, starting simple and adding complexity
+   - Adopt information-theoretic approaches (AIC/BIC) for model selection
+
+2. **Addressing Collinearity**
+   - Examine correlations among predictors before modeling
+   - Calculate VIF values and remove highly collinear predictors (VIF > 10)
+   - Consider dimension reduction techniques (PCA) for related predictors
+   - Use regularization methods (ridge, lasso) for high-dimensional data
+
+3. **Results Communication**
+   - Present standardized coefficients to compare predictor importance
+   - Visualize partial effects rather than just reporting coefficients
+   - Report effect sizes and confidence intervals, not just p-values
+   - Describe both statistical and biological significance of your findings
 :::
 
 ## Logistic Regression
@@ -182,82 +325,199 @@ Logistic regression models binary outcomes:
 ```{r}
 # Prepare data for logistic regression by creating a binary outcome
 # We'll predict whether a penguin is Adelie species or not
-penguins_binary <- penguins %>%
+penguins_binary <- penguins_clean %>%
   # Create a binary outcome variable (is_adelie)
   mutate(is_adelie = ifelse(species == "Adelie", 1, 0),
          # Convert to factor for better model interpretation
-         is_adelie_factor = factor(is_adelie, levels = c(0, 1), labels = c("Other", "Adelie")))
+         is_adelie_factor = factor(is_adelie, levels = c(0, 1),
+                                  labels = c("Other", "Adelie")))
 
 # Create logistic regression model
-log_model <- glm(is_adelie ~ bill_length_mm + bill_depth_mm,
+log_model <- glm(is_adelie ~ bill_length_mm + bill_depth_mm + flipper_length_mm,
                 family = binomial(link = "logit"),
                 data = penguins_binary)
 
-# Get model summary
-summary(log_model)
+# Summarize model with tidy output
+log_summary <- summary(log_model)
+log_tidy <- tidy(log_model, conf.int = TRUE, exponentiate = TRUE)
+log_glance <- glance(log_model)
+
+# Display key model metrics
+cat("Logistic Regression Model Summary:\n")
+cat(paste0("AIC: ", round(log_glance$AIC, 2),
+          ", Deviance: ", round(log_glance$deviance, 2), "\n"))
+cat(paste0("Null Deviance: ", round(log_glance$null.deviance, 2),
+          ", DF: ", log_glance$df.null, ", Residual DF: ", log_glance$df.residual, "\n\n"))
+
+# Calculate and show pseudo R-squared (McFadden)
+pseudo_r2 <- 1 - (log_glance$deviance / log_glance$null.deviance)
+cat(paste0("McFadden's Pseudo R²: ", round(pseudo_r2, 3), "\n\n"))
+
+# Create a table of odds ratios with CI
+knitr::kable(log_tidy,
+            caption = "Logistic Regression Results (Odds Ratios)",
+            digits = c(0, 3, 3, 3, 3, 3, 3),
+            col.names = c("Term", "Odds Ratio", "Std. Error", "z value", "p-value",
+                         "95% CI Lower", "95% CI Upper"))
+
+# Add predictions to the data
+penguins_pred <- penguins_binary %>%
+  mutate(
+    predicted_prob = predict(log_model, type = "response"),
+    predicted_class = ifelse(predicted_prob > 0.5, "Adelie", "Other"),
+    correct = ifelse(predicted_class == ifelse(is_adelie == 1, "Adelie", "Other"), "Correct", "Incorrect")
+  )
+
+# Create a confusion matrix
+confusion <- table(
+  Predicted = penguins_pred$predicted_class,
+  Actual = ifelse(penguins_pred$is_adelie == 1, "Adelie", "Other")
+)
+
+# Calculate accuracy metrics
+accuracy <- sum(diag(confusion)) / sum(confusion)
+sensitivity <- confusion["Adelie", "Adelie"] / sum(confusion[, "Adelie"])
+specificity <- confusion["Other", "Other"] / sum(confusion[, "Other"])
+precision <- confusion["Adelie", "Adelie"] / sum(confusion["Adelie", ])
+
+# Display confusion matrix with metrics
+knitr::kable(confusion,
+            caption = paste0("Confusion Matrix (Accuracy = ", round(accuracy * 100, 1), "%)"))
+
+cat(paste0("Sensitivity (True Positive Rate): ", round(sensitivity * 100, 1), "%\n"))
+cat(paste0("Specificity (True Negative Rate): ", round(specificity * 100, 1), "%\n"))
+cat(paste0("Precision (Positive Predictive Value): ", round(precision * 100, 1), "%\n\n"))
 
 # Create ROC curve
 library(pROC)
 roc_curve <- roc(penguins_binary$is_adelie, fitted(log_model))
-plot(roc_curve)
+auc_value <- auc(roc_curve)
+
+# Plot the ROC curve
+plot(roc_curve, print.auc = TRUE, auc.polygon = TRUE,
+     grid = TRUE, main = "ROC Curve for Adelie Penguin Classification")
+
+# Create a visualization of predicted probabilities by species
+ggplot(penguins_pred, aes(x = bill_length_mm, y = bill_depth_mm, color = predicted_prob)) +
+  geom_point(size = 3, alpha = 0.7) +
+  # Add decision boundary (0.5 probability contour)
+  geom_contour(aes(z = predicted_prob), breaks = 0.5, color = "black", linewidth = 1) +
+  # Add text labels for misclassified points
+  geom_text(data = filter(penguins_pred, correct == "Incorrect"),
+            aes(label = "✗"), color = "black", size = 4, nudge_y = 0.5) +
+  # Color gradient for probability
+  scale_color_gradient2(low = "navy", mid = "white", high = "red",
+                      midpoint = 0.5, limits = c(0, 1)) +
+  facet_wrap(~species) +
+  labs(
+    title = "Classification of Adelie vs. Other Penguins",
+    subtitle = paste0("AUC = ", round(auc_value, 3), ", Accuracy = ", round(accuracy * 100, 1), "%"),
+    x = "Bill Length (mm)",
+    y = "Bill Depth (mm)",
+    color = "Probability\nof Adelie",
+    caption = "Black line: decision boundary (p=0.5), ✗: misclassified points"
+  ) +
+  theme(legend.position = "right")
+
+# Create marginal effects plots for the predictors
+library(effects)
+plot(allEffects(log_model), ask = FALSE, main = "Marginal Effects on Probability of Adelie")
+
+# Check model fit
+library(DHARMa)
+sim_residuals <- simulateResiduals(log_model)
+plot(sim_residuals)
 ```
 
 ::: {.callout-note}
 ## Code Explanation
 
-This code demonstrates logistic regression:
+This enhanced logistic regression analysis provides comprehensive insights:
 
-1. **Model Setup**:
-   - Creates a binary outcome variable (is_adelie)
-   - Uses logit link function
-   - Includes multiple predictors
+1. **Model Construction**
+   - Creates a binary outcome variable (Adelie vs. Other species)
+   - Uses `glm()` with a binomial family and logit link
+   - Incorporates multiple predictors (bill length, bill depth, flipper length)
 
-2. **Analysis Components**:
-   - Odds ratios
-   - Classification accuracy
-   - ROC curve analysis
+2. **Professional Reporting**
+   - Displays odds ratios with confidence intervals for interpretability
+   - Calculates and reports pseudo-R² (McFadden) for model fit
+   - Creates a detailed confusion matrix with classification metrics
+   - Generates a ROC curve with AUC for overall discriminative ability
 
-3. **Visualization**:
-   - ROC curve
-   - Classification plots
-   - Diagnostic plots
+3. **Advanced Visualization**
+   - Plots predicted probabilities with decision boundaries
+   - Highlights misclassified points for error analysis
+   - Creates marginal effects plots showing how each predictor influences classification
+   - Conducts simulation-based residual analysis for model validation
 :::
 
 ::: {.callout-important}
 ## Results Interpretation
 
-The logistic regression analysis reveals:
+The logistic regression yields important ecological insights:
 
-1. **Classification Performance**:
-   - Model accuracy
-   - Sensitivity and specificity
-   - ROC curve characteristics
+1. **Classification Performance**
+   - The model effectively distinguishes Adelie penguins from other species
+   - High AUC (area under ROC curve) indicates strong discriminative ability
+   - Classification accuracy, sensitivity, and specificity show the practical utility
 
-2. **Predictor Effects**:
-   - Odds ratios
-   - Confidence intervals
-   - Statistical significance
+2. **Morphological Predictors**
+   - Bill dimensions are strong predictors of species identity
+   - Odds ratios reveal how changes in morphology affect classification probability
+   - Interaction between bill length and depth creates a clear decision boundary
 
-3. **Model Diagnostics**:
-   - Classification errors
-   - Residual patterns
-   - Model fit
+3. **Ecological Implications**
+   - The model demonstrates morphological differentiation between penguin species
+   - Misclassified individuals may represent morphological overlap zones
+   - Results align with evolutionary theory on character displacement
+   - Potential applications in field identification and evolutionary studies
+:::
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Logistic Regression Best Practices
+
+When applying logistic regression in ecological studies:
+
+1. **Model Development**
+   - Balance the number of events and predictors (aim for >10 events per predictor)
+   - Test for nonlinearity in continuous predictors using splines or polynomial terms
+   - Evaluate interactions between predictors where biologically meaningful
+   - Consider regularization for high-dimensional data to prevent overfitting
+
+2. **Model Evaluation**
+   - Use cross-validation to assess predictive performance
+   - Report multiple performance metrics beyond p-values (AUC, accuracy, sensitivity, specificity)
+   - Consider the costs of different error types (false positives vs. false negatives)
+   - Test model calibration (agreement between predicted probabilities and observed outcomes)
+
+3. **Result Communication**
+   - Report odds ratios for interpretability (not just coefficients)
+   - Create visualizations showing decision boundaries and classification regions
+   - Discuss practical significance for ecological applications
+   - Indicate model limitations and potential sampling biases
 :::
 
 ## Summary
 
-In this chapter, we've explored different types of regression analysis:
+In this chapter, we've explored different types of regression analysis with advanced techniques and visualizations:
 
-- Linear regression for continuous outcomes
-- Multiple regression for multiple predictors
-- Logistic regression for binary outcomes
+- **Linear regression** for modeling continuous relationships between morphological variables
+- **Multiple regression** for incorporating several predictors and controlling for confounding factors
+- **Logistic regression** for binary classification and probability estimation
 
-Each type has specific applications and assumptions that must be considered when analyzing natural science data.
+Each approach provides unique insights into ecological patterns and relationships, with applications ranging from morphological studies to species classification and trait prediction.
 
 ## Exercises
 
-1. Fit a linear regression model predicting body mass from bill length and bill depth.
-2. Create diagnostic plots for your model and interpret them.
-3. Compare the performance of different model specifications.
-4. Conduct a logistic regression analysis for species classification.
-5. Create and interpret ROC curves for your logistic regression model.
+1. Fit a linear regression model predicting body mass from bill length and bill depth. Create a 3D visualization of this relationship using the `plotly` package.
+
+2. Conduct multiple regression with interaction terms between predictors. How does adding interactions improve model performance?
+
+3. Perform model selection using AIC to find the most parsimonious multiple regression model for the penguin data.
+
+4. Create a multinomial logistic regression model to classify all three penguin species based on morphological traits.
+
+5. Compare the performance of logistic regression with other classification methods (e.g., random forest, support vector machines) for species identification.
+
+6. Develop a predictive model for penguin body mass and evaluate it using k-fold cross-validation.

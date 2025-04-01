@@ -8,7 +8,7 @@ Welcome to **Data Analysis in Natural Sciences: An R-Based Approach**, a compreh
 
 ## About the Author
 
-This book has been developed by **Dr. Jimmy Moses (PhD)** from the School of Forestry, Faculty of Natural Resources, Papua New Guinea University of Technology. With extensive experience in ecological research and data analysis, Dr. Moses has created this resource to support students and researchers in developing essential analytical skills for natural science disciplines.
+This book has been developed by **Jimmy Moses** from the School of Forestry, Faculty of Natural Resources, Papua New Guinea University of Technology. With extensive experience in ecological research and data analysis, the author has created this resource to support students and researchers in developing essential analytical skills for natural science disciplines.
 
 ## Target Audience
 

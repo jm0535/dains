@@ -339,7 +339,7 @@ ggplot(data.frame(height = site_A), aes(x = height)) +
   geom_vline(xintercept = reference_height, color = "red", linetype = "dashed") +
   labs(
     title = "Distribution of Tree Heights with Reference Value",
-    x = "Height (m)",
+       x = "Height (m)",
     y = "Frequency"
   ) +
   theme_minimal()

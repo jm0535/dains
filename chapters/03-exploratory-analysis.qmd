@@ -83,6 +83,41 @@ top_wheat_countries <- crop_yields %>%
 knitr::kable(top_wheat_countries, caption = "Top 10 Countries by Average Wheat Yield")
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code block demonstrates how to calculate and visualize descriptive statistics:
+
+1. `library(tidyverse)` loads the tidyverse collection of packages for data manipulation and visualization.
+2. `read_csv()` imports the crop yields dataset from a CSV file.
+3. `head()` displays the first few rows to inspect the data structure.
+4. The `summarize()` function calculates key statistics for wheat yields:
+   - `Mean`: Average yield across all observations
+   - `Median`: Middle value when yields are arranged in order
+   - `StdDev`: Standard deviation, measuring data dispersion
+   - `Min/Max`: Minimum and maximum values in the dataset
+   - `Q1/Q3`: First and third quartiles (25th and 75th percentiles)
+5. `knitr::kable()` creates a formatted table of the summary statistics.
+6. `ggplot()` with `geom_histogram()` visualizes the distribution of wheat yields.
+7. The final section identifies and displays the top 10 countries by average wheat yield using:
+   - `group_by()` to organize data by country
+   - `summarize()` to calculate average yield per country
+   - `arrange(desc())` to sort in descending order
+   - `head(10)` to select the top 10 entries
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The summary statistics reveal several key insights about global wheat yields:
+
+- The mean wheat yield is higher than the median, suggesting a right-skewed distribution with some countries achieving exceptionally high yields.
+- The standard deviation indicates substantial variability in wheat productivity across different regions.
+- The histogram confirms this skewed distribution, with most countries clustered at lower to moderate yield levels, and fewer countries achieving very high yields.
+- The top 10 countries table shows which nations have the most productive wheat cultivation systems, likely due to advanced agricultural practices, favorable climate conditions, or intensive farming methods.
+- This analysis provides a foundation for investigating factors that contribute to high wheat yields and potential strategies for improving agricultural productivity in lower-yielding regions.
+:::
+
 ### Frequency Tables
 
 Frequency tables are useful for understanding the distribution of categorical variables:
@@ -116,6 +151,31 @@ yield_decade_table
 prop.table(yield_decade_table, margin = 1)
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code block demonstrates how to create and analyze frequency tables:
+
+1. `mutate()` with `case_when()` creates a new categorical variable `yield_category` by binning wheat yields into "Low," "Medium," and "High" categories.
+2. `table()` produces a frequency count for each yield category.
+3. `prop.table()` converts the frequency counts to proportions (relative frequencies).
+4. A new variable `decade` is created by rounding down the year to the nearest decade using `floor(Year / 10) * 10`.
+5. A two-way frequency table is created to examine the relationship between yield categories and decades.
+6. `prop.table(yield_decade_table, margin = 1)` calculates row proportions, showing the distribution of decades within each yield category.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The frequency tables reveal important patterns in wheat yield categories:
+
+- The distribution of yield categories shows which productivity levels are most common globally.
+- The proportions table quantifies this distribution, indicating what percentage of observations fall into each yield category.
+- The two-way table between yield categories and decades allows us to track how wheat productivity has changed over time.
+- The row proportions reveal whether certain yield categories have become more or less common in different decades, potentially indicating technological improvements, climate effects, or changes in agricultural practices.
+- These temporal patterns are crucial for understanding agricultural development trends and projecting future food security scenarios.
+:::
+
 ## Visualizing Distributions
 
 ### Histograms and Density Plots
@@ -148,6 +208,40 @@ ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
        y = "Density") +
   theme_minimal()
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code block demonstrates three approaches to visualizing distributions:
+
+1. **Histogram**: 
+   - `geom_histogram()` divides the data into bins and counts observations in each bin
+   - `bins = 30` specifies the number of divisions
+   - `na.rm = TRUE` removes missing values from the visualization
+
+2. **Density Plot**:
+   - `geom_density()` creates a smoothed representation of the distribution
+   - `fill` and `alpha` control the appearance and transparency
+   - Density plots show the probability density function of the data
+
+3. **Combined Visualization**:
+   - The histogram is converted to density scale with `aes(y = ..density..)`
+   - `geom_density()` overlays a smoothed curve on the histogram
+   - This combination shows both the raw data structure and the smoothed distribution
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+These distribution visualizations reveal key patterns in wheat yields:
+
+- The histogram shows the frequency of observations at different yield levels, highlighting where most countries cluster.
+- The density plot smooths the distribution, making it easier to identify the central tendency and spread.
+- The combined plot allows us to see both the actual data distribution (histogram) and the underlying probability density (curve).
+- The right-skewed shape indicates that while most countries have moderate yields, a few achieve exceptionally high productivity.
+- Multiple peaks (if present) might suggest distinct groups of countries with different agricultural technologies or growing conditions.
+- These visualizations help identify outliers and understand the overall pattern of global wheat production efficiency.
+:::
 
 ### Box Plots
 
@@ -183,6 +277,36 @@ ggplot(recent_wheat_data, aes(x = Entity, y = `Wheat (tonnes per hectare)`)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to create and enhance box plots for comparing distributions:
+
+1. First, we select major wheat-producing countries for comparison and filter for recent data (since 2000).
+2. The basic box plot:
+   - `geom_boxplot()` creates a box-and-whisker plot for each country
+   - Each box shows the median (middle line), interquartile range (IQR, the box), and whiskers extending to 1.5 × IQR
+   - Points beyond the whiskers represent outliers
+
+3. The enhanced box plot adds:
+   - `geom_jitter()` to display individual data points with slight horizontal displacement
+   - This combination shows both the summary statistics (box plot) and the raw data distribution (points)
+   - `angle = 45, hjust = 1` rotates country labels for better readability
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The box plots reveal important comparisons between major wheat-producing countries:
+
+- The median line in each box shows the typical yield for each country, allowing direct comparison of central tendency.
+- The height of each box (IQR) indicates the variability of yields within each country over the time period.
+- Whisker length reflects the range of typical yields, while outlier points show exceptional years.
+- Countries with higher boxes generally have more variable production, possibly due to climate fluctuations or changing agricultural practices.
+- The jittered points reveal the actual distribution and density of observations for each country.
+- These comparisons help identify which countries have the most consistent and productive wheat cultivation systems, providing insights for agricultural policy and development.
+:::
+
 ### Bar Charts
 
 Bar charts are useful for visualizing categorical data:
@@ -205,6 +329,31 @@ ggplot(recent_avg_yields, aes(x = reorder(Entity, avg_wheat_yield), y = avg_whea
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to create a bar chart for visualizing categorical data:
+
+1. First, we calculate the average wheat yield by country for the last decade (2010-present).
+2. We then select the top 10 countries by average yield.
+3. The bar chart:
+   - `geom_bar(stat = "identity")` creates a bar for each country, with height proportional to average yield
+   - `reorder(Entity, avg_wheat_yield)` sorts the countries by average yield in descending order
+   - `fill = "darkgreen"` sets the bar color
+   - `theme(axis.text.x = element_text(angle = 45, hjust = 1))` rotates country labels for better readability
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The bar chart reveals the top 10 countries by average wheat yield:
+
+- The height of each bar represents the average yield for each country.
+- The countries are sorted in descending order by average yield, making it easy to identify the most productive nations.
+- This visualization helps identify which countries have the most efficient wheat cultivation systems, providing insights for agricultural policy and development.
+- The bar chart can also be used to compare the average yields of different countries, helping to identify potential areas for improvement.
+:::
 
 ## Exploring Relationships
 
@@ -256,6 +405,34 @@ ggplot(crop_yields_with_continent, aes(x = `Wheat (tonnes per hectare)`, y = `Ri
   theme_minimal()
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to create scatter plots for exploring relationships:
+
+1. First, we filter the data to include only observations with non-missing values for wheat and rice yields, and only consider recent data (since 2000).
+2. The basic scatter plot:
+   - `geom_point()` creates a scatter plot of wheat yields vs. rice yields
+   - `alpha = 0.5` sets the transparency of the points
+   - `color = "darkgreen"` sets the color of the points
+
+3. The scatter plot with color by continent:
+   - We create a simple mapping of countries to continents using `tibble()`.
+   - We join this mapping with our dataset using `inner_join()`.
+   - We create a scatter plot with color by continent using `geom_point(aes(color = Continent))`.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The scatter plots reveal the relationship between wheat and rice yields:
+
+- The basic scatter plot shows the overall relationship between wheat and rice yields.
+- The scatter plot with color by continent reveals how the relationship varies across different continents.
+- This visualization helps identify patterns and correlations between wheat and rice yields, providing insights for agricultural policy and development.
+- The scatter plot can also be used to identify outliers and anomalies in the data.
+:::
+
 ### Correlation Analysis
 
 Correlation analysis quantifies the strength and direction of relationships between variables:
@@ -277,6 +454,29 @@ corrplot(cor_matrix, method = "circle", type = "upper",
          title = "Correlation Matrix of Crop Yields")
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to perform correlation analysis:
+
+1. First, we select the numeric columns of interest for correlation analysis.
+2. We remove any missing values using `na.omit()`.
+3. We calculate the correlation matrix using `cor()`.
+4. We round the correlation matrix to 2 decimal places using `round()`.
+5. We visualize the correlation matrix using `corrplot()`.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The correlation matrix reveals the strength and direction of relationships between variables:
+
+- The correlation matrix shows the correlation coefficients between each pair of variables.
+- The correlation coefficients range from -1 (perfect negative correlation) to 1 (perfect positive correlation).
+- This visualization helps identify strong correlations between variables, providing insights for agricultural policy and development.
+- The correlation matrix can also be used to identify potential multicollinearity issues in regression analysis.
+:::
+
 ### Pair Plots
 
 Pair plots provide a comprehensive view of relationships between multiple variables:
@@ -291,6 +491,27 @@ ggpairs(crop_numeric) +
   theme_minimal() +
   labs(title = "Relationships Between Different Crop Yields")
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to create pair plots:
+
+1. First, we create a basic pair plot using `pairs()`.
+2. We then create an enhanced pair plot using `ggpairs()` from the GGally package.
+3. The enhanced pair plot includes histograms, scatter plots, and correlation coefficients for each pair of variables.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The pair plots reveal the relationships between multiple variables:
+
+- The pair plots show the relationships between each pair of variables.
+- The histograms and scatter plots provide a visual representation of the relationships.
+- The correlation coefficients provide a quantitative measure of the strength and direction of the relationships.
+- This visualization helps identify patterns and correlations between multiple variables, providing insights for agricultural policy and development.
+:::
 
 ## Identifying Outliers and Anomalies
 
@@ -324,6 +545,27 @@ wheat_outliers <- crop_yields %>%
 head(wheat_outliers, 10)
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to use box plots for outlier detection:
+
+1. First, we create a box plot of wheat yields using `geom_boxplot()`.
+2. We then identify potential outliers using the interquartile range (IQR) method.
+3. We calculate the lower and upper bounds for outliers using `q1 - 1.5 * iqr` and `q3 + 1.5 * iqr`, respectively.
+4. We identify observations that fall outside these bounds as potential outliers.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The box plot and outlier detection reveal potential outliers:
+
+- The box plot shows the distribution of wheat yields, with potential outliers indicated by points outside the whiskers.
+- The outlier detection identifies observations that fall outside the lower and upper bounds.
+- This visualization helps identify potential errors or anomalies in the data, providing insights for data cleaning and quality control.
+:::
+
 ### Z-Scores for Outlier Detection
 
 Z-scores can also help identify outliers:
@@ -348,6 +590,26 @@ wheat_extremes <- wheat_z_scores %>%
 head(wheat_extremes, 10)
 ```
 
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to use z-scores for outlier detection:
+
+1. First, we calculate the mean and standard deviation of wheat yields using `mean()` and `sd()`, respectively.
+2. We then calculate the z-scores for each observation using `(x - mean) / sd`.
+3. We identify observations with absolute z-scores greater than 3 as extreme values.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The z-scores reveal extreme values:
+
+- The z-scores show the number of standard deviations from the mean for each observation.
+- The extreme values are identified by their absolute z-scores greater than 3.
+- This visualization helps identify potential outliers or anomalies in the data, providing insights for data cleaning and quality control.
+:::
+
 ## Time Series Exploration
 
 Agricultural data often contains important temporal patterns:
@@ -371,6 +633,27 @@ ggplot(wheat_ts_data, aes(x = Year, y = `Wheat (tonnes per hectare)`, color = En
   theme_minimal() +
   scale_color_brewer(palette = "Dark2")
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to create a time series plot:
+
+1. First, we select a few countries for time series analysis.
+2. We filter the data for these countries and non-missing wheat yields.
+3. We create a time series plot using `geom_line()` and `geom_point()`.
+4. We add a title, x-axis label, and y-axis label using `labs()`.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The time series plot reveals temporal patterns:
+
+- The time series plot shows the trends in wheat yields over time for each country.
+- The plot reveals patterns such as increasing or decreasing trends, seasonality, or anomalies.
+- This visualization helps identify temporal patterns and correlations in the data, providing insights for agricultural policy and development.
+:::
 
 ## Missing Data Analysis
 
@@ -405,6 +688,26 @@ if(requireNamespace("naniar", quietly = TRUE)) {
   head(missing_df, 10)
 }
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to analyze missing data:
+
+1. First, we check for missing values in each column using `colSums(is.na())`.
+2. We then visualize missing data patterns using `gg_miss_var()` and `vis_miss()` from the naniar package.
+3. If the naniar package is not installed, we provide an alternative summary of missing data using `sapply()` and `data.frame()`.
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The missing data analysis reveals patterns of missingness:
+
+- The summary of missing data shows the number and percentage of missing values in each column.
+- The visualization of missing data patterns reveals the distribution of missing values across different variables.
+- This analysis helps identify potential issues with data quality and informs strategies for handling missing data.
+:::
 
 ## Summary
 

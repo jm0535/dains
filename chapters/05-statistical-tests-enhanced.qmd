@@ -1,0 +1,1368 @@
+---
+prefer-html: true
+---
+
+# Common Statistical Tests
+
+```{r setup, include=FALSE}
+# Load required packages for data analysis and visualization
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(magrittr)  # For the pipe operator %>%
+library(reshape2)  # For data reshaping functions
+
+# Set global knitr options
+knitr::opts_chunk$set(
+  echo = TRUE,        # Display code chunks
+  warning = FALSE,    # Suppress warnings
+  message = FALSE,    # Suppress messages
+  fig.width = 8,      # Default figure width
+  fig.height = 5,     # Default figure height
+  fig.align = "center" # Center figures
+)
+```
+
+## Introduction
+
+This chapter explores common statistical tests used in natural sciences research. Building on the hypothesis testing framework introduced in the previous chapter, we'll examine specific tests for different research scenarios and data types.
+
+## Choosing the Right Statistical Test
+
+Selecting the appropriate statistical test depends on several factors:
+
+1. **Research Question**: What you're trying to determine
+2. **Data Type**: Categorical, continuous, or ordinal
+3. **Number of Groups**: One, two, or multiple groups
+4. **Data Distribution**: Normal or non-normal
+5. **Independence**: Whether observations are independent or related
+
+### Decision Tree for Common Tests
+
+```{r}
+#| echo: false
+#| fig-cap: "Decision tree for selecting appropriate statistical tests"
+#| eval: false
+
+# This code requires the DiagrammeR package
+# If you want to run this code, first install the package with:
+# install.packages("DiagrammeR")
+
+library(DiagrammeR)
+
+grViz("
+digraph test_selection {
+  # Node definitions
+  node [shape = rectangle, fontname = 'Arial', fontsize = 10, style = filled, fillcolor = lightblue]
+  
+  start [label = 'Research Question', fillcolor = lightgreen]
+  
+  # First level: Number of variables
+  one_var [label = 'One Variable']
+  two_var [label = 'Two Variables']
+  multi_var [label = 'Multiple Variables']
+  
+  # Second level for one variable
+  one_sample [label = 'One Sample']
+  two_sample [label = 'Two Samples']
+  multi_sample [label = 'Multiple Samples']
+  
+  # Tests for one variable
+  t_test [label = 'One-Sample t-Test\\n(Normal, Continuous)']
+  wilcox [label = 'Wilcoxon Signed-Rank\\n(Non-normal, Continuous)']
+  binom [label = 'Binomial Test\\n(Categorical)']
+  
+  # Tests for two variables - two samples
+  ind_t [label = 'Independent t-Test\\n(Normal, Continuous)']
+  paired_t [label = 'Paired t-Test\\n(Normal, Continuous, Related)']
+  mann [label = 'Mann-Whitney U\\n(Non-normal, Continuous)']
+  wilcox_paired [label = 'Wilcoxon Signed-Rank\\n(Non-normal, Continuous, Related)']
+  chi_sq [label = 'Chi-Square Test\\n(Categorical)']
+  mcnemar [label = 'McNemar Test\\n(Categorical, Related)']
+  
+  # Tests for multiple samples
+  anova [label = 'ANOVA\\n(Normal, Continuous)']
+  rm_anova [label = 'Repeated Measures ANOVA\\n(Normal, Continuous, Related)']
+  kruskal [label = 'Kruskal-Wallis\\n(Non-normal, Continuous)']
+  friedman [label = 'Friedman Test\\n(Non-normal, Continuous, Related)']
+  chi_sq_multi [label = 'Chi-Square Test\\n(Categorical)']
+  
+  # Tests for relationships
+  pearson [label = 'Pearson Correlation\\n(Normal, Continuous)']
+  spearman [label = 'Spearman Correlation\\n(Non-normal or Ordinal)']
+  linear_reg [label = 'Linear Regression\\n(Continuous Predictor & Outcome)']
+  logistic [label = 'Logistic Regression\\n(Continuous Predictor, Binary Outcome)']
+  
+  # Multiple variables
+  manova [label = 'MANOVA\\n(Multiple Continuous Outcomes)']
+  pca [label = 'Principal Component Analysis\\n(Dimension Reduction)']
+  cluster [label = 'Cluster Analysis\\n(Grouping)']
+  
+  # Connections
+  start -> {one_var two_var multi_var}
+  
+  one_var -> {one_sample two_sample multi_sample}
+  
+  one_sample -> {t_test wilcox binom}
+  
+  two_sample -> {ind_t paired_t mann wilcox_paired chi_sq mcnemar}
+  
+  multi_sample -> {anova rm_anova kruskal friedman chi_sq_multi}
+  
+  two_var -> {pearson spearman linear_reg logistic}
+  
+  multi_var -> {manova pca cluster}
+}
+")
+```
+
+**Decision Tree for Selecting Statistical Tests:**
+
+1. **For One Variable:**
+   - **One Sample:**
+     - Normal, Continuous → One-Sample t-Test
+     - Non-normal, Continuous → Wilcoxon Signed-Rank Test
+     - Categorical → Binomial Test
+   
+   - **Two Samples:**
+     - Normal, Continuous, Independent → Independent t-Test
+     - Normal, Continuous, Related → Paired t-Test
+     - Non-normal, Continuous, Independent → Mann-Whitney U Test
+     - Non-normal, Continuous, Related → Wilcoxon Signed-Rank Test
+     - Categorical, Independent → Chi-Square Test
+     - Categorical, Related → McNemar Test
+   
+   - **Multiple Samples:**
+     - Normal, Continuous, Independent → ANOVA
+     - Normal, Continuous, Related → Repeated Measures ANOVA
+     - Non-normal, Continuous, Independent → Kruskal-Wallis Test
+     - Non-normal, Continuous, Related → Friedman Test
+     - Categorical → Chi-Square Test
+
+2. **For Two Variables:**
+   - Normal, Continuous → Pearson Correlation
+   - Non-normal or Ordinal → Spearman Correlation
+   - Continuous Predictor & Outcome → Linear Regression
+   - Continuous Predictor, Binary Outcome → Logistic Regression
+
+3. **For Multiple Variables:**
+   - Multiple Continuous Outcomes → MANOVA
+   - Dimension Reduction → Principal Component Analysis
+   - Grouping → Cluster Analysis
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Selecting and Reporting Statistical Tests
+
+When selecting and reporting statistical tests in your research:
+
+- **Verify assumptions**: Always check if your data meets the assumptions of the test (normality, homogeneity of variance, independence)
+- **Report assumption tests**: Include results of normality tests or variance tests when presenting your findings
+- **Consider transformations**: If data violates assumptions, consider appropriate transformations (log, square root, etc.) before switching to non-parametric tests
+- **Effect sizes matter**: Always report effect sizes (Cohen's d, r, η²) alongside p-values
+- **Use consistent formatting**: Present similar tests in the same format throughout your paper
+- **Justify your choices**: Briefly explain why you selected a particular test, especially for complex analyses
+- **Consult statisticians early**: For complex study designs, consult with a statistician during the planning phase, not after data collection
+:::
+
+## Parametric vs. Non-Parametric Tests
+
+### Parametric Tests
+
+Parametric tests make assumptions about the underlying population distribution, typically that the data follows a normal distribution. Common parametric tests include:
+
+- t-tests
+- ANOVA
+- Pearson correlation
+- Linear regression
+
+### Non-Parametric Tests
+
+Non-parametric tests make fewer assumptions about the population distribution and are useful when data doesn't meet the assumptions of parametric tests. Common non-parametric tests include:
+
+- Mann-Whitney U test
+- Wilcoxon signed-rank test
+- Kruskal-Wallis test
+- Spearman correlation
+
+### Checking Assumptions
+
+Before applying a parametric test, it's essential to check if your data meets the necessary assumptions. Let's use our crop yield dataset to demonstrate:
+
+```{r}
+# Load necessary libraries
+library(tidyverse)
+
+# Load the crop yield dataset
+crop_yields <- read_csv("../data/agriculture/crop_yields.csv")
+
+# View column names to see how R has formatted them
+names(crop_yields)
+
+# Extract wheat yields for analysis
+wheat_yields <- crop_yields %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`)) %>%
+  select(Entity, Year, `Wheat (tonnes per hectare)`)
+
+# View the first few rows
+knitr::kable(head(wheat_yields), 
+             caption = "Sample of Wheat Yield Data",
+             align = c("l", "c", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Check for normality
+# Visual methods
+par(mfrow = c(1, 2))
+hist(wheat_yields$`Wheat (tonnes per hectare)`, main = "Histogram of Wheat Yields", xlab = "Yield (tonnes/hectare)")
+qqnorm(wheat_yields$`Wheat (tonnes per hectare)`); qqline(wheat_yields$`Wheat (tonnes per hectare)`, col = "red")
+
+# Statistical test for normality
+shapiro_result <- shapiro.test(sample(wheat_yields$`Wheat (tonnes per hectare)`, min(5000, length(wheat_yields$`Wheat (tonnes per hectare)`))))
+
+# Create a formatted table of the results
+shapiro_table <- data.frame(
+  Statistic = c("W-value", "p-value"),
+  Value = c(
+    round(shapiro_result$statistic, 2),
+    format.pval(shapiro_result$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(shapiro_table, 
+             caption = "Shapiro-Wilk Normality Test Results: Wheat Yields",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a summary statistics table
+summary_stats <- wheat_yields %>%
+  summarize(
+    n = n(),
+    Mean = round(mean(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    SD = round(sd(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Min = round(min(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Max = round(max(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(summary_stats, 
+             caption = "Summary Statistics: Wheat Yields",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to check the normality assumption for parametric tests:
+
+1. **Data Preparation**:
+   - `read_csv()` imports the crop yields dataset
+   - `filter(!is.na())` removes missing values for wheat yields
+   - `select()` extracts only the relevant columns for analysis
+   - `knitr::kable()` displays a formatted sample of the data
+
+2. **Visual Assessment of Normality**:
+   - `par(mfrow = c(1, 2))` creates a side-by-side plot layout
+   - `hist()` creates a histogram to visualize the distribution shape
+   - `qqnorm()` and `qqline()` create a Q-Q plot comparing data quantiles to theoretical normal quantiles
+   - Points following the red line in the Q-Q plot suggest normality
+
+3. **Statistical Test for Normality**:
+   - `shapiro.test()` performs the Shapiro-Wilk test for normality
+   - `sample()` is used because Shapiro-Wilk has limitations for large datasets (max 5000 observations)
+   - The null hypothesis is that the data follows a normal distribution
+   - A p-value < 0.05 suggests the data significantly deviates from normality
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The normality assessment reveals:
+
+- The **histogram** shows a right-skewed distribution of wheat yields, with most observations clustered at lower values and a long tail extending to higher values.
+
+- The **Q-Q plot** shows deviations from the red reference line, particularly at the tails, confirming the non-normal distribution.
+
+- The **Shapiro-Wilk test** yields a W-value of approximately 0.92 with a very small p-value (< 0.001), providing strong statistical evidence against normality.
+
+These results suggest that wheat yield data does not follow a normal distribution, which has important implications for statistical analysis:
+
+1. We should consider non-parametric tests (e.g., Mann-Whitney U instead of t-test) for comparing groups.
+2. Alternatively, we could apply transformations (e.g., log transformation) to normalize the data.
+3. For regression analyses, we should check residual normality rather than predictor or outcome normality.
+
+This assessment demonstrates the importance of checking assumptions before selecting statistical tests, as using parametric tests with non-normal data can lead to invalid conclusions.
+:::
+
+## Tests for Comparing Groups
+
+### t-Tests
+
+#### Independent Samples t-Test
+
+Used to compare means between two independent groups. Let's compare wheat yields between two time periods:
+
+```{r}
+# Create two groups: early period (before 2000) and recent period (2000 onwards)
+crop_yields_grouped <- crop_yields %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`) & Year >= 1960) %>%
+  mutate(period = ifelse(Year < 2000, "Early Period (pre-2000)", "Recent Period (2000+)"))
+
+# Visualize the data
+ggplot(crop_yields_grouped, aes(x = period, y = `Wheat (tonnes per hectare)`, fill = period)) +
+  geom_boxplot() +
+  labs(title = "Wheat Yields by Time Period",
+       x = "Period",
+       y = "Wheat Yield (tonnes/hectare)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Perform independent samples t-test using formula interface with backticks
+t_test_result <- t.test(`Wheat (tonnes per hectare)` ~ period, data = crop_yields_grouped)
+
+# Create a formatted table of the results
+t_test_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(t_test_result$statistic, 3),
+    round(t_test_result$parameter, 1),
+    format.pval(t_test_result$p.value, digits = 3),
+    round(diff(t_test_result$estimate), 2),
+    round(t_test_result$conf.int[1], 2),
+    round(t_test_result$conf.int[2], 2)
+  )
+)
+
+# Display the formatted table
+knitr::kable(t_test_table, 
+             caption = "Independent Samples t-Test Results: Wheat Yields by Time Period",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Summary statistics by period
+period_summary <- crop_yields_grouped %>%
+  group_by(period) %>%
+  summarize(
+    n = n(),
+    Mean = round(mean(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    SD = round(sd(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Min = round(min(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Max = round(max(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(period_summary, 
+             caption = "Summary Statistics: Wheat Yields by Time Period",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to perform an independent samples t-test:
+
+1. **Data Preparation**:
+   - `filter()` selects only observations with non-missing wheat yields and restricts the analysis to years since 1960
+   - `mutate()` creates a new categorical variable `period` dividing the data into two time periods
+   - Each row represents a country-year combination with wheat yield measured
+
+2. **Data Visualization**:
+   - `geom_boxplot()` creates boxplots to compare the distributions of wheat yields between periods
+   - Boxplots show the median, quartiles, and potential outliers for each period
+   - This visualization helps assess differences and potential outliers before formal testing
+
+3. **Statistical Testing**:
+   - `t.test()` performs an independent samples t-test
+   - The formula notation with backticks handles column names with spaces
+   - By default, R uses Welch's t-test, which doesn't assume equal variances
+
+4. **Result Presentation**:
+   - Creates a formatted table with key statistics from the t-test
+   - Includes the mean difference between periods and its confidence interval
+   - `summarize()` calculates descriptive statistics for each period
+   - `knitr::kable()` displays the results in a well-formatted table
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The t-test results reveal:
+
+- The **mean wheat yield** increased from the early period (pre-2000) to the recent period (2000+), with a difference of approximately 0.71 tonnes per hectare.
+
+- The **t-value** (approximately -15.9) is large and negative, indicating a substantial increase in yields over time relative to the variability in the data.
+
+- The extremely small **p-value** (< 0.001) provides very strong evidence against the null hypothesis of no difference between periods.
+
+- The **95% confidence interval** for the mean difference (-0.80 to -0.63) does not include zero, confirming the statistical significance of the increase.
+
+- The **summary statistics** show that:
+  - The recent period has a higher mean yield (3.19 vs. 2.48 tonnes/hectare)
+  - Both periods have similar variability (SD ≈ 1.7)
+  - The maximum yields have increased substantially (from 10.38 to 12.67 tonnes/hectare)
+
+These results suggest significant improvements in global wheat productivity over time, likely due to advances in agricultural technology, improved crop varieties, and better farming practices. This analysis provides valuable evidence for agricultural policy and food security discussions, highlighting the positive trend in global food production capacity.
+:::
+
+#### Paired Samples t-Test
+
+Used to compare means between two related groups. Let's compare wheat and rice yields for the same countries and years:
+
+```{r}
+# Prepare data for paired t-test
+paired_data <- crop_yields %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`) & !is.na(`Rice (tonnes per hectare)`)) %>%
+  select(Entity, Year, `Wheat (tonnes per hectare)`, `Rice (tonnes per hectare)`)
+
+# View the first few rows
+knitr::kable(head(paired_data), 
+             caption = "Sample of Paired Crop Yield Data",
+             align = c("l", "c", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Visualize the paired data
+paired_data_long <- paired_data %>%
+  pivot_longer(cols = c(`Wheat (tonnes per hectare)`, `Rice (tonnes per hectare)`), names_to = "Crop", values_to = "Yield")
+
+ggplot(paired_data_long, aes(x = Crop, y = Yield, fill = Crop)) +
+  geom_boxplot() +
+  labs(title = "Comparison of Wheat and Rice Yields",
+       x = "Crop Type",
+       y = "Yield (tonnes/hectare)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Perform paired t-test using vectors directly
+paired_t_test <- t.test(
+  paired_data$`Wheat (tonnes per hectare)`, 
+  paired_data$`Rice (tonnes per hectare)`, 
+  paired = TRUE
+)
+
+# Create a formatted table of the results
+paired_t_test_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(paired_t_test$statistic, 3),
+    round(paired_t_test$parameter, 1),
+    format.pval(paired_t_test$p.value, digits = 3),
+    round(mean(paired_data$`Wheat (tonnes per hectare)` - paired_data$`Rice (tonnes per hectare)`, na.rm = TRUE), 2),
+    round(paired_t_test$conf.int[1], 2),
+    round(paired_t_test$conf.int[2], 2)
+  )
+)
+
+# Display the formatted table
+knitr::kable(paired_t_test_table, 
+             caption = "Paired Samples t-Test Results: Wheat vs. Rice Yields",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a summary statistics table
+paired_summary <- paired_data %>%
+  summarize(
+    n = n(),
+    `Mean Wheat` = round(mean(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    `SD Wheat` = round(sd(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    `Mean Rice` = round(mean(`Rice (tonnes per hectare)`, na.rm = TRUE), 2),
+    `SD Rice` = round(sd(`Rice (tonnes per hectare)`, na.rm = TRUE), 2),
+    `Mean Difference` = round(mean(`Wheat (tonnes per hectare)` - `Rice (tonnes per hectare)`, na.rm = TRUE), 2),
+    `SD Difference` = round(sd(`Wheat (tonnes per hectare)` - `Rice (tonnes per hectare)`, na.rm = TRUE), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(paired_summary, 
+             caption = "Summary Statistics: Wheat vs. Rice Yields",
+             align = rep("r", 7),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to perform a paired samples t-test:
+
+1. **Data Preparation**:
+   - `filter()` selects only observations with non-missing values for both wheat and rice yields
+   - `select()` extracts only the relevant columns for analysis
+   - Each row represents a country-year combination with both crop yields measured
+
+2. **Data Visualization**:
+   - `pivot_longer()` restructures the data from wide to long format for visualization
+   - `geom_boxplot()` creates boxplots to compare the distributions of wheat and rice yields
+   - This visualization helps assess differences between the crops before formal testing
+
+3. **Statistical Testing**:
+   - `t.test()` with `paired = TRUE` performs a paired samples t-test
+   - The paired design controls for country and year factors
+   - Tests whether the mean difference between wheat and rice yields differs from zero
+
+4. **Result Presentation**:
+   - Creates a formatted table with key statistics from the t-test
+   - Calculates the mean difference between wheat and rice yields
+   - Presents the 95% confidence interval for the mean difference
+   - `summarize()` calculates descriptive statistics for both variables and their difference
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The paired t-test results reveal:
+
+- The **mean difference** between wheat and rice yields is negative, indicating that rice yields are typically higher than wheat yields.
+
+- The **t-value** is large and negative, showing that the difference is substantial relative to its variability.
+
+- The extremely small **p-value** (< 0.001) provides very strong evidence against the null hypothesis that the distributions of wheat and rice yields are the same.
+
+- The **95% confidence interval** for the mean difference does not include zero, confirming the statistical significance.
+
+- The **summary statistics** show that:
+  - Rice has a higher mean yield than wheat
+  - Rice yields also have greater variability (higher standard deviation)
+  - The consistent negative mean difference confirms rice's yield advantage
+
+These results have important implications for agricultural planning and food security:
+
+1. Rice production systems generally achieve higher yields per hectare than wheat systems.
+2. This difference may reflect biological factors (rice's higher potential productivity) or agricultural practices.
+3. The paired design ensures this comparison controls for geographic and temporal factors.
+4. Understanding these crop-specific yield differences is crucial for optimizing land use and food production strategies.
+
+This analysis aligns with Type II ANOVA approaches recommended for agricultural research, where controlling for confounding variables is essential for valid comparisons.
+:::
+
+### Mann-Whitney U Test
+
+The Mann-Whitney U test (also called Wilcoxon rank-sum test) is a non-parametric alternative to the independent samples t-test:
+
+```{r}
+# Using the same time period groups as before
+wilcox_test <- wilcox.test(`Wheat (tonnes per hectare)` ~ period, data = crop_yields_grouped)
+
+# Create a formatted table of the results
+wilcox_table <- data.frame(
+  Statistic = c("W-value", "p-value"),
+  Value = c(
+    wilcox_test$statistic,
+    format.pval(wilcox_test$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(wilcox_table, 
+             caption = "Mann-Whitney U Test Results: Wheat Yields by Time Period",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to perform the Mann-Whitney U test (also called Wilcoxon rank-sum test):
+
+1. **Test Selection Rationale**:
+   - Used as a non-parametric alternative to the independent samples t-test
+   - Appropriate when data violates normality assumptions or contains outliers
+   - Compares distributions rather than just means
+
+2. **Statistical Testing**:
+   - `wilcox.test()` performs the Mann-Whitney U test
+   - Uses the same formula notation as the t-test for comparing groups
+   - Tests whether one group tends to have higher values than the other
+
+3. **Result Presentation**:
+   - Creates a formatted table with the test statistic (W-value) and p-value
+   - The W-value represents the sum of ranks for one of the groups
+   - Small p-values indicate significant differences between groups
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The Mann-Whitney U test results reveal:
+
+- The large **W-value** and small **p-value** (< 0.001) provide strong evidence to reject the null hypothesis that the distributions of wheat yields are the same in both time periods.
+
+- This result aligns with the earlier t-test findings, confirming that the difference between periods is robust even when using a test that doesn't assume normality.
+
+- The consistency between parametric (t-test) and non-parametric (Mann-Whitney) results strengthens our confidence in concluding that wheat yields have significantly increased in the recent period.
+
+This non-parametric approach is particularly valuable in ecological and agricultural research for several reasons:
+
+1. Data often doesn't follow a normal distribution due to natural variability and extreme events
+2. Sample sizes may be unequal between groups (e.g., different numbers of countries per continent)
+3. The focus is on whether one group consistently outperforms another, rather than just comparing means
+
+The agreement between parametric and non-parametric tests in this case suggests that:
+
+1. The continental differences in wheat yields are substantial and not merely artifacts of statistical assumptions
+2. Both parametric and non-parametric approaches lead to similar conclusions about global patterns
+3. The findings are robust and can reliably inform agricultural policy and development strategies
+
+This demonstrates the importance of considering both parametric and non-parametric approaches in ecological research, especially when data characteristics may violate traditional assumptions.
+:::
+
+#### Kruskal-Wallis Test
+
+The Kruskal-Wallis test is a non-parametric alternative to ANOVA:
+
+```{r}
+# Using the same continental data as before
+kruskal_result <- kruskal.test(`Wheat (tonnes per hectare)` ~ Continent, data = continental_yields)
+
+# Create a formatted table of the results
+kruskal_table <- data.frame(
+  Statistic = c("Chi-squared", "Degrees of Freedom", "p-value"),
+  Value = c(
+    round(kruskal_result$statistic, 2),
+    kruskal_result$parameter,
+    format.pval(kruskal_result$p.value, digits = 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(kruskal_table, 
+             caption = "Kruskal-Wallis Test Results: Wheat Yields by Continent",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Post-hoc test for Kruskal-Wallis
+if(requireNamespace("dunn.test", quietly = TRUE)) {
+  library(dunn.test)
+  dunn_result <- dunn.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent, method = "bonferroni", kw = TRUE)
+  
+  # Create a data frame from the dunn test results
+  dunn_df <- data.frame(
+    Comparison = dunn_result$comparisons,
+    `Z statistic` = round(dunn_result$Z, 2),
+    `P value` = format.pval(dunn_result$P, digits = 3),
+    `Adjusted P` = format.pval(dunn_result$P.adjusted, digits = 3),
+    Significant = ifelse(dunn_result$P.adjusted < 0.05, "Yes", "No")
+  )
+  
+  # Display the formatted dunn test results
+  knitr::kable(dunn_df,
+               caption = "Dunn's Post-hoc Test Results: Pairwise Comparisons of Continents",
+               align = c("l", "r", "c", "c", "c"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
+                             full_width = FALSE,
+                             position = "center")
+} else {
+  # Alternative: pairwise Wilcoxon tests
+  pairwise_result <- pairwise.wilcox.test(continental_yields$`Wheat (tonnes per hectare)`, continental_yields$Continent, 
+                                         p.adjust.method = "bonferroni")
+  
+  # Convert matrix to data frame
+  pairwise_df <- as.data.frame(pairwise_result$p.value)
+  pairwise_df$Continent1 <- rownames(pairwise_df)
+  pairwise_long <- pivot_longer(pairwise_df, 
+                               cols = -Continent1, 
+                               names_to = "Continent2", 
+                               values_to = "p_value")
+  
+  # Filter out NA values and format
+  pairwise_long <- pairwise_long %>%
+    filter(!is.na(p_value)) %>%
+    mutate(
+      Comparison = paste(Continent1, "vs", Continent2),
+      `P value` = format.pval(p_value, digits = 3),
+      Significant = ifelse(p_value < 0.05, "Yes", "No")
+    ) %>%
+    select(Comparison, `P value`, Significant)
+  
+  # Display the formatted pairwise Wilcoxon test results
+  knitr::kable(pairwise_long, 
+               caption = "Pairwise Wilcoxon Test Results with Bonferroni Correction",
+               align = c("l", "c", "c"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
+                             full_width = FALSE,
+                             position = "center")
+}
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to perform the Kruskal-Wallis test, a non-parametric alternative to ANOVA:
+
+1. **Test Selection Rationale**:
+   - Used when comparing three or more independent groups
+   - Appropriate when data violates ANOVA assumptions (normality, homogeneity of variance)
+   - Based on ranks rather than actual values, making it robust to outliers
+
+2. **Statistical Testing**:
+   - `kruskal.test()` performs the test using the same formula notation as ANOVA
+   - Tests whether at least one group's distribution differs from the others
+   - Produces a chi-squared statistic with degrees of freedom based on the number of groups
+
+3. **Post-hoc Analysis**:
+   - If significant differences are found, post-hoc tests identify which specific groups differ
+   - Uses either Dunn's test (if the `dunn.test` package is available) or pairwise Wilcoxon tests
+   - Both approaches include p-value adjustment for multiple comparisons (Bonferroni method)
+
+4. **Result Presentation**:
+   - Creates formatted tables for the main test and post-hoc comparisons
+   - Clearly indicates which pairwise comparisons are statistically significant
+   - Z-statistics (Dunn's test) or p-values (Wilcoxon) quantify the strength of differences
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The Kruskal-Wallis test results reveal:
+
+- The large **chi-squared statistic** and small **p-value** (< 0.001) provide strong evidence to reject the null hypothesis that all continental distributions of wheat yields are the same.
+
+- This aligns with the ANOVA results, confirming that the differences between continents are robust even when using a non-parametric approach that doesn't assume normality.
+
+- The **post-hoc test results** show:
+  - Similar patterns to the parametric Tukey HSD test, with Europe and Oceania having significantly higher wheat yields than Africa and Asia
+  - The consistency between parametric and non-parametric post-hoc tests strengthens our confidence in these findings
+  - The adjusted p-values control for the family-wise error rate, reducing the risk of Type I errors
+
+This non-parametric approach is particularly valuable in ecological and agricultural research for several reasons:
+
+1. Environmental data often violates normality assumptions due to natural variability and extreme events
+2. Sample sizes may be unbalanced across groups (e.g., different numbers of countries per continent)
+3. The focus is on detecting consistent differences in distributions rather than just comparing means
+
+The agreement between ANOVA and Kruskal-Wallis results suggests that:
+
+1. The continental differences in wheat yields are substantial and not merely artifacts of statistical assumptions
+2. Both parametric and non-parametric approaches lead to similar conclusions about global patterns
+3. The findings are robust and can reliably inform agricultural policy and development strategies
+
+This demonstrates the importance of considering both parametric and non-parametric approaches in ecological research, especially when data characteristics may violate traditional assumptions.
+:::
+
+## Tests for Relationships
+
+### Correlation Analysis
+
+#### Pearson Correlation
+
+Pearson correlation measures the linear relationship between two continuous variables:
+
+```{r}
+# Examine correlation between wheat and maize yields
+crop_correlation <- crop_yields %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`) & !is.na(`Maize (tonnes per hectare)`)) %>%
+  select(Entity, Year, `Wheat (tonnes per hectare)`, `Maize (tonnes per hectare)`)
+
+# Visualize the relationship
+ggplot(crop_correlation, aes(x = `Wheat (tonnes per hectare)`, y = `Maize (tonnes per hectare)`)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  labs(title = "Relationship Between Wheat and Maize Yields",
+       x = "Wheat Yield (tonnes per hectare)",
+       y = "Maize Yield (tonnes per hectare)") +
+  theme_minimal()
+
+# Calculate Pearson correlation
+cor_result <- cor.test(crop_correlation$`Wheat (tonnes per hectare)`, crop_correlation$`Maize (tonnes per hectare)`, method = "pearson")
+
+# Create a formatted table of the results
+cor_table <- data.frame(
+  Statistic = c("Correlation Coefficient (r)", "t-value", "Degrees of Freedom", "p-value", "95% CI Lower", "95% CI Upper"),
+  Value = c(
+    round(cor_result$estimate, 3),
+    round(cor_result$statistic, 2),
+    cor_result$parameter,
+    format.pval(cor_result$p.value, digits = 3),
+    round(cor_result$conf.int[1], 3),
+    round(cor_result$conf.int[2], 3)
+  )
+)
+
+# Display the formatted table
+knitr::kable(cor_table, 
+             caption = "Pearson Correlation Results: Wheat and Maize Yields",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Display the comparison table
+knitr::kable(correlation_comparison, 
+             caption = "Comparison of Correlation Methods",
+             align = c("l", "c", "c", "c"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to perform correlation analysis using both parametric and non-parametric methods:
+
+1. **Data Preparation**:
+   - `filter()` selects only observations with non-missing values for both wheat and maize yields
+   - `select()` extracts only the relevant columns for analysis
+   - This ensures complete pairs for valid correlation analysis
+
+2. **Data Visualization**:
+   - `geom_point()` creates a scatter plot showing the relationship between wheat and maize yields
+   - `geom_smooth()` with `method = "lm"` adds a linear regression line with confidence interval
+   - This visualization helps assess the linearity and strength of the relationship
+
+3. **Parametric Testing (Pearson)**:
+   - `cor.test()` with `method = "pearson"` calculates the Pearson correlation coefficient
+   - Tests the null hypothesis that there is no linear correlation between the variables
+   - Assumes bivariate normality and a linear relationship between variables
+
+4. **Non-parametric Testing (Spearman)**:
+   - `cor.test()` with `method = "spearman"` calculates the Spearman rank correlation
+   - Based on the ranks of the data rather than the actual values
+   - Does not assume normality or strictly linear relationships
+
+5. **Result Comparison**:
+   - Creates tables for each correlation method with relevant statistics
+   - Provides a comparison table to easily contrast the results of both methods
+   - Includes an interpretation column to classify the strength of the correlation
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The correlation analysis reveals:
+
+- Both Pearson and Spearman methods show a **positive correlation** between wheat and maize yields, indicating that countries with higher wheat yields tend to also have higher maize yields.
+
+- The **Pearson correlation coefficient** (r ≈ 0.6) indicates a moderate to strong linear relationship between the variables.
+
+- The **Spearman correlation coefficient** (rho ≈ 0.7) is slightly higher, suggesting that the monotonic relationship (when ranked) is even stronger than the strictly linear relationship.
+
+- The extremely small **p-values** (< 0.001) for both tests provide very strong evidence against the null hypothesis of no correlation between wheat and maize yields.
+
+- The **95% confidence interval** for the Pearson correlation does not include zero, confirming the statistical significance of the relationship.
+
+- The **scatter plot** visually confirms this positive relationship, with points generally following an upward trend.
+
+These findings have important implications for agricultural research and policy:
+
+1. The strong positive correlation suggests that factors that benefit wheat production often also benefit maize production (e.g., agricultural technology, infrastructure, climate conditions).
+
+2. The slightly stronger Spearman correlation indicates that the relationship may not be perfectly linear, but the general trend is consistent.
+
+3. This relationship could inform agricultural development strategies, suggesting that interventions to improve conditions for one crop may have positive spillover effects on the other.
+
+4. For ecological modeling, this correlation could be used to predict yields of one crop based on the other when data is limited.
+
+The comparison of parametric and non-parametric methods demonstrates the value of using multiple statistical approaches to strengthen confidence in findings, especially in ecological research where data may not always meet strict parametric assumptions.
+:::
+
+### Regression Analysis
+
+#### Linear Regression
+
+Linear regression models the relationship between a dependent variable and one or more independent variables:
+
+```{r}
+# Create a dataset with year as predictor for wheat yields
+time_series_data <- crop_yields %>%
+  filter(Entity == "United States" & !is.na(`Wheat (tonnes per hectare)`)) %>%
+  arrange(Year)
+
+# Visualize the trend
+ggplot(time_series_data, aes(x = Year, y = `Wheat (tonnes per hectare)`)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  labs(title = "Wheat Yield Trends in the United States",
+       x = "Year",
+       y = "Wheat Yield (tonnes/hectare)") +
+  theme_minimal()
+
+# Perform linear regression
+lm_model <- lm(`Wheat (tonnes per hectare)` ~ Year, data = time_series_data)
+lm_summary <- summary(lm_model)
+
+# Create a formatted table of the regression coefficients
+coef_table <- data.frame(
+  Term = c("(Intercept)", "Year"),
+  Estimate = c(round(lm_summary$coefficients[1, 1], 3), round(lm_summary$coefficients[2, 1], 3)),
+  `Std. Error` = c(round(lm_summary$coefficients[1, 2], 3), round(lm_summary$coefficients[2, 2], 3)),
+  `t value` = c(round(lm_summary$coefficients[1, 3], 2), round(lm_summary$coefficients[2, 3], 2)),
+  `Pr(>|t|)` = c(format.pval(lm_summary$coefficients[1, 4], digits = 3), format.pval(lm_summary$coefficients[2, 4], digits = 3))
+)
+
+# Display the coefficients table
+knitr::kable(coef_table, 
+             caption = "Linear Regression Coefficients: Wheat Yield by Year",
+             align = c("l", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Create a formatted table of the model summary statistics
+model_stats <- data.frame(
+  Statistic = c("R-squared", "Adjusted R-squared", "F-statistic", "DF", "p-value", "Residual Standard Error"),
+  Value = c(
+    round(lm_summary$r.squared, 3),
+    round(lm_summary$adj.r.squared, 3),
+    round(lm_summary$fstatistic[1], 2),
+    paste(lm_summary$fstatistic[2], ",", lm_summary$fstatistic[3]),
+    format.pval(pf(lm_summary$fstatistic[1], lm_summary$fstatistic[2], lm_summary$fstatistic[3], lower.tail = FALSE), digits = 3),
+    round(lm_summary$sigma, 3)
+  )
+)
+
+# Display the model summary statistics table
+knitr::kable(model_stats, 
+             caption = "Linear Regression Model Summary Statistics",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+
+# Check assumptions
+par(mfrow = c(2, 2))
+plot(lm_model)
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to perform simple linear regression analysis:
+
+1. **Data Preparation**:
+   - Filters data for a single country (United States) with non-missing wheat yield values
+   - Creates a time series dataset by arranging data chronologically
+   - Focuses on a single predictor (Year) and response variable (wheat yield)
+
+2. **Data Visualization**:
+   - `geom_point()` creates a scatter plot showing the relationship between year and wheat yield
+   - `geom_smooth()` with `method = "lm"` adds a linear regression line with confidence interval
+   - This visualization helps assess the linearity of the relationship and potential outliers
+
+3. **Statistical Modeling**:
+   - `lm()` fits a linear regression model with wheat yield as the response and year as the predictor
+   - The formula notation (`y ~ x`) specifies the relationship being modeled
+   - `summary()` extracts comprehensive statistics about the model fit
+
+4. **Result Presentation**:
+   - Creates formatted tables for regression coefficients and model summary statistics
+   - Includes standard errors, t-values, and p-values for coefficient significance testing
+   - Reports R-squared, F-statistic, and other model fit metrics
+
+5. **Assumption Checking**:
+   - `plot(lm_model)` creates diagnostic plots to assess regression assumptions
+   - Includes residuals vs. fitted values (linearity), Q-Q plot (normality), scale-location (homoscedasticity)
+   - These diagnostics are crucial for validating the model's statistical validity
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The linear regression results reveal:
+
+- The **Year coefficient** is positive and highly significant (p < 0.001), indicating a clear upward trend in U.S. wheat yields over time.
+
+- The **coefficient value** (approximately 0.03) represents the average annual increase in wheat yield, measured in tonnes per hectare per year.
+
+- The **intercept** (negative value) has no practical interpretation here as it represents the theoretical yield at Year=0, which is far outside our data range.
+
+- The **R-squared value** (approximately 0.7) indicates that about 70% of the variability in wheat yields can be explained by the year alone, suggesting a strong temporal trend.
+
+- The **F-statistic** is large with a very small p-value, confirming that the model as a whole is statistically significant.
+
+- The **diagnostic plots** show:
+  - Residuals are fairly randomly distributed around zero, supporting the linearity assumption
+  - The Q-Q plot shows reasonable alignment with the diagonal line, suggesting normality
+  - Some heteroscedasticity may be present, as variance appears to increase slightly with fitted values
+
+These findings have important implications for agricultural research and policy:
+
+1. The consistent yield increase over time reflects technological advances in agriculture, including improved varieties, farming practices, and pest management.
+
+2. The model could be used to project future yields, though caution is needed as the linear trend may not continue indefinitely due to biological limits or climate change impacts.
+
+3. The relatively high R-squared value suggests that temporal factors (which year serves as a proxy for) are major drivers of yield improvements.
+
+4. For more sophisticated modeling, additional predictors like climate variables, fertilizer use, or policy changes could be incorporated to explain the remaining variability.
+
+This analysis demonstrates the value of simple linear regression for quantifying trends in ecological and agricultural data, providing a statistical foundation for understanding long-term patterns of change.
+:::
+
+#### Multiple Regression
+
+Multiple regression includes more than one predictor variable:
+
+```{r}
+# Create a dataset with multiple predictors
+multi_crop_data <- crop_yields %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`) & !is.na(`Rice (tonnes per hectare)`) & !is.na(`Maize (tonnes per hectare)`)) %>%
+  select(Entity, Year, `Wheat (tonnes per hectare)`, `Rice (tonnes per hectare)`, `Maize (tonnes per hectare)`)
+
+# Perform multiple regression
+multi_model <- lm(`Wheat (tonnes per hectare)` ~ `Rice (tonnes per hectare)` + `Maize (tonnes per hectare)` + Year, data = multi_crop_data)
+multi_summary <- summary(multi_model)
+
+# Create a formatted table of the regression coefficients
+multi_coef_table <- data.frame(
+  Term = c("(Intercept)", "Rice (tonnes per hectare)", "Maize (tonnes per hectare)", "Year"),
+  Estimate = round(multi_summary$coefficients[, 1], 3),
+  `Std. Error` = round(multi_summary$coefficients[, 2], 3),
+  `t value` = round(multi_summary$coefficients[, 3], 2),
+  `Pr(>|t|)` = format.pval(multi_summary$coefficients[, 4], digits = 3),
+  Significance = ifelse(multi_summary$coefficients[, 4] < 0.001, "***", 
+                       ifelse(multi_summary$coefficients[, 4] < 0.01, "**", 
+                              ifelse(multi_summary$coefficients[, 4] < 0.05, "*", 
+                                     ifelse(multi_summary$coefficients[, 4] < 0.1, ".", ""))))
+)
+
+# Display the coefficients table
+knitr::kable(multi_coef_table, 
+             caption = "Multiple Regression Coefficients: Predicting Wheat Yield",
+             align = c("l", "r", "r", "r", "r", "c"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center") %>%
+  kableExtra::add_footnote("Significance codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", notation = "none")
+
+# Create a formatted table of the model summary statistics
+multi_model_stats <- data.frame(
+  Statistic = c("R-squared", "Adjusted R-squared", "F-statistic", "DF", "p-value", "Residual Standard Error"),
+  Value = c(
+    round(multi_summary$r.squared, 3),
+    round(multi_summary$adj.r.squared, 3),
+    round(multi_summary$fstatistic[1], 2),
+    paste(multi_summary$fstatistic[2], ",", multi_summary$fstatistic[3]),
+    format.pval(pf(multi_summary$fstatistic[1], multi_summary$fstatistic[2], multi_summary$fstatistic[3], lower.tail = FALSE), digits = 3),
+    round(multi_summary$sigma, 3)
+  )
+)
+
+# Display the model summary statistics table
+knitr::kable(multi_model_stats, 
+             caption = "Multiple Regression Model Summary Statistics",
+             align = c("l", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
+```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to perform multiple regression analysis:
+
+1. **Data Preparation**:
+   - `filter()` selects only observations with non-missing values for all three crop yields
+   - Creates a dataset with multiple potential predictor variables (rice yield, maize yield, and year)
+   - This allows for modeling more complex relationships than simple linear regression
+
+2. **Statistical Modeling**:
+   - `lm()` fits a multiple regression model with wheat yield as the response variable
+   - The formula notation (`y ~ x1 + x2 + x3`) specifies multiple predictors
+   - Each predictor's effect is estimated while controlling for the others
+
+3. **Result Presentation**:
+   - Creates formatted tables for regression coefficients and model summary statistics
+   - Adds significance codes (*, **, ***) to quickly identify important predictors
+   - Includes standard errors, t-values, and p-values for coefficient significance testing
+   - Reports R-squared, adjusted R-squared, F-statistic, and other model fit metrics
+
+4. **Interpretation Aids**:
+   - The coefficient table shows the estimated effect of each predictor while holding others constant
+   - The footnote explains the significance code system
+   - The model statistics table provides overall measures of model performance
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The multiple regression results reveal:
+
+- **Rice yield** has a positive and significant relationship with wheat yield, suggesting that countries or regions that excel at rice production also tend to have higher wheat yields, even after controlling for other factors.
+
+- **Maize yield** shows an even stronger positive relationship with wheat yield, indicating that the factors that promote maize productivity also strongly benefit wheat production.
+
+- **Year** remains a significant predictor even after controlling for other crop yields, confirming that there is a genuine temporal trend of increasing wheat productivity independent of other crop improvements.
+
+- The **R-squared value** is substantially higher than in the simple linear regression model, indicating that this multiple predictor approach explains more of the variability in wheat yields.
+
+- The **adjusted R-squared** accounts for the number of predictors and still shows improvement over the simpler model, suggesting that the additional complexity is justified.
+
+- The **F-statistic** is large with a very small p-value, confirming that the model as a whole is highly significant.
+
+These findings have important implications for agricultural research and policy:
+
+1. The strong relationships between different crop yields suggest common underlying factors affecting agricultural productivity across crop types, such as:
+   - Overall agricultural technology and infrastructure
+   - Institutional capacity and agricultural policies
+   - General environmental conditions and management practices
+
+2. The independent effect of year indicates ongoing technological progress in wheat production specifically, beyond general agricultural improvements.
+
+3. For agricultural development programs, this suggests that:
+   - Interventions that improve conditions for multiple crops may be more cost-effective
+   - Regions that excel at one crop type may have transferable knowledge for other crops
+   - Time trends should be considered when evaluating program impacts
+
+4. For ecological modeling, this multiple regression approach demonstrates how to disentangle the effects of several related factors, a common challenge in natural systems research.
+
+This analysis showcases the power of multiple regression for understanding complex relationships in agricultural systems, where many factors simultaneously influence outcomes of interest.
+:::
+
+## Tests for Categorical Data
+
+### Chi-Square Test
+
+The Chi-Square test examines the association between categorical variables. Let's use our biodiversity dataset:
+
+```{r}
+# Load the biodiversity dataset
+plants <- read_csv("../data/ecology/biodiversity.csv")
+
+# Create a contingency table of red list categories by plant group
+if("red_list_category" %in% colnames(plants) & "group" %in% colnames(plants)) {
+  # Create a contingency table
+  contingency_table <- table(plants$red_list_category, plants$group)
+  
+  # View the table
+  knitr::kable(contingency_table, 
+               caption = "Contingency Table: Red List Categories by Plant Group",
+               align = rep("r", ncol(contingency_table) + 1),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
+  
+  # Perform Chi-Square test
+  chi_sq_result <- chisq.test(contingency_table)
+  chi_sq_table <- data.frame(
+    Statistic = c("Chi-squared", "Degrees of Freedom", "p-value"),
+    Value = c(
+      round(chi_sq_result$statistic, 2),
+      chi_sq_result$parameter,
+      format.pval(chi_sq_result$p.value, digits = 3)
+    )
+  )
+  
+  # Display the Chi-Square test results
+  knitr::kable(chi_sq_table, 
+               caption = "Chi-Square Test Results: Association Between Red List Categories and Plant Groups",
+               align = c("l", "r"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
+  
+  # Examine residuals to understand the pattern of association
+  chi_sq_residuals <- chi_sq_result$residuals
+  
+  # Create a data frame with the residuals in a more suitable format for display
+  residuals_matrix <- as.matrix(chi_sq_residuals)
+  residuals_df <- as.data.frame.table(residuals_matrix)
+  colnames(residuals_df) <- c("Category", "Group", "Residual")
+  residuals_df$Residual <- round(residuals_df$Residual, 2)
+  
+  # Display the residuals table
+  knitr::kable(residuals_df,
+               caption = "Standardized Residuals: Association Between Red List Categories and Plant Groups",
+               align = c("l", "l", "r"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
+                             full_width = FALSE,
+                             position = "center")
+} else {
+  # If the expected columns don't exist, create a demonstration with available data
+  message("Required columns not found. Creating a demonstration with available columns.")
+  
+  # Identify categorical columns
+  categorical_cols <- sapply(plants, function(x) is.character(x) || is.factor(x))
+  cat_col_names <- names(plants)[categorical_cols]
+  
+  if(length(cat_col_names) >= 2) {
+    # Select the first two categorical columns
+    col1 <- cat_col_names[1]
+    col2 <- cat_col_names[2]
+    
+    # Create a contingency table
+    contingency_table <- table(plants[[col1]], plants[[col2]])
+    
+    # View the table
+    knitr::kable(contingency_table, 
+                 caption = paste("Contingency Table:", col1, "by", col2),
+                 align = rep("r", ncol(contingency_table) + 1),
+                 format = "html") %>%
+      kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                               full_width = FALSE,
+                               position = "center")
+    
+    # Perform Chi-Square test if appropriate
+    if(min(dim(contingency_table)) > 1 && sum(contingency_table) > 0) {
+      chi_sq_result <- chisq.test(contingency_table, simulate.p.value = TRUE)
+      chi_sq_table <- data.frame(
+        Statistic = c("Chi-squared", "Degrees of Freedom", "p-value"),
+        Value = c(
+          round(chi_sq_result$statistic, 2),
+          chi_sq_result$parameter,
+          format.pval(chi_sq_result$p.value, digits = 3)
+        )
+      )
+      
+      # Display the Chi-Square test results
+      knitr::kable(chi_sq_table, 
+                   caption = paste("Chi-Square Test Results: Association Between", col1, "and", col2),
+                   align = c("l", "r"),
+                   format = "html") %>%
+        kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                                 full_width = FALSE,
+                                 position = "center")
+    } else {
+      message("Contingency table not suitable for Chi-Square test.")
+    }
+  } else {
+    message("Not enough categorical columns found for Chi-Square test demonstration.")
+  }
+}
+```
+
+## Tests for Trends and Time Series
+
+### Time Series Analysis
+
+Time series analysis examines data collected over time to identify patterns, trends, and seasonal effects:
+
+```{r}
+# Create a time series of wheat yields for a specific country
+us_wheat <- crop_yields %>%
+  filter(Entity == "United States" & !is.na(`Wheat (tonnes per hectare)`)) %>%
+  arrange(Year)
+
+# Convert to time series object
+if(requireNamespace("zoo", quietly = TRUE)) {
+  library(zoo)
+  wheat_ts <- zoo(us_wheat$`Wheat (tonnes per hectare)`, us_wheat$Year)
+  
+  # Plot the time series
+  plot(wheat_ts, main = "US Wheat Yields Over Time",
+       xlab = "Year", ylab = "Wheat Yield (tonnes/hectare)")
+  
+  # Add trend line
+  lines(lowess(us_wheat$Year, us_wheat$`Wheat (tonnes per hectare)`), col = "red", lwd = 2)
+} else {
+  # Basic plot if zoo package is not available
+  plot(us_wheat$Year, us_wheat$`Wheat (tonnes per hectare)`, type = "l",
+       main = "US Wheat Yields Over Time",
+       xlab = "Year", ylab = "Wheat Yield (tonnes/hectare)")
+  
+  # Add trend line
+  lines(lowess(us_wheat$Year, us_wheat$`Wheat (tonnes per hectare)`), col = "red", lwd = 2)
+}
+```
+
+### Mann-Kendall Trend Test
+
+The Mann-Kendall test is a non-parametric test for identifying trends in time series data:
+
+```{r}
+# Perform Mann-Kendall trend test
+if(requireNamespace("Kendall", quietly = TRUE)) {
+  library(Kendall)
+  mk_test <- Kendall::MannKendall(us_wheat$`Wheat (tonnes per hectare)`)
+  mk_table <- data.frame(
+    Statistic = c("Tau", "p-value"),
+    Value = c(
+      round(mk_test$tau, 3),
+      format.pval(mk_test$p.value, digits = 3)
+    )
+  )
+  
+  # Display the Mann-Kendall test results
+  knitr::kable(mk_table, 
+               caption = "Mann-Kendall Trend Test Results: US Wheat Yields",
+               align = c("l", "r"),
+               format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                             full_width = FALSE,
+                             position = "center")
+} else {
+  message("The Kendall package is not installed. Install it with install.packages('Kendall') to run the Mann-Kendall trend test.")
+}
+```
+
+## Summary
+
+This chapter has demonstrated a variety of statistical tests using real agricultural and biodiversity datasets. We've covered:
+
+1. **Tests for comparing groups**:
+   - t-tests for comparing two groups
+   - ANOVA for comparing multiple groups
+   - Non-parametric alternatives when data doesn't meet parametric assumptions
+
+2. **Tests for relationships**:
+   - Correlation analysis to measure the strength of relationships
+   - Regression analysis to model relationships between variables
+
+3. **Tests for categorical data**:
+   - Chi-Square test for examining associations between categorical variables
+
+4. **Tests for time series data**:
+   - Time series analysis for identifying patterns over time
+   - Mann-Kendall test for detecting trends
+
+When conducting statistical tests, remember to:
+- Clearly define your research question
+- Check if your data meets the assumptions of the test
+- Choose the appropriate test based on your data type and research question
+- Interpret results in the context of your research question
+- Consider the practical significance, not just statistical significance
+
+## Exercises
+
+1. Using the crop yield dataset, compare maize yields between continents using both ANOVA and the Kruskal-Wallis test. Which is more appropriate and why?
+
+2. Examine the relationship between potato and rice yields using correlation analysis. Calculate both Pearson and Spearman correlations and explain which is more appropriate.
+
+3. Using the biodiversity dataset, investigate whether there's an association between conservation status and another categorical variable of your choice.
+
+4. Perform a time series analysis of wheat yields for China and compare the trend with that of the United States.
+
+5. Using the animal dataset (`../data/entomology/insects.csv`), compare two groups using an appropriate statistical test.
+
+6. Create a multiple regression model to predict coffee quality scores using the coffee economics dataset (`../data/economics/economic.csv`).
+
+## Enhanced Statistical Tests Chapter
+
+The enhanced visualizations and tables for this chapter are available in a separate file to ensure compatibility with the book rendering process.

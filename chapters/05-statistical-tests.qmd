@@ -262,7 +262,6 @@ knitr::kable(summary_stats,
 
 ::: {.callout-note}
 ## Code Explanation
-
 This code demonstrates how to check the normality assumption for parametric tests:
 
 1. **Data Preparation**: Imports and filters the dataset, removing missing values
@@ -273,7 +272,6 @@ This code demonstrates how to check the normality assumption for parametric test
 
 ::: {.callout-important}
 ## Results Interpretation
-
 The normality assessment reveals a right-skewed distribution of wheat yields, confirmed by both visual inspection and the significant Shapiro-Wilk test (p < 0.001). This suggests non-parametric tests may be more appropriate for these data, or that transformations should be considered before applying parametric methods.
 :::
 
@@ -345,6 +343,23 @@ knitr::kable(period_summary,
                            full_width = FALSE,
                            position = "center")
 ```
+
+::: {.callout-note}
+## Code Explanation
+This code demonstrates how to perform an independent samples t-test:
+
+1. **Data Preparation**: Creates two groups based on time periods
+2. **Visualization**: Uses boxplots to visually compare the distributions
+3. **Statistical Testing**: Performs t-test using R's formula interface with backticks for column names with spaces
+4. **Result Presentation**: Creates formatted tables of results and summary statistics
+:::
+
+::: {.callout-important}
+## Results Interpretation
+The t-test results show a significant difference in wheat yields between the two time periods (p < 0.001). The recent period (2000+) has substantially higher yields (mean = 3.31 tonnes/hectare) compared to the earlier period (mean = 2.45 tonnes/hectare).
+
+This increase of approximately 35% over time likely reflects advancements in agricultural technology, improved crop varieties, and better farming practices that have been developed and implemented over recent decades.
+:::
 
 #### Paired Samples t-Test
 
@@ -426,6 +441,23 @@ knitr::kable(paired_summary,
                            full_width = FALSE,
                            position = "center")
 ```
+
+::: {.callout-note}
+## Code Explanation
+This code demonstrates how to perform a paired samples t-test:
+
+1. **Data Preparation**: Creates a dataset with paired observations (wheat and rice yields)
+2. **Visualization**: Uses a scatterplot to show the relationship between the paired variables
+3. **Statistical Testing**: Performs a paired t-test to compare the means of two related variables
+4. **Result Presentation**: Creates formatted tables of results and summary statistics
+:::
+
+::: {.callout-important}
+## Results Interpretation
+The paired t-test results show a significant difference between wheat and rice yields (p < 0.001). On average, rice yields are higher than wheat yields by approximately 1.68 tonnes per hectare.
+
+This difference is consistent with biological and agricultural knowledge - rice typically produces more biomass per hectare than wheat under certain conditions. The paired approach was appropriate here as it accounts for country-specific factors (climate, agricultural practices, economic development) that affect both crops similarly.
+:::
 
 ### Analysis of Variance (ANOVA)
 
@@ -534,6 +566,31 @@ knitr::kable(continent_summary,
                            position = "center")
 ```
 
+::: {.callout-note}
+## Code Explanation
+This code demonstrates how to perform a one-way ANOVA:
+
+1. **Data Preparation**: Creates a dataset with continental groupings for wheat yields
+2. **Visualization**: Uses boxplots to compare distributions across continents
+3. **Statistical Testing**: Performs ANOVA using R's formula interface
+4. **Post-hoc Analysis**: Conducts Tukey's HSD test to identify which specific groups differ
+5. **Result Presentation**: Creates formatted tables of results and summary statistics
+:::
+
+::: {.callout-important}
+## Results Interpretation
+The ANOVA results show significant differences in wheat yields between continents (p < 0.001). The F-statistic (39.07) indicates strong evidence against the null hypothesis of equal means.
+
+The Tukey HSD post-hoc test reveals:
+- Europe and Oceania have significantly higher wheat yields than Africa and Asia
+- North America has significantly higher yields than Africa
+- No significant difference between Europe and Oceania
+
+These findings reflect important geographical and developmental patterns in global agriculture, with European and Oceanian countries typically having more advanced agricultural technology and favorable growing conditions.
+
+Note that for unbalanced designs (unequal sample sizes across groups), Type II ANOVA tests would be more appropriate, as they adjust for the imbalance in the data. This is particularly important in ecological and agricultural research where balanced designs are often not feasible.
+:::
+
 ### Non-Parametric Alternatives
 
 #### Mann-Whitney U Test
@@ -570,8 +627,6 @@ The Kruskal-Wallis test is a non-parametric alternative to ANOVA:
 ```{r}
 # Using the same continental data as before
 kruskal_result <- kruskal.test(`Wheat (tonnes per hectare)` ~ Continent, data = continental_yields)
-
-# Create a formatted table of the results
 kruskal_table <- data.frame(
   Statistic = c("Chi-squared", "Degrees of Freedom", "p-value"),
   Value = c(
@@ -581,7 +636,7 @@ kruskal_table <- data.frame(
   )
 )
 
-# Display the formatted table
+# Display the Kruskal-Wallis test results
 knitr::kable(kruskal_table, 
              caption = "Kruskal-Wallis Test Results: Wheat Yields by Continent",
              align = c("l", "r"),
@@ -604,12 +659,12 @@ if(requireNamespace("dunn.test", quietly = TRUE)) {
     Significant = ifelse(dunn_result$P.adjusted < 0.05, "Yes", "No")
   )
   
-  # Display the formatted dunn test results
-  knitr::kable(dunn_df, 
+  # Display the dunn test results
+  knitr::kable(dunn_df,
                caption = "Dunn's Post-hoc Test Results: Pairwise Comparisons of Continents",
                align = c("l", "r", "c", "c", "c"),
                format = "html") %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                              full_width = FALSE,
                              position = "center")
 } else {
@@ -635,12 +690,12 @@ if(requireNamespace("dunn.test", quietly = TRUE)) {
     ) %>%
     select(Comparison, `P value`, Significant)
   
-  # Display the formatted pairwise Wilcoxon test results
+  # Display the pairwise Wilcoxon test results
   knitr::kable(pairwise_long, 
                caption = "Pairwise Wilcoxon Test Results with Bonferroni Correction",
                align = c("l", "c", "c"),
                format = "html") %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                              full_width = FALSE,
                              position = "center")
 }
@@ -695,6 +750,28 @@ knitr::kable(cor_table,
                            position = "center")
 ```
 
+::: {.callout-note}
+## Code Explanation
+This code demonstrates how to perform correlation analysis:
+
+1. **Data Preparation**: Creates a dataset with wheat and maize yields for comparison
+2. **Visualization**: Uses a scatterplot to show the relationship between variables
+3. **Statistical Testing**: Calculates Pearson correlation
+4. **Result Presentation**: Creates a formatted table of results
+:::
+
+::: {.callout-important}
+## Results Interpretation
+The Pearson correlation results show a strong positive relationship between wheat and maize yields (r = 0.73, p < 0.001).
+
+This strong correlation likely reflects shared agricultural factors affecting both crops:
+- Countries with advanced agricultural technology tend to have higher yields for all crops
+- Similar environmental conditions (soil quality, rainfall, temperature) affect multiple crops
+- Economic development level influences agricultural inputs (fertilizers, machinery, irrigation)
+
+Understanding these correlations can help in developing agricultural policies that benefit multiple crop systems simultaneously.
+:::
+
 #### Spearman Correlation
 
 Spearman correlation is a non-parametric measure of rank correlation:
@@ -742,6 +819,27 @@ knitr::kable(correlation_comparison,
                            full_width = FALSE,
                            position = "center")
 ```
+
+::: {.callout-note}
+## Code Explanation
+This code demonstrates how to perform Spearman rank correlation:
+
+1. **Purpose**: Calculates a non-parametric correlation that works with non-normal data
+2. **Implementation**: Uses the same cor.test() function but specifies method="spearman"
+3. **Advantages**: Robust to outliers and non-linear relationships as it uses ranks instead of raw values
+4. **Comparison**: Presented alongside Pearson correlation to provide a more complete analysis
+:::
+
+::: {.callout-important}
+## Results Interpretation
+The Spearman correlation (rho = 0.76, p < 0.001) is slightly stronger than the Pearson correlation (r = 0.73), suggesting that:
+
+1. The relationship between wheat and maize yields may have some non-linear components
+2. The correlation is robust even when considering ranks rather than absolute values
+3. The relationship holds across the entire distribution, not just for countries with average yields
+
+The similarity between Pearson and Spearman results increases confidence in the finding that wheat and maize yields are strongly correlated, regardless of the statistical approach used.
+:::
 
 ### Regression Analysis
 
@@ -812,6 +910,29 @@ knitr::kable(model_stats,
 par(mfrow = c(2, 2))
 plot(lm_model)
 ```
+
+::: {.callout-note}
+## Code Explanation
+This code demonstrates how to perform linear regression analysis:
+
+1. **Model Specification**: Uses the formula interface to predict wheat yields from year
+2. **Model Fitting**: Applies the lm() function to fit the linear model
+3. **Visualization**: Creates a scatter plot with the regression line and confidence interval
+4. **Model Assessment**: Extracts key statistics including coefficients, R-squared, and p-values
+5. **Result Presentation**: Formats results in publication-ready tables
+:::
+
+::: {.callout-important}
+## Results Interpretation
+The linear regression results show that year is a significant predictor of wheat yield (p < 0.001). For each additional year, wheat yield increases by approximately 0.04 tonnes per hectare.
+
+The model explains a substantial portion of the variance in wheat yields (R² = 0.53), indicating that:
+1. There is a strong linear trend in wheat yields over time
+2. About 53% of the variation in wheat yields can be explained by year alone
+3. The remaining 47% is due to factors specific to wheat cultivation or other variables not included in the model
+
+This relationship has practical implications for agricultural planning and food security assessments, as year data could potentially be used to estimate wheat production in regions where data is more readily available.
+:::
 
 #### Multiple Regression
 

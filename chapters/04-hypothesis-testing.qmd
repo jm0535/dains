@@ -743,4 +743,20 @@ This chapter has covered the fundamentals of hypothesis testing in ecological an
 5. **Assumptions**: Testing for normality and other requirements
 6. **Confidence Intervals**: Estimating population parameters with uncertainty
 
-{{ ... }}
+Hypothesis testing provides a structured framework for making statistical inferences from sample data. By following the principles outlined in this chapter, researchers can design robust studies, analyze data appropriately, and draw valid conclusions about ecological and forestry phenomena.
+
+Remember that hypothesis testing is just one component of a comprehensive research approach. It should be complemented by exploratory data analysis, effect size estimation, and consideration of practical significance in addition to statistical significance.
+
+## Exercises
+
+1. Using the tree growth dataset (`../data/forestry/tree_growth.csv`), perform a two-sample t-test to compare growth rates between two different species.
+
+2. For the biodiversity dataset (`../data/ecology/biodiversity.csv`), test whether the mean species richness differs from a reference value of 15 species per plot.
+
+3. Using the soil chemistry dataset (`../data/soil/soil_chemistry.csv`), conduct a paired t-test to compare nutrient levels before and after a treatment.
+
+4. For any dataset of your choice, check the normality assumption using both visual methods (Q-Q plot) and statistical tests (Shapiro-Wilk).
+
+5. Calculate and interpret a 95% confidence interval for a parameter of interest in the climate dataset (`../data/climate/temperature.csv`).
+
+6. Design a hypothesis test for a research question of your choice related to natural sciences. Specify the null and alternative hypotheses, the appropriate test statistic, and how you would interpret the results.

@@ -201,7 +201,7 @@ names(crop_yields)
 
 # Extract wheat yields for analysis
 wheat_yields <- crop_yields %>%
-  filter(!is.na(`Wheat (tonnes per hectare)`)) %>%
+  filter(!is.na(`Wheat (tonnes per hectare)`) & Year >= 1960) %>%
   select(Entity, Year, `Wheat (tonnes per hectare)`)
 
 # View the first few rows
@@ -239,7 +239,43 @@ knitr::kable(shapiro_table,
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
                            full_width = FALSE,
                            position = "center")
+
+# Summary statistics
+summary_stats <- wheat_yields %>%
+  summarize(
+    n = n(),
+    Mean = round(mean(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    SD = round(sd(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Min = round(min(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2),
+    Max = round(max(`Wheat (tonnes per hectare)`, na.rm = TRUE), 2)
+  )
+
+# Display the summary statistics table
+knitr::kable(summary_stats, 
+             caption = "Summary Statistics: Wheat Yields",
+             align = c("l", "c", "r", "r", "r", "r"),
+             format = "html") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), 
+                           full_width = FALSE,
+                           position = "center")
 ```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates how to check the normality assumption for parametric tests:
+
+1. **Data Preparation**: Imports and filters the dataset, removing missing values
+2. **Visual Assessment**: Creates histogram and Q-Q plot to visually assess normality
+3. **Statistical Testing**: Uses Shapiro-Wilk test to formally test for normality
+4. **Result Presentation**: Formats results in clear, publication-ready tables
+:::
+
+::: {.callout-important}
+## Results Interpretation
+
+The normality assessment reveals a right-skewed distribution of wheat yields, confirmed by both visual inspection and the significant Shapiro-Wilk test (p < 0.001). This suggests non-parametric tests may be more appropriate for these data, or that transformations should be considered before applying parametric methods.
+:::
 
 ## Tests for Comparing Groups
 

@@ -110,6 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -299,6 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#testing-assumptions-normality" id="toc-testing-assumptions-normality" class="nav-link" data-scroll-target="#testing-assumptions-normality"><span class="header-section-number">4.10</span> Testing Assumptions: Normality</a></li>
   <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">4.11</span> Confidence Intervals</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">4.12</span> Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">4.13</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
@@ -1523,7 +1525,19 @@ Results Interpretation
 <li><strong>Assumptions</strong>: Testing for normality and other requirements</li>
 <li><strong>Confidence Intervals</strong>: Estimating population parameters with uncertainty</li>
 </ol>
-<p>{{ … }}</p>
+<p>Hypothesis testing provides a structured framework for making statistical inferences from sample data. By following the principles outlined in this chapter, researchers can design robust studies, analyze data appropriately, and draw valid conclusions about ecological and forestry phenomena.</p>
+<p>Remember that hypothesis testing is just one component of a comprehensive research approach. It should be complemented by exploratory data analysis, effect size estimation, and consideration of practical significance in addition to statistical significance.</p>
+</section>
+<section id="exercises" class="level2" data-number="4.13">
+<h2 data-number="4.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.13</span> Exercises</h2>
+<ol type="1">
+<li><p>Using the tree growth dataset (<code>../data/forestry/tree_growth.csv</code>), perform a two-sample t-test to compare growth rates between two different species.</p></li>
+<li><p>For the biodiversity dataset (<code>../data/ecology/biodiversity.csv</code>), test whether the mean species richness differs from a reference value of 15 species per plot.</p></li>
+<li><p>Using the soil chemistry dataset (<code>../data/soil/soil_chemistry.csv</code>), conduct a paired t-test to compare nutrient levels before and after a treatment.</p></li>
+<li><p>For any dataset of your choice, check the normality assumption using both visual methods (Q-Q plot) and statistical tests (Shapiro-Wilk).</p></li>
+<li><p>Calculate and interpret a 95% confidence interval for a parameter of interest in the climate dataset (<code>../data/climate/temperature.csv</code>).</p></li>
+<li><p>Design a hypothesis test for a research question of your choice related to natural sciences. Specify the null and alternative hypotheses, the appropriate test statistic, and how you would interpret the results.</p></li>
+</ol>
 
 
 <!-- -->
@@ -2738,7 +2752,23 @@ Results Interpretation
 <span id="cb28-755"><a href="#cb28-755" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Assumptions**: Testing for normality and other requirements</span>
 <span id="cb28-756"><a href="#cb28-756" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Confidence Intervals**: Estimating population parameters with uncertainty</span>
 <span id="cb28-757"><a href="#cb28-757" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-758"><a href="#cb28-758" aria-hidden="true" tabindex="-1"></a>{{ ... }}</span>
+<span id="cb28-758"><a href="#cb28-758" aria-hidden="true" tabindex="-1"></a>Hypothesis testing provides a structured framework for making statistical inferences from sample data. By following the principles outlined in this chapter, researchers can design robust studies, analyze data appropriately, and draw valid conclusions about ecological and forestry phenomena.</span>
+<span id="cb28-759"><a href="#cb28-759" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-760"><a href="#cb28-760" aria-hidden="true" tabindex="-1"></a>Remember that hypothesis testing is just one component of a comprehensive research approach. It should be complemented by exploratory data analysis, effect size estimation, and consideration of practical significance in addition to statistical significance.</span>
+<span id="cb28-761"><a href="#cb28-761" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-762"><a href="#cb28-762" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
+<span id="cb28-763"><a href="#cb28-763" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-764"><a href="#cb28-764" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Using the tree growth dataset (<span class="in">`../data/forestry/tree_growth.csv`</span>), perform a two-sample t-test to compare growth rates between two different species.</span>
+<span id="cb28-765"><a href="#cb28-765" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-766"><a href="#cb28-766" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>For the biodiversity dataset (<span class="in">`../data/ecology/biodiversity.csv`</span>), test whether the mean species richness differs from a reference value of 15 species per plot.</span>
+<span id="cb28-767"><a href="#cb28-767" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-768"><a href="#cb28-768" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Using the soil chemistry dataset (<span class="in">`../data/soil/soil_chemistry.csv`</span>), conduct a paired t-test to compare nutrient levels before and after a treatment.</span>
+<span id="cb28-769"><a href="#cb28-769" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-770"><a href="#cb28-770" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>For any dataset of your choice, check the normality assumption using both visual methods (Q-Q plot) and statistical tests (Shapiro-Wilk).</span>
+<span id="cb28-771"><a href="#cb28-771" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-772"><a href="#cb28-772" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Calculate and interpret a 95% confidence interval for a parameter of interest in the climate dataset (<span class="in">`../data/climate/temperature.csv`</span>).</span>
+<span id="cb28-773"><a href="#cb28-773" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-774"><a href="#cb28-774" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Design a hypothesis test for a research question of your choice related to natural sciences. Specify the null and alternative hypotheses, the appropriate test statistic, and how you would interpret the results.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

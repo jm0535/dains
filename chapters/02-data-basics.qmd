@@ -1,3 +1,7 @@
+---
+prefer-html: true
+---
+
 # Data Basics
 
 ## Introduction

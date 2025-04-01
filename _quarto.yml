@@ -45,12 +45,17 @@ format:
     fig-cap-location: bottom
     tbl-cap-location: top
     css: styles.css
+    prefer-html: true
     crossref:
       fig-title: "Figure"
       tbl-title: "Table"
     footer-text: "DRAFT - Edition 1 - This book is currently in development. Content may change before final publication."
   pdf:
     documentclass: scrreprt
+    prefer-html: true
+    knitr:
+      opts_chunk:
+        dev: "png"
 
 bibliography: references.bib
 csl: apa.csl
@@ -61,3 +66,8 @@ execute:
   message: false
   eval: true
   always_allow_html: true
+  prefer-html: true
+  knitr:
+    opts_chunk:
+      dev: "png"
+      screenshot.force: true

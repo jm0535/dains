@@ -1,3 +1,7 @@
+---
+prefer-html: true
+---
+
 # Introduction to Data Analysis
 
 ## Overview

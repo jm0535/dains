@@ -1,3 +1,7 @@
+---
+prefer-html: true
+---
+
 # About This Book {.unnumbered}
 
 ## About the Author

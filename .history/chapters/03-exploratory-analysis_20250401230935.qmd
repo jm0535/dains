@@ -147,7 +147,7 @@ crop_yields_with_categories <- crop_yields_with_categories %>%
   mutate(decade = floor(Year / 10) * 10)
 
 # Two-way frequency table: yield category by decade
-yield_decade_table <- table(crop_yields_with_categories$yield_category,
+yield_decade_table <- table(crop_yields_with_categories$yield_category, 
                             crop_yields_with_categories$decade)
 yield_decade_table
 
@@ -180,118 +180,6 @@ The frequency tables reveal important patterns in wheat yield categories:
 - These temporal patterns are crucial for understanding agricultural development trends and projecting future food security scenarios.
 :::
 
-### Box Plots
-
-Box plots are excellent for comparing distributions across groups:
-
-```{r}
-# Select a few major countries for comparison
-major_wheat_producers <- c("United States", "China", "India", "Russia", "France", "Australia")
-
-# Filter data for these countries and recent years
-recent_wheat_data <- crop_yields %>%
-  filter(Entity %in% major_wheat_producers,
-         Year >= 2000,
-         !is.na(`Wheat (tonnes per hectare)`))
-
-# Box plot of wheat yields by country
-ggplot(recent_wheat_data, aes(x = Entity, y = `Wheat (tonnes per hectare)`)) +
-  geom_boxplot(fill = "darkgreen", alpha = 0.7) +
-  labs(title = "Wheat Yields by Country (2000-present)",
-       x = "Country",
-       y = "Wheat Yield (tonnes per hectare)") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-# Enhanced box plot with jittered points
-ggplot(recent_wheat_data, aes(x = Entity, y = `Wheat (tonnes per hectare)`)) +
-  geom_boxplot(fill = "darkgreen", alpha = 0.5) +
-  geom_jitter(width = 0.2, alpha = 0.5, color = "darkgreen") +
-  labs(title = "Wheat Yields by Country (2000-present)",
-       x = "Country",
-       y = "Wheat Yield (tonnes per hectare)") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates how to create and enhance box plots for comparing distributions:
-
-1. First, we select major wheat-producing countries for comparison and filter for recent data (since 2000).
-2. The basic box plot:
-   - `geom_boxplot()` creates a box-and-whisker plot for each country
-   - Each box shows the median (middle line), interquartile range (IQR, the box), and whiskers extending to 1.5 × IQR
-   - Points beyond the whiskers represent outliers
-
-3. The enhanced box plot adds:
-   - `geom_jitter()` to display individual data points with slight horizontal displacement
-   - This combination shows both the summary statistics (box plot) and the raw data distribution (points)
-   - `angle = 45, hjust = 1` rotates country labels for better readability
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The box plots reveal important comparisons between major wheat-producing countries:
-
-- The median line in each box shows the typical yield for each country, allowing direct comparison of central tendency.
-- The height of each box (IQR) indicates the variability of yields within each country over the time period.
-- Whisker length reflects the range of typical yields, while outlier points show exceptional years.
-- Countries with higher boxes generally have more variable production, possibly due to climate fluctuations or changing agricultural practices.
-- The jittered points reveal the actual distribution and density of observations for each country.
-- These comparisons help identify which countries have the most consistent and productive wheat cultivation systems, providing insights for agricultural policy and development.
-:::
-
-### Bar Charts
-
-Bar charts are useful for visualizing categorical data:
-
-```{r}
-# Calculate average wheat yield by country for the last decade
-recent_avg_yields <- crop_yields %>%
-  filter(Year >= 2010, !is.na(`Wheat (tonnes per hectare)`)) %>%
-  group_by(Entity) %>%
-  summarize(avg_wheat_yield = mean(`Wheat (tonnes per hectare)`, na.rm = TRUE)) %>%
-  arrange(desc(avg_wheat_yield)) %>%
-  head(10)  # Top 10 countries
-
-# Bar chart of average wheat yields
-ggplot(recent_avg_yields, aes(x = reorder(Entity, avg_wheat_yield), y = avg_wheat_yield)) +
-  geom_bar(stat = "identity", fill = "darkgreen") +
-  labs(title = "Top 10 Countries by Average Wheat Yield (2010-present)",
-       x = "Country",
-       y = "Average Wheat Yield (tonnes per hectare)") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates how to create a bar chart for visualizing categorical data:
-
-1. First, we calculate the average wheat yield by country for the last decade (2010-present).
-2. We then select the top 10 countries by average yield.
-3. The bar chart:
-   - `geom_bar(stat = "identity")` creates a bar for each country, with height proportional to average yield
-   - `reorder(Entity, avg_wheat_yield)` sorts the countries by average yield in descending order
-   - `fill = "darkgreen"` sets the bar color
-   - `theme(axis.text.x = element_text(angle = 45, hjust = 1))` rotates country labels for better readability
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The bar chart reveals the top 10 countries by average wheat yield:
-
-- The height of each bar represents the average yield for each country.
-- The countries are sorted in descending order by average yield, making it easy to identify the most productive nations.
-- This visualization helps identify which countries have the most efficient wheat cultivation systems, providing insights for agricultural policy and development.
-- The bar chart can also be used to compare the average yields of different countries, helping to identify potential areas for improvement.
-:::
-
 ## Visualizing Distributions
 
 ### Histograms and Density Plots
@@ -302,16 +190,16 @@ Histograms and density plots help visualize the distribution of continuous varia
 # Histogram of wheat yields
 ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
   geom_histogram(bins = 30, fill = "darkgreen", color = "white", na.rm = TRUE) +
-  labs(title = "Histogram of Wheat Yields",
-       x = "Wheat Yield (tonnes per hectare)",
+  labs(title = "Histogram of Wheat Yields", 
+       x = "Wheat Yield (tonnes per hectare)", 
        y = "Frequency") +
   theme_minimal()
 
 # Density plot
 ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
   geom_density(fill = "darkgreen", alpha = 0.5, na.rm = TRUE) +
-  labs(title = "Density Plot of Wheat Yields",
-       x = "Wheat Yield (tonnes per hectare)",
+  labs(title = "Density Plot of Wheat Yields", 
+       x = "Wheat Yield (tonnes per hectare)", 
        y = "Density") +
   theme_minimal()
 
@@ -319,8 +207,8 @@ ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
 ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = "darkgreen", color = "white", na.rm = TRUE) +
   geom_density(color = "darkgreen", linewidth = 1, na.rm = TRUE) +
-  labs(title = "Distribution of Wheat Yields",
-       x = "Wheat Yield (tonnes per hectare)",
+  labs(title = "Distribution of Wheat Yields", 
+       x = "Wheat Yield (tonnes per hectare)", 
        y = "Density") +
   theme_minimal()
 ```
@@ -328,7 +216,7 @@ ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
 ::: {.callout-note}
 ## Code Explanation
 
-This code demonstrates three approaches to visualizing distributions:
+This code block demonstrates three approaches to visualizing distributions:
 
 1. **Histogram**: 
    - `geom_histogram()` divides the data into bins and counts observations in each bin
@@ -369,15 +257,15 @@ major_wheat_producers <- c("United States", "China", "India", "Russia", "France"
 
 # Filter data for these countries and recent years
 recent_wheat_data <- crop_yields %>%
-  filter(Entity %in% major_wheat_producers,
+  filter(Entity %in% major_wheat_producers, 
          Year >= 2000,
          !is.na(`Wheat (tonnes per hectare)`))
 
 # Box plot of wheat yields by country
 ggplot(recent_wheat_data, aes(x = Entity, y = `Wheat (tonnes per hectare)`)) +
   geom_boxplot(fill = "darkgreen", alpha = 0.7) +
-  labs(title = "Wheat Yields by Country (2000-present)",
-       x = "Country",
+  labs(title = "Wheat Yields by Country (2000-present)", 
+       x = "Country", 
        y = "Wheat Yield (tonnes per hectare)") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -386,8 +274,8 @@ ggplot(recent_wheat_data, aes(x = Entity, y = `Wheat (tonnes per hectare)`)) +
 ggplot(recent_wheat_data, aes(x = Entity, y = `Wheat (tonnes per hectare)`)) +
   geom_boxplot(fill = "darkgreen", alpha = 0.5) +
   geom_jitter(width = 0.2, alpha = 0.5, color = "darkgreen") +
-  labs(title = "Wheat Yields by Country (2000-present)",
-       x = "Country",
+  labs(title = "Wheat Yields by Country (2000-present)", 
+       x = "Country", 
        y = "Wheat Yield (tonnes per hectare)") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -439,8 +327,8 @@ recent_avg_yields <- crop_yields %>%
 # Bar chart of average wheat yields
 ggplot(recent_avg_yields, aes(x = reorder(Entity, avg_wheat_yield), y = avg_wheat_yield)) +
   geom_bar(stat = "identity", fill = "darkgreen") +
-  labs(title = "Top 10 Countries by Average Wheat Yield (2010-present)",
-       x = "Country",
+  labs(title = "Top 10 Countries by Average Wheat Yield (2010-present)", 
+       x = "Country", 
        y = "Average Wheat Yield (tonnes per hectare)") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -487,22 +375,22 @@ crop_yields_filtered <- crop_yields %>%
 ggplot(crop_yields_filtered, aes(x = `Wheat (tonnes per hectare)`, y = `Rice (tonnes per hectare)`)) +
   geom_point(alpha = 0.5, color = "darkgreen") +
   labs(title = "Relationship between Wheat and Rice Yields",
-       x = "Wheat Yield (tonnes per hectare)",
+       x = "Wheat Yield (tonnes per hectare)", 
        y = "Rice Yield (tonnes per hectare)") +
   theme_minimal()
 
 # Scatter plot with color by continent (we'll need to add continent information)
 # For demonstration, let's create a simple mapping for a few countries
 continent_mapping <- tibble(
-  Entity = c("United States", "Canada", "Mexico",
-             "China", "India", "Japan",
-             "Germany", "France", "United Kingdom",
+  Entity = c("United States", "Canada", "Mexico", 
+             "China", "India", "Japan", 
+             "Germany", "France", "United Kingdom", 
              "Brazil", "Argentina", "Chile",
              "Egypt", "Nigeria", "South Africa",
              "Australia", "New Zealand"),
-  Continent = c(rep("North America", 3),
-                rep("Asia", 3),
-                rep("Europe", 3),
+  Continent = c(rep("North America", 3), 
+                rep("Asia", 3), 
+                rep("Europe", 3), 
                 rep("South America", 3),
                 rep("Africa", 3),
                 rep("Oceania", 2))
@@ -516,7 +404,7 @@ crop_yields_with_continent <- crop_yields_filtered %>%
 ggplot(crop_yields_with_continent, aes(x = `Wheat (tonnes per hectare)`, y = `Rice (tonnes per hectare)`, color = Continent)) +
   geom_point(size = 3, alpha = 0.7) +
   labs(title = "Relationship between Wheat and Rice Yields by Continent",
-       x = "Wheat Yield (tonnes per hectare)",
+       x = "Wheat Yield (tonnes per hectare)", 
        y = "Rice Yield (tonnes per hectare)") +
   theme_minimal()
 ```
@@ -565,7 +453,7 @@ round(cor_matrix, 2)
 
 # Visualize correlation matrix
 library(corrplot)
-corrplot(cor_matrix, method = "circle", type = "upper",
+corrplot(cor_matrix, method = "circle", type = "upper", 
          tl.col = "black", tl.srt = 45,
          title = "Correlation Matrix of Crop Yields")
 ```

@@ -500,15 +500,433 @@ When applying logistic regression in ecological studies:
 
 ## Summary
 
-In this chapter, we've explored different types of regression analysis with advanced techniques and visualizations:
+In this chapter, we've explored regression analysis using both traditional base R approaches and the modern tidymodels framework:
 
 - **Linear regression** for modeling continuous relationships between morphological variables
 - **Multiple regression** for incorporating several predictors and controlling for confounding factors
 - **Logistic regression** for binary classification and probability estimation
+- **Tidymodels workflow** for consistent, reproducible modeling
+
+The tidymodels framework provides:
+- Unified interface across different model types
+- Consistent preprocessing with recipes
+- Built-in resampling and cross-validation
+- Standardized model evaluation metrics
+- Streamlined workflow management
 
 Each approach provides unique insights into ecological patterns and relationships, with applications ranging from morphological studies to species classification and trait prediction.
 
+## Regression with Tidymodels Framework
+
+The tidymodels ecosystem provides a modern, unified approach to statistical modeling in R. Let's explore how to implement regression analysis using this framework.
+
+### Setting Up Tidymodels
+
+```{r}
+# Load tidymodels packages
+library(tidymodels)  # Meta-package loading parsnip, recipes, rsample, tune, workflows, yardstick
+library(tidyverse)    # For data manipulation
+
+# Set random seed for reproducibility
+set.seed(123)
+
+# Load and prepare data
+penguins <- read_csv("../data/environmental/climate_data.csv", show_col_types = FALSE) %>%
+  filter(!is.na(bill_length_mm), !is.na(body_mass_g),
+         !is.na(bill_depth_mm), !is.na(flipper_length_mm)) %>%
+  mutate(species = as.factor(species))
+
+# Display data structure
+glimpse(penguins)
+```
+
+::: {.callout-note}
+## Tidymodels Philosophy
+
+The tidymodels framework follows key principles:
+
+1. **Consistency**: Uniform syntax across different model types
+2. **Modularity**: Separate components for different modeling tasks
+3. **Tidyverse integration**: Works seamlessly with dplyr, ggplot2, etc.
+4. **Reproducibility**: Built-in support for resampling and validation
+5. **Extensibility**: Easy to add new models and methods
+:::
+
+### Linear Regression with Tidymodels
+
+```{r}
+# Step 1: Split data into training and testing sets
+penguin_split <- initial_split(penguins, prop = 0.75, strata = species)
+penguin_train <- training(penguin_split)
+penguin_test <- testing(penguin_split)
+
+cat("Training set:", nrow(penguin_train), "observations\n")
+cat("Testing set:", nrow(penguin_test), "observations\n")
+
+# Step 2: Define a recipe for preprocessing
+penguin_recipe <- recipe(body_mass_g ~ bill_length_mm + bill_depth_mm + 
+                         flipper_length_mm + species, 
+                         data = penguin_train) %>%
+  # Create dummy variables for species
+  step_dummy(species) %>%
+  # Normalize all numeric predictors
+  step_normalize(all_numeric_predictors()) %>%
+  # Check for zero variance predictors
+  step_zv(all_predictors())
+
+# View the recipe
+print(penguin_recipe)
+
+# Step 3: Specify the model
+lm_spec <- linear_reg() %>%
+  set_engine("lm") %>%
+  set_mode("regression")
+
+print(lm_spec)
+
+# Step 4: Create a workflow combining recipe and model
+penguin_wf <- workflow() %>%
+  add_recipe(penguin_recipe) %>%
+  add_model(lm_spec)
+
+print(penguin_wf)
+
+# Step 5: Fit the model
+penguin_fit <- penguin_wf %>%
+  fit(data = penguin_train)
+
+# Extract and display model results
+tidy(penguin_fit) %>%
+  knitr::kable(caption = "Tidymodels Linear Regression Coefficients",
+               digits = 3)
+
+# Get model performance metrics on training data
+train_results <- penguin_fit %>%
+  predict(penguin_train) %>%
+  bind_cols(penguin_train) %>%
+  metrics(truth = body_mass_g, estimate = .pred)
+
+knitr::kable(train_results,
+             caption = "Training Set Performance Metrics",
+             digits = 3)
+
+# Step 6: Evaluate on test data
+test_results <- penguin_fit %>%
+  predict(penguin_test) %>%
+  bind_cols(penguin_test) %>%
+  metrics(truth = body_mass_g, estimate = .pred)
+
+knitr::kable(test_results,
+             caption = "Test Set Performance Metrics",
+             digits = 3)
+
+# Create predictions for visualization
+penguin_pred <- penguin_fit %>%
+  predict(penguin_test) %>%
+  bind_cols(penguin_test)
+
+# Visualize predictions vs. actual
+ggplot(penguin_pred, aes(x = body_mass_g, y = .pred, color = species)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray50") +
+  scale_color_viridis_d() +
+  labs(
+    title = "Tidymodels: Predicted vs. Actual Body Mass",
+    subtitle = "Test set predictions from linear regression workflow",
+    x = "Actual Body Mass (g)",
+    y = "Predicted Body Mass (g)",
+    color = "Species",
+    caption = "Dashed line represents perfect predictions"
+  ) +
+  theme_minimal()
+```
+
+::: {.callout-important}
+## Tidymodels Workflow Benefits
+
+This tidymodels approach provides several advantages:
+
+1. **Clear separation of concerns**: Data splitting, preprocessing, and modeling are distinct steps
+2. **Automatic train/test split**: Built-in support for validation
+3. **Preprocessing pipeline**: Recipe ensures consistent transformations
+4. **Reusable workflows**: Easy to apply the same pipeline to new data
+5. **Standardized metrics**: Consistent evaluation across models
+
+The test set RMSE and R² provide unbiased estimates of model performance on new data.
+:::
+
+### Cross-Validation with Tidymodels
+
+```{r}
+# Create cross-validation folds
+set.seed(456)
+penguin_folds <- vfold_cv(penguin_train, v = 10, strata = species)
+
+cat("Created", nrow(penguin_folds), "cross-validation folds\n")
+
+# Fit model using cross-validation
+cv_results <- penguin_wf %>%
+  fit_resamples(
+    resamples = penguin_folds,
+    control = control_resamples(save_pred = TRUE),
+    metrics = metric_set(rmse, rsq, mae)
+  )
+
+# Collect and display metrics
+cv_metrics <- collect_metrics(cv_results)
+
+knitr::kable(cv_metrics,
+             caption = "10-Fold Cross-Validation Performance",
+             digits = 3)
+
+# Visualize cross-validation results
+collect_metrics(cv_results, summarize = FALSE) %>%
+  ggplot(aes(x = .metric, y = .estimate)) +
+  geom_boxplot(fill = "skyblue", alpha = 0.7) +
+  geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
+  labs(
+    title = "Cross-Validation Performance Distribution",
+    subtitle = "10-fold CV shows model stability across folds",
+    x = "Metric",
+    y = "Value"
+  ) +
+  theme_minimal()
+
+# Extract predictions from all folds
+cv_predictions <- collect_predictions(cv_results)
+
+# Plot predictions from cross-validation
+ggplot(cv_predictions, aes(x = body_mass_g, y = .pred)) +
+  geom_point(alpha = 0.5, color = "steelblue") +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    title = "Cross-Validation Predictions",
+    subtitle = "All predictions from 10-fold CV",
+    x = "Actual Body Mass (g)",
+    y = "Predicted Body Mass (g)"
+  ) +
+  theme_minimal()
+```
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Why Cross-Validation?
+
+Cross-validation provides:
+
+1. **More reliable performance estimates**: Averages over multiple train/test splits
+2. **Better use of data**: All observations used for both training and validation
+3. **Overfitting detection**: Large difference between training and CV metrics suggests overfitting
+4. **Model comparison**: Fair basis for comparing different modeling approaches
+5. **Hyperparameter tuning**: Essential for selecting optimal model parameters
+:::
+
+### Model Comparison with Tidymodels
+
+```{r}
+# Define multiple model specifications
+lm_spec <- linear_reg() %>%
+  set_engine("lm") %>%
+  set_mode("regression")
+
+rf_spec <- rand_forest(trees = 100) %>%
+  set_engine("ranger") %>%
+  set_mode("regression")
+
+# Create workflows for each model
+lm_wf <- workflow() %>%
+  add_recipe(penguin_recipe) %>%
+  add_model(lm_spec)
+
+rf_wf <- workflow() %>%
+  add_recipe(penguin_recipe) %>%
+  add_model(rf_spec)
+
+# Fit both models with cross-validation
+set.seed(789)
+lm_cv <- lm_wf %>%
+  fit_resamples(
+    resamples = penguin_folds,
+    metrics = metric_set(rmse, rsq, mae)
+  )
+
+rf_cv <- rf_wf %>%
+  fit_resamples(
+    resamples = penguin_folds,
+    metrics = metric_set(rmse, rsq, mae)
+  )
+
+# Compare model performance
+model_comparison <- bind_rows(
+  collect_metrics(lm_cv) %>% mutate(model = "Linear Regression"),
+  collect_metrics(rf_cv) %>% mutate(model = "Random Forest")
+)
+
+knitr::kable(model_comparison %>% select(model, .metric, mean, std_err),
+             caption = "Model Comparison: Linear Regression vs. Random Forest",
+             digits = 3,
+             col.names = c("Model", "Metric", "Mean", "Std Error"))
+
+# Visualize model comparison
+model_comparison %>%
+  ggplot(aes(x = model, y = mean, fill = model)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = mean - std_err, ymax = mean + std_err), 
+                width = 0.2) +
+  facet_wrap(~ .metric, scales = "free_y") +
+  scale_fill_viridis_d(begin = 0.3, end = 0.8) +
+  labs(
+    title = "Model Performance Comparison",
+    subtitle = "Cross-validation results with standard errors",
+    x = "Model Type",
+    y = "Performance (mean ± SE)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Logistic Regression with Tidymodels
+
+```{r}
+# Prepare binary classification data
+penguins_binary <- penguins %>%
+  mutate(is_adelie = factor(ifelse(species == "Adelie", "Adelie", "Other"),
+                           levels = c("Other", "Adelie")))
+
+# Split data
+set.seed(2023)
+binary_split <- initial_split(penguins_binary, prop = 0.75, strata = is_adelie)
+binary_train <- training(binary_split)
+binary_test <- testing(binary_split)
+
+# Create recipe
+logistic_recipe <- recipe(is_adelie ~ bill_length_mm + bill_depth_mm + flipper_length_mm,
+                         data = binary_train) %>%
+  step_normalize(all_numeric_predictors())
+
+# Specify logistic regression model
+logistic_spec <- logistic_reg() %>%
+  set_engine("glm") %>%
+  set_mode("classification")
+
+# Create workflow
+logistic_wf <- workflow() %>%
+  add_recipe(logistic_recipe) %>%
+  add_model(logistic_spec)
+
+# Fit the model
+logistic_fit <- logistic_wf %>%
+  fit(data = binary_train)
+
+# Get predictions with probabilities
+logistic_pred <- logistic_fit %>%
+  predict(binary_test, type = "prob") %>%
+  bind_cols(logistic_fit %>% predict(binary_test)) %>%
+  bind_cols(binary_test)
+
+# Calculate multiple classification metrics
+logistic_metrics <- logistic_pred %>%
+  metrics(truth = is_adelie, estimate = .pred_class, .pred_Adelie)
+
+knitr::kable(logistic_metrics,
+             caption = "Logistic Regression Classification Metrics",
+             digits = 3)
+
+# Create confusion matrix
+conf_mat(logistic_pred, truth = is_adelie, estimate = .pred_class) %>%
+  autoplot(type = "heatmap") +
+  labs(title = "Confusion Matrix: Adelie Classification") +
+  theme_minimal()
+
+# ROC curve
+logistic_pred %>%
+  roc_curve(truth = is_adelie, .pred_Adelie) %>%
+  autoplot() +
+  labs(title = "ROC Curve: Tidymodels Logistic Regression") +
+  theme_minimal()
+
+# Calculate and display AUC
+auc_value <- logistic_pred %>%
+  roc_auc(truth = is_adelie, .pred_Adelie) %>%
+  pull(.estimate)
+
+cat("Area Under the Curve (AUC):", round(auc_value, 3), "\n")
+
+# Visualize predicted probabilities
+ggplot(logistic_pred, aes(x = bill_length_mm, y = bill_depth_mm, 
+                         color = .pred_Adelie, shape = is_adelie)) +
+  geom_point(size = 3, alpha = 0.7) +
+  scale_color_gradient2(low = "navy", mid = "white", high = "red",
+                       midpoint = 0.5) +
+  labs(
+    title = "Predicted Probabilities: Adelie Classification",
+    subtitle = paste0("AUC = ", round(auc_value, 3)),
+    x = "Bill Length (mm)",
+    y = "Bill Depth (mm)",
+    color = "P(Adelie)",
+    shape = "Actual Species"
+  ) +
+  theme_minimal()
+```
+
+::: {.callout-note}
+## Tidymodels for Classification
+
+The tidymodels classification workflow provides:
+
+1. **Unified metrics**: Automatic calculation of accuracy, ROC AUC, and other metrics
+2. **Probability predictions**: Easy access to class probabilities
+3. **Visualization tools**: Built-in plotting for confusion matrices and ROC curves
+4. **Consistent interface**: Same workflow structure as regression
+:::
+
+## Comparing Base R and Tidymodels Approaches
+
+### When to Use Each Approach
+
+**Base R (`lm()`, `glm()`) is ideal for:**
+- Quick exploratory analyses
+- Simple models with few predictors
+- Teaching statistical concepts
+- When you need specific model diagnostics
+- Working with traditional statistical output
+
+**Tidymodels is ideal for:**
+- Production modeling pipelines
+- Comparing multiple models
+- Complex preprocessing requirements
+- Cross-validation and resampling
+- Hyperparameter tuning
+- Consistent evaluation across models
+- Reproducible research workflows
+
+### Feature Comparison
+
+| Feature | Base R | Tidymodels |
+|---------|--------|------------|
+| **Learning Curve** | Moderate | Steeper initially |
+| **Consistency** | Varies by package | Unified interface |
+| **Preprocessing** | Manual | Automated with recipes |
+| **Cross-validation** | Manual setup | Built-in support |
+| **Model Comparison** | Manual | Streamlined |
+| **Hyperparameter Tuning** | Package-specific | Unified with tune |
+| **Production Deployment** | More complex | Workflow objects |
+| **Extensibility** | High | Very high |
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Best of Both Worlds
+
+Many practitioners use both approaches:
+
+1. **Exploration**: Use base R for quick model fitting and diagnostics
+2. **Refinement**: Transition to tidymodels for rigorous evaluation
+3. **Production**: Deploy tidymodels workflows for consistency
+4. **Communication**: Use base R output for traditional audiences, tidymodels for modern reports
+:::
+
 ## Exercises
+
+### Base R Exercises
 
 1. Fit a linear regression model predicting body mass from bill length and bill depth. Create a 3D visualization of this relationship using the `plotly` package.
 
@@ -520,4 +938,33 @@ Each approach provides unique insights into ecological patterns and relationship
 
 5. Compare the performance of logistic regression with other classification methods (e.g., random forest, support vector machines) for species identification.
 
-6. Develop a predictive model for penguin body mass and evaluate it using k-fold cross-validation.
+### Tidymodels Exercises
+
+6. Create a tidymodels workflow for predicting flipper length from body mass and bill measurements. Use 5-fold cross-validation to evaluate performance.
+
+7. Build a recipe that includes polynomial features (e.g., squared terms) for bill length and bill depth. Compare this model's performance to a linear model using cross-validation.
+
+8. Use tidymodels to compare at least three different regression models (e.g., linear regression, random forest, support vector machine) for predicting body mass. Which performs best?
+
+9. Create a classification workflow using tidymodels to predict all three penguin species. Calculate and compare precision, recall, and F1 scores for each species.
+
+10. Implement a hyperparameter tuning workflow using `tune_grid()` to optimize the number of trees and minimum node size for a random forest model predicting body mass.
+
+### Advanced Exercises
+
+11. Split the penguin data by island, use one island as a test set, and evaluate how well models trained on other islands generalize. What does this tell you about geographical variation?
+
+12. Create a nested cross-validation workflow: use an outer loop for model evaluation and an inner loop for hyperparameter tuning. Compare this to simple cross-validation.
+
+13. Develop a complete modeling pipeline that includes:
+    - Data exploration and visualization
+    - Train/test split with stratification
+    - Recipe with appropriate preprocessing
+    - Multiple model specifications
+    - Cross-validation comparison
+    - Final model evaluation on test set
+    - Interpretation of results
+
+14. Use tidymodels to implement a regularized regression (ridge or lasso) and compare it to ordinary least squares. How does regularization affect the coefficients?
+
+15. Create an ensemble model that combines predictions from linear regression, random forest, and gradient boosting models. Does the ensemble outperform individual models?

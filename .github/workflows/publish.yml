@@ -83,7 +83,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: tests/
@@ -116,7 +116,7 @@ jobs:
 
       - name: Upload validation log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: validation-log
           path: data_validation_log.txt
@@ -183,7 +183,7 @@ jobs:
           echo "Build verification passed"
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: book-output
           path: docs/

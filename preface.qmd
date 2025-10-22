@@ -2,95 +2,272 @@
 prefer-html: true
 ---
 
-# About This Book {.unnumbered}
+# Preface {.unnumbered}
+
+Welcome to **Data Analysis in Natural Sciences: An R-Based Approach**, a comprehensive guide designed for students, professionals, and researchers across the natural sciences. This book provides practical methods for analyzing and visualizing data using R, with applications spanning forestry, agriculture, ecology, marine biology, environmental science, geology, atmospheric science, hydrology, and more.
+
+## Why This Book?
+
+The landscape of data analysis in natural sciences has evolved dramatically in recent years. Modern researchers need to navigate increasingly complex datasets, apply sophisticated statistical methods, and communicate their findings effectively to diverse audiences. This book addresses these challenges by providing a unified framework for data analysis that combines:
+
+1. **Modern R Workflow**: Emphasis on the tidyverse and tidymodels ecosystems for consistent, readable code
+2. **Reproducible Research**: Best practices for creating transparent, reproducible analyses
+3. **Practical Applications**: Real-world datasets from multiple natural science disciplines
+4. **Statistical Rigor**: Comprehensive coverage of appropriate statistical methods and their assumptions
+5. **Effective Communication**: Professional visualization techniques and reporting strategies
 
 ## About the Author
 
-Jimmy Moses is a Papua New Guinean entomologist and lecturer at the Papua New Guinea University of Technology's School of Forestry, specializing in ant ecology, biostatistics, and geospatial analysis. He holds a Ph.D. in Entomology from the University of South Bohemia (2021) and has extensive experience in tropical ecology research, with a particular focus on ant communities along elevational gradients.
+This book has been developed by **Dr. Jimmy Moses** from the School of Forestry, Faculty of Natural Resources, Papua New Guinea University of Technology. With extensive experience in ecological research and data analysis, Dr. Moses has created this resource to support students and researchers in developing essential analytical skills for natural science disciplines.
 
-As an active researcher and educator, the author currently supervises several master's students and co-supervises a Ph.D. student, bringing substantial expertise to both research methodology and educational practices. His research combines ecological field studies with modern analytical approaches, bridging the gap between traditional field ecology and contemporary data science. This interdisciplinary approach has resulted in several publications in high-impact journals, including *Global Ecology and Biogeography* and *Proceedings of the Royal Society B*.
+## Target Audience
 
-The author possesses a diverse technical skillset that uniquely qualifies him to author this book:
+This book is designed for:
 
-- Advanced proficiency in R and Python for statistical computing and data science
-- Expert knowledge of GIS and satellite remote sensing for spatial data analysis
-- Strong foundation in biostatistics and experimental design applied to ecological research
-- Developing expertise in full-stack application development for scientific computing
+- **Undergraduate and postgraduate students** in natural science disciplines
+- **Researchers** seeking to enhance their data analysis capabilities
+- **Technicians** working in laboratories and field settings
+- **Professionals** in government agencies, NGOs, and private sector
+- **Hobbyists** with an interest in analyzing scientific data
 
-His international research collaborations span institutions in the Czech Republic, Germany, and Belgium. He has been an integral contributor to the New Guinea Binatang Research Center, supporting both research initiatives and educational programs in Papua New Guinea.
+The content is relevant to those working in:
 
-When not teaching or conducting research, the author enjoys reading across disciplines—from technical manuals to ecological texts—and experimenting with code to solve practical problems in data analysis. His passion for making complex analytical methods accessible to researchers in the natural sciences drives both his teaching and his writing, including this book.
+- Forestry and agroforestry
+- Agriculture and agronomy
+- Ecology and conservation
+- Environmental science
+- Geography and GIS/remote sensing
+- Marine biology and fisheries
+- Botany and plant sciences
+- Entomology and zoology
+- Epidemiology and veterinary sciences
+- Geology and earth sciences
+- Atmospheric and climate sciences
+- Hydrology and water resources
+- Natural resource management
+- Conservation biology
 
-## Purpose and Scope
+## What Makes This Book Different?
 
-This book is designed to serve as both a learning resource and a reference guide for data analysis in the natural sciences, with applications spanning forestry, agriculture, ecology, environmental science, marine biology, and related disciplines. Whether you're a student, researcher, technician, professional, or hobbyist in these fields, this book will help you develop the skills needed to analyze and visualize data effectively using R.
+### Tidyverse and Tidymodels Framework
 
-The focus is on practical applications rather than theoretical statistics, with an emphasis on techniques commonly used across natural science disciplines. By working through this book, you will:
+This book embraces the modern R ecosystem built around the tidyverse and tidymodels principles:
 
-- Master the fundamentals of data analysis in R
-- Learn to import, clean, and organize various types of scientific data
-- Develop skills in exploratory data analysis and visualization
-- Apply appropriate statistical tests for different research questions
-- Create publication-quality visualizations
-- Implement reproducible research workflows
-- Interpret and communicate results effectively
+- **Tidyverse**: A coherent collection of R packages sharing a common design philosophy, grammar, and data structures. This includes `dplyr` for data manipulation, `ggplot2` for visualization, `tidyr` for data tidying, and many others.
 
-## Features of This Book
+- **Tidymodels**: A unified framework for modeling and machine learning that brings the tidyverse philosophy to statistical modeling. This provides consistency across different modeling approaches and simplifies complex workflows.
 
-This book includes:
+### Real-World Applications
 
-- Step-by-step instructions for R with complete code examples
-- Practical examples using real datasets from various natural science disciplines
-- Exercises to reinforce learning and build skills
-- Tips and best practices from experienced researchers
-- Reproducible code that can be adapted for your own research
-- Professional formatting of data and model outputs
+Every chapter includes examples using actual datasets from natural sciences research, ensuring that the methods you learn can be immediately applied to your own work.
 
-## Professional Data and Model Output Formatting
+### Reproducible Research Focus
 
-Throughout this book, we use several R packages to create professionally formatted tables and model outputs suitable for publications:
+The book emphasizes reproducible research practices throughout, including:
+- Version control with Git
+- R Markdown and Quarto for dynamic documents
+- Package management with renv
+- Clear documentation practices
 
-- **knitr**: The core package for dynamic report generation, allowing seamless integration of R code with text
-- **kableExtra**: For creating elegant, publication-quality tables with customizable styling
-- **gt**: For producing beautiful, highly customizable tables with advanced formatting options
-- **broom**: For converting statistical model outputs into tidy data frames that are easier to work with
-- **sjPlot**: For creating publication-ready tables and plots from statistical models
-- **gtsummary**: For creating publication-ready analytical and summary tables
-- **flextable**: For creating tables that work well across different output formats (HTML, PDF, Word)
+## What You Will Learn
 
-These tools help transform raw data and complex statistical outputs into clear, professional presentations. Each chapter demonstrates how to use these packages to format your results effectively, following best practices in scientific publishing. You'll learn to:
+This book will guide you through:
 
-- Format regression tables with proper statistical notation
-- Create elegant summary tables with appropriate precision and units
-- Generate publication-ready ANOVA tables
-- Design custom table themes that match your publication requirements
-- Export formatted tables to various formats (HTML, PDF, Word)
+1. **Foundations of Data Analysis**
+   - R programming essentials
+   - Data structures and types
+   - Modern workflow practices
 
-The code examples throughout the book show not just how to perform analyses, but how to present the results professionally—a critical skill for scientific communication.
+2. **Data Management**
+   - Importing data from various sources
+   - Tidying and transforming data
+   - Handling missing values
+   - Data validation and quality control
 
-## How to Use the Code Examples
+3. **Exploratory Data Analysis**
+   - Descriptive statistics
+   - Data visualization techniques
+   - Pattern recognition
+   - Outlier detection
 
-All code examples in this book are written in R and can be executed in RStudio. To use the examples:
+4. **Statistical Analysis**
+   - Hypothesis testing framework
+   - Common statistical tests
+   - Analysis of variance (ANOVA)
+   - Non-parametric methods
 
-1. Make sure you have R and RStudio installed (see Chapter 1 for installation instructions)
-2. Install the required packages mentioned at the beginning of each chapter
-3. Copy and paste the code into your R console or script editor
-4. Modify the code as needed for your own data
+5. **Modeling and Prediction**
+   - Linear regression
+   - Multiple regression
+   - Logistic regression
+   - Model validation and diagnostics
+   - Cross-validation techniques
 
-The datasets used in the examples are available in the `docs/data` directory of the book's repository and are properly cited throughout the text.
+6. **Advanced Topics**
+   - Spatial analysis
+   - Time series analysis
+   - Mixed-effects models
+   - Machine learning basics
 
-## Software Requirements
+7. **Communication**
+   - Professional visualization
+   - Report generation
+   - Scientific presentation
 
-This book uses:
+## How to Use This Book
 
-- R (version 4.0.0 or higher)
-- RStudio (latest version recommended)
-- Various R packages (installation instructions provided in each chapter)
+This book is designed to be both a learning resource and a reference guide. You can:
+
+- **Read sequentially** from start to finish to build your skills progressively
+- **Focus on specific chapters** as needed for particular tasks or analyses
+- **Use as a reference** when encountering specific analytical challenges
+- **Adapt code examples** to your own datasets and research questions
+
+### Code Examples
+
+All code examples are provided in a clear, commented format. You can:
+
+1. **Copy and run directly** in R or RStudio
+2. **Modify for your needs** with confidence
+3. **Learn by doing** through practical exercises
+
+### Exercises
+
+Each chapter includes exercises to reinforce learning:
+- Basic exercises for fundamental concepts
+- Intermediate challenges for applied practice
+- Advanced problems for deeper exploration
+
+## Prerequisites
+
+To get the most out of this book, you should have:
+
+- **Basic computer skills**: File management, software installation
+- **R and RStudio installed**: Instructions provided in Chapter 1
+- **Statistical awareness**: Basic understanding helpful but not required
+- **Scientific curiosity**: Interest in data-driven discovery
+
+## Book Structure
+
+The book is organized into four main parts:
+
+### Part I: Getting Started
+- Introduction to data analysis in natural sciences
+- Setting up your R environment
+- Data basics and fundamental concepts
+
+### Part II: Data Analysis Fundamentals
+- Exploratory data analysis
+- Hypothesis testing
+- Common statistical tests
+
+### Part III: Data Visualization
+- Principles of effective visualization
+- Creating publication-quality graphics
+- Advanced visualization techniques
+
+### Part IV: Advanced Topics
+- Regression analysis
+- Modeling workflows with tidymodels
+- Conservation applications
+- Special topics in natural sciences
+
+## Companion Resources
+
+This book is accompanied by:
+
+- **GitHub Repository**: All code, data, and supplementary materials
+- **Online Version**: Interactive HTML version with enhanced features
+- **Datasets**: Carefully curated real-world data from multiple disciplines
+- **Updates**: Regular updates with new methods and best practices
+
+## Conventions Used in This Book
+
+Throughout the book, you'll encounter several types of highlighted boxes:
+
+::: {.callout-note}
+## Note Boxes
+These provide additional context, technical details, or explanations of code.
+:::
+
+::: {.callout-important}
+## Important Boxes
+These highlight critical concepts, interpretation guidelines, or common pitfalls.
+:::
+
+::: {.callout-tip}
+## Professional Tips
+These offer best practices, efficiency tips, and expert insights for real-world applications.
+:::
+
+::: {.callout-warning}
+## Warnings
+These alert you to common mistakes, limitations, or things to watch out for.
+:::
+
+### Code Formatting
+
+Code is presented in monospaced font:
+
+```r
+# This is an R code example
+library(tidyverse)
+
+data <- read_csv("data.csv")
+```
+
+Function names are shown as [`function_name()`]{.inline-code}, and package names as **packagename**.
+
+## Acknowledgments {.unnumbered}
+
+This book would not have been possible without the contributions of many individuals and the broader R community:
+
+- The **R Core Team** for developing and maintaining R
+- The **tidyverse team** (particularly Hadley Wickham) for revolutionizing R programming
+- The **tidymodels team** (especially Max Kuhn and Julia Silge) for creating a unified modeling framework
+- The **RStudio team** for providing excellent development tools
+- **Data providers** who make their datasets openly available for research and education
+- **Students and colleagues** who provided feedback and testing
+- The **open-source community** whose packages make this work possible
+
+## Software and Package Information
+
+This book was written using:
+
+- **R** (version 4.0.0 or higher)
+- **RStudio** (2023.06.0 or higher)
+- **Quarto** (1.3.0 or higher)
+- **Tidyverse** packages
+- **Tidymodels** packages
+
+For the most up-to-date package versions and dependencies, see the `install_packages.R` script included with the book materials.
 
 ## Feedback and Contributions
 
-Your feedback is valuable for improving future editions of this book. If you find errors, have suggestions, or want to contribute examples, please submit them through the book's repository or contact the author directly.
+This book is a living document that will evolve based on feedback from readers and advances in the field. If you find errors, have suggestions for improvements, or would like to contribute:
 
-## Acknowledgments
+- **Report issues**: Use the GitHub repository's issue tracker
+- **Suggest improvements**: Submit pull requests
+- **Share your applications**: We'd love to hear how you've applied these methods in your research
 
-I would like to express my gratitude to colleagues, students, and the broader R community whose insights and feedback have contributed to the development of this book. Special thanks to the creators and maintainers of the R packages used throughout this book, as well as the data providers whose datasets make the examples both practical and relevant.
+## License
+
+This work is licensed under the MIT License, allowing you to freely use, modify, and share the material with appropriate attribution. See the LICENSE file in the repository for full details.
+
+## Let's Begin!
+
+Data analysis is both a science and an art. While the statistical methods provide the rigorous foundation, the creative application of these tools to real-world problems is where the true value emerges. This book aims to equip you with both the technical skills and the analytical mindset needed to excel in natural sciences research.
+
+Whether you're analyzing forest inventory data, tracking species populations, studying climate patterns, or investigating any other natural phenomenon, the skills you'll develop here will serve as a foundation for your scientific journey.
+
+Let's embark on this journey into the world of data analysis for natural sciences!
+
+---
+
+**Dr. Jimmy Moses**  
+School of Forestry  
+Faculty of Natural Resources  
+Papua New Guinea University of Technology  
+PMB 411, Lae, Morobe Province, Papua New Guinea
+
+*Last updated: October 2025*

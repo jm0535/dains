@@ -1,0 +1,89 @@
+# Pre-commit hooks configuration
+# Install with: pip install pre-commit && pre-commit install
+# See: https://pre-commit.com
+
+repos:
+  # General file quality checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+        args: [--markdown-linebreak-ext=md]
+
+      - id: end-of-file-fixer
+        name: Fix end of files
+
+      - id: check-yaml
+        name: Check YAML syntax
+
+      - id: check-added-large-files
+        name: Check for large files
+        args: ['--maxkb=5000']
+
+      - id: check-case-conflict
+        name: Check for case conflicts
+
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+
+      - id: detect-private-key
+        name: Detect private keys
+
+      - id: mixed-line-ending
+        name: Fix mixed line endings
+        args: ['--fix=lf']
+
+  # R-specific checks
+  - repo: local
+    hooks:
+      - id: r-lintr
+        name: Lint R files
+        entry: Rscript -e 'library(lintr); files <- commandArgs(trailingOnly = TRUE); for (f in files) { lint(f) }'
+        language: system
+        files: \\.R$
+        pass_filenames: true
+        verbose: true
+
+      - id: r-styler
+        name: Style R files
+        entry: Rscript -e 'library(styler); files <- commandArgs(trailingOnly = TRUE); style_file(files)'
+        language: system
+        files: \\.R$
+        pass_filenames: true
+
+      - id: quarto-check
+        name: Check Quarto files
+        entry: quarto check
+        language: system
+        files: \\.qmd$
+        pass_filenames: false
+
+  # Prevent committing to main/master directly
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: no-commit-to-branch
+        name: Don't commit directly to main/master
+        args: ['--branch=main', '--branch=master']
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint
+        name: Lint Markdown files
+        args: ['--config', '.markdownlint.json']
+
+  # Secret detection
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: Detect secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package.lock.json
+
+# Configuration
+default_stages: [commit]
+fail_fast: false

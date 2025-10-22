@@ -1,0 +1,57 @@
+# Docker ignore file - exclude unnecessary files from Docker build context
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs/ARCHITECTURE.md
+docs/DEVELOPMENT.md
+
+# IDE
+.vscode/
+.idea/
+*.Rproj.user/
+
+# R
+.Rhistory
+.RData
+.Ruserdata
+
+# Quarto
+/.quarto/
+_site/
+_book/
+_cache/
+
+# Logs
+logs/*.log
+
+# Data files (can be downloaded)
+data/**/*.csv
+data/**/*.xlsx
+!data/*/sample_*.csv
+
+# renv library (will be rebuilt)
+renv/library/
+renv/local/
+renv/staging/
+
+# Temporary files
+*.tmp
+*~
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+docs/
+*.pdf
+
+# Tests
+tests/testthat/_snaps/

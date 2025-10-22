@@ -3,7 +3,8 @@
 .Rhistory
 .RData
 .Ruserdata
-*.Rproj
+# Note: .Rproj file is now committed for team collaboration
+# *.Rproj line removed to allow committing project file
 
 # Quarto specific
 /.quarto/
@@ -34,3 +35,21 @@ Thumbs.db
 *.log
 *.tmp
 *~
+
+# renv - don't commit library but do commit lock file
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+!renv.lock
+
+# Logs directory but keep structure
+logs/*.log
+!logs/.gitkeep
+
+# Cache directory
+_cache/
+*.rds

@@ -1,0 +1,61 @@
+# Docker Compose configuration for local development
+
+version: '3.8'
+
+services:
+  # Main book development environment
+  book:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: data-analysis-book
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount project directory for live editing
+      - .:/book
+      # Persist renv library across container restarts
+      - renv-library:/book/renv/library
+      # Persist logs
+      - ./logs:/book/logs
+    environment:
+      - QUARTO_PRINT_STACK=true
+      - R_MAX_VSIZE=32Gb
+    command: quarto preview --host 0.0.0.0 --port 8080 --no-browser
+    restart: unless-stopped
+
+  # Optional: R Studio Server for interactive development
+  rstudio:
+    image: rocker/rstudio:4.2.0
+    container_name: data-analysis-rstudio
+    ports:
+      - "8787:8787"
+    volumes:
+      - .:/home/rstudio/Data-Analysis-in-Natural-Sciences
+      - rrstudio-library:/home/rstudio/.local/share/renv
+    environment:
+      - PASSWORD=rstudio
+      - ROOT=true
+    restart: unless-stopped
+
+volumes:
+  renv-library:
+  rstudio-library:
+
+# Usage:
+#
+# Start services:
+#   docker-compose up -d
+#
+# View logs:
+#   docker-compose logs -f
+#
+# Stop services:
+#   docker-compose down
+#
+# Rebuild:
+#   docker-compose up -d --build
+#
+# Access:
+#   - Book preview: http://localhost:8080
+#   - RStudio: http://localhost:8787 (user: rstudio, password: rstudio)

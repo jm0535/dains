@@ -1,0 +1,91 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  # Quick checks for PRs
+  pr-validation:
+    name: Validate Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Full history for better diff analysis
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.0'
+          use-public-rspm: true
+
+      - name: Check for large files
+        run: |
+          # Check if any files are too large (>5MB)
+          large_files=$(find . -type f -size +5M -not -path "./.git/*" -not -path "./renv/*")
+          if [ -n "$large_files" ]; then
+            echo "Error: Large files detected:"
+            echo "$large_files"
+            echo "Please use Git LFS for files larger than 5MB"
+            exit 1
+          fi
+
+      - name: Validate YAML files
+        run: |
+          # Check that all .yml files are valid
+          for file in $(find . -name "*.yml" -o -name "*.yaml"); do
+            python3 -c "import yaml; yaml.safe_load(open('$file'))" || exit 1
+          done
+
+      - name: Check for secrets
+        run: |
+          # Basic check for common secret patterns
+          if grep -r -E "(api_key|password|secret|token)\s*=\s*['\"][^'\"]+['\"]" --include="*.R" --include="*.qmd" .; then
+            echo "Warning: Possible secrets detected in code"
+            echo "Please review and remove any hardcoded credentials"
+            exit 1
+          fi
+
+      - name: Install testing dependencies
+        run: |
+          install.packages(c("testthat", "lintr"))
+        shell: Rscript {0}
+
+      - name: Run R tests
+        run: |
+          library(testthat)
+          test_results <- test_dir("tests")
+        shell: Rscript {0}
+
+      - name: Check R code style
+        run: |
+          library(lintr)
+          # Get list of R files changed in this PR
+          changed_files <- system("git diff --name-only origin/main HEAD | grep '\\.R$'", intern = TRUE)
+          if (length(changed_files) > 0) {
+            for (file in changed_files) {
+              if (file.exists(file)) {
+                lint_result <- lint(file)
+                if (length(lint_result) > 0) {
+                  print(paste("Linting issues in", file))
+                  print(lint_result)
+                }
+              }
+            }
+          }
+        shell: Rscript {0}
+        continue-on-error: true
+
+      - name: Comment PR
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Automated checks completed. Please review the results above.'
+            })

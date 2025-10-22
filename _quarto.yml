@@ -64,7 +64,10 @@ execute:
   eval: true
   always_allow_html: true
   prefer-html: true
+  cache: true
+  freeze: auto
   knitr:
     opts_chunk:
       dev: "png"
       screenshot.force: true
+      cache.lazy: false

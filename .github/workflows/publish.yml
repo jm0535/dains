@@ -1,13 +1,132 @@
-name: Publish to GitHub Pages
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [main, master]
+  pull_request:
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
-  build-deploy:
+  # Job 1: Code Quality Checks
+  quality-checks:
+    name: Code Quality and Linting
     runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.0'
+          use-public-rspm: true
+
+      - name: Install lintr and styler
+        run: |
+          install.packages("lintr")
+          install.packages("styler")
+        shell: Rscript {0}
+
+      - name: Lint R code
+        run: |
+          library(lintr)
+          lint_results <- lint_dir("R", linters = linters_with_defaults(
+            line_length_linter(120),
+            object_name_linter = NULL  # Allow different naming conventions
+          ))
+          print(lint_results)
+          # Don't fail build on lint warnings for now, just report
+        shell: Rscript {0}
+        continue-on-error: true
+
+      - name: Check R code style
+        run: |
+          library(styler)
+          # Check style without modifying files
+          style_results <- style_dir("R", dry = "on")
+          style_results_scripts <- style_dir("scripts", dry = "on")
+        shell: Rscript {0}
+        continue-on-error: true
+
+  # Job 2: Automated Tests
+  test:
+    name: Run Automated Tests
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.0'
+          use-public-rspm: true
+
+      - name: Install system dependencies
+        run: sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+
+      - name: Install R Dependencies
+        run: |
+          install.packages(c("testthat", "tidyverse", "ggplot2", "rstatix",
+                           "knitr", "dplyr", "tidyr", "digest", "readr"))
+        shell: Rscript {0}
+
+      - name: Run tests
+        run: |
+          library(testthat)
+          # Run tests and capture results
+          test_results <- test_dir("tests", reporter = "summary")
+          print(test_results)
+        shell: Rscript {0}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: tests/
+
+  # Job 3: Data Validation
+  data-validation:
+    name: Validate Data Integrity
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.0'
+          use-public-rspm: true
+
+      - name: Install validation packages
+        run: |
+          install.packages(c("tidyverse", "naniar", "validate", "digest",
+                           "dataMaid", "janitor", "skimr", "readxl"))
+        shell: Rscript {0}
+
+      - name: Run data validation
+        run: Rscript scripts/data_validation.R
+        continue-on-error: true
+
+      - name: Upload validation log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: validation-log
+          path: data_validation_log.txt
+
+  # Job 4: Build and Deploy
+  build-deploy:
+    name: Build and Deploy Book
+    runs-on: ubuntu-latest
+    needs: [quality-checks, test, data-validation]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     permissions:
       contents: write
     steps:
@@ -25,6 +144,9 @@ jobs:
           r-version: '4.2.0'
           use-public-rspm: true
 
+      - name: Install system dependencies
+        run: sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libgdal-dev libproj-dev libgeos-dev
+
       - name: Install R Dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -37,10 +159,42 @@ jobs:
             any::leaflet
             any::rstatix
             any::kableExtra
+            any::sf
+            any::rnaturalearth
+            any::viridis
+            any::corrplot
 
-      - name: Render and Publish
+      - name: Check Quarto installation
+        run: quarto check
+
+      - name: Render Quarto book
+        run: quarto render
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "Error: docs directory not created"
+            exit 1
+          fi
+          if [ ! -f "docs/index.html" ]; then
+            echo "Error: index.html not found"
+            exit 1
+          fi
+          echo "Build verification passed"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: book-output
+          path: docs/
+
+      - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deployment status
+        if: success()
+        run: echo "Successfully deployed to GitHub Pages"

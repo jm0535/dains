@@ -18,14 +18,21 @@ pacman::p_load(
   curl = "5.0.1" # Enhanced download capabilities
 )
 
-#' Download a dataset with enhanced error handling and validation
+#' Download a dataset with enhanced error handling, validation, and rollback
+#'
+#' This function implements atomic downloads with rollback on failure:
+#' 1. Downloads to temporary file first (not final destination)
+#' 2. Validates file integrity (size, hash, format)
+#' 3. Only moves to final location if all validations pass
+#' 4. Automatically cleans up temporary files on failure
 #'
 #' @param url Character string specifying the URL to download from
 #' @param dest_file Character string specifying the destination file path
 #' @param description Character string describing the dataset
 #' @param expected_hash Character string with expected MD5 hash (NULL to skip validation)
+#' @param min_size_kb Minimum expected file size in KB (default: 1)
 #' @return Logical indicating success (TRUE) or failure (FALSE)
-download_dataset <- function(url, dest_file, description, expected_hash = NULL) {
+download_dataset <- function(url, dest_file, description, expected_hash = NULL, min_size_kb = 1) {
   timestamp <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   cat(paste0("[", timestamp, "] Downloading ", description, "...\n"))
 
@@ -35,52 +42,158 @@ download_dataset <- function(url, dest_file, description, expected_hash = NULL) 
     dir.create(dest_dir, recursive = TRUE)
   }
 
-  # Attempt to download with progressbar and multiple attempts
+  # Create temporary file path for atomic downloads
+  # This prevents corrupting existing files during failed downloads
+  temp_file <- paste0(dest_file, ".tmp.", Sys.getpid())
+
+  # Backup existing file if present (rollback capability)
+  backup_file <- NULL
+  if (file.exists(dest_file)) {
+    backup_file <- paste0(dest_file, ".backup.", Sys.getpid())
+    file.copy(dest_file, backup_file, overwrite = TRUE)
+    cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] Backed up existing file\n"))
+  }
+
+  # Cleanup function to remove temporary files
+  cleanup_temp_files <- function() {
+    if (file.exists(temp_file)) {
+      unlink(temp_file)
+    }
+  }
+
+  # Rollback function to restore previous state
+  rollback_to_backup <- function() {
+    if (!is.null(backup_file) && file.exists(backup_file)) {
+      file.copy(backup_file, dest_file, overwrite = TRUE)
+      unlink(backup_file)
+      cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] Rolled back to previous version\n"))
+    }
+  }
+
+  # Attempt to download with multiple retries and exponential backoff
   max_attempts <- 3
   for (attempt in 1:max_attempts) {
     tryCatch(
       {
-        # Use curl for better progress tracking and timeout handling
-        curl::curl_download(url, dest_file, quiet = FALSE, mode = "wb")
+        # Download to temporary location (not final destination)
+        curl::curl_download(url, temp_file, quiet = FALSE, mode = "wb")
 
-        # Verify file was downloaded successfully
-        if (!file.exists(dest_file) || file.size(dest_file) == 0) {
-          warning(paste0("Download resulted in empty or missing file (attempt ", attempt, " of ", max_attempts, ")"))
-          if (attempt < max_attempts) Sys.sleep(2) # Wait before retry
-          next
+        # Verification Step 1: Check file existence
+        if (!file.exists(temp_file)) {
+          warning(paste0("Downloaded file not found (attempt ", attempt, " of ", max_attempts, ")"))
+          cleanup_temp_files()
+          if (attempt < max_attempts) {
+            Sys.sleep(2^attempt) # Exponential backoff: 2s, 4s, 8s
+            next
+          } else {
+            rollback_to_backup()
+            return(FALSE)
+          }
         }
 
-        # Validate file hash if expected_hash is provided
+        # Verification Step 2: Check minimum file size
+        file_size_kb <- file.size(temp_file) / 1024
+        if (file_size_kb < min_size_kb) {
+          warning(paste0("File too small: ", round(file_size_kb, 2), " KB (expected >= ", min_size_kb, " KB)"))
+          cleanup_temp_files()
+          if (attempt < max_attempts) {
+            Sys.sleep(2^attempt)
+            next
+          } else {
+            rollback_to_backup()
+            return(FALSE)
+          }
+        }
+
+        # Verification Step 3: Validate file hash if provided
         if (!is.null(expected_hash)) {
-          actual_hash <- digest::digest(dest_file, algo = "md5", file = TRUE)
+          cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] Validating file integrity...\n"))
+          actual_hash <- digest::digest(temp_file, algo = "md5", file = TRUE)
+
           if (actual_hash != expected_hash) {
-            warning(paste0("File hash mismatch. Expected: ", expected_hash, ", Got: ", actual_hash))
+            warning(paste0("Hash mismatch. Expected: ", expected_hash, ", Got: ", actual_hash))
+            cleanup_temp_files()
             if (attempt < max_attempts) {
-              Sys.sleep(2) # Wait before retry
+              Sys.sleep(2^attempt)
               next
             } else {
-              cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] WARNING: File hash verification failed for ", description, ". File may be corrupted or changed upstream.\n"))
+              cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] WARNING: All attempts failed hash validation.\n"))
+              rollback_to_backup()
+              return(FALSE)
             }
           } else {
             cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] File hash verified successfully.\n"))
           }
         }
 
-        cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] Successfully downloaded to ", dest_file, " (", round(file.size(dest_file) / 1024), " KB)\n"))
+        # Verification Step 4: Basic format validation for CSV files
+        if (grepl("\\.csv$", dest_file, ignore.case = TRUE)) {
+          tryCatch({
+            test_read <- read.csv(temp_file, nrows = 5)
+            if (nrow(test_read) == 0 || ncol(test_read) == 0) {
+              warning("CSV file appears to be empty or invalid")
+              cleanup_temp_files()
+              if (attempt < max_attempts) {
+                Sys.sleep(2^attempt)
+                next
+              } else {
+                rollback_to_backup()
+                return(FALSE)
+              }
+            }
+          }, error = function(e) {
+            warning(paste0("CSV validation failed: ", e$message))
+            cleanup_temp_files()
+            if (attempt < max_attempts) {
+              Sys.sleep(2^attempt)
+              next
+            } else {
+              rollback_to_backup()
+              return(FALSE)
+            }
+          })
+        }
+
+        # All validations passed - atomic move to final location
+        file_move_success <- file.rename(temp_file, dest_file)
+
+        if (!file_move_success) {
+          # If rename fails, try copy and delete
+          file.copy(temp_file, dest_file, overwrite = TRUE)
+          unlink(temp_file)
+        }
+
+        # Remove backup since new file is successfully in place
+        if (!is.null(backup_file) && file.exists(backup_file)) {
+          unlink(backup_file)
+        }
+
+        cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] Successfully downloaded to ", dest_file, " (", round(file_size_kb, 2), " KB)\n"))
         return(TRUE)
       },
       error = function(e) {
         cat(paste0("[", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "] Error downloading ", description, " (attempt ", attempt, " of ", max_attempts, "): ", e$message, "\n"))
+        cleanup_temp_files()
+
         if (attempt < max_attempts) {
-          cat(paste0("Retrying in 2 seconds...\n"))
-          Sys.sleep(2)
+          wait_time <- 2^attempt
+          cat(paste0("Retrying in ", wait_time, " seconds...\n"))
+          Sys.sleep(wait_time)
         } else {
           cat(paste0("All download attempts failed for ", description, ".\n"))
+          rollback_to_backup()
           return(FALSE)
         }
       }
     )
   }
+
+  # Final cleanup in case of unexpected exit
+  cleanup_temp_files()
+  if (!is.null(backup_file) && file.exists(backup_file)) {
+    unlink(backup_file)
+  }
+
   return(FALSE)
 }
 

@@ -124,7 +124,7 @@ For reproducibility, consider using **renv** to manage package versions. See the
 ### Contributing to This Book
 
 This book is open source and welcomes contributions:
-- **GitHub Repository**: https://github.com/jm0535/Data-Analysis-in-Natural-Sciences
+- **GitHub Repository**: https://github.com/jm0535/dains
 - **Report Issues**: Use the issue tracker for bugs or suggestions
 - **Submit Improvements**: Pull requests are welcome
 - **Share Your Experience**: Let us know how you're using this book
@@ -143,7 +143,7 @@ The field of data science and R programming evolves rapidly. To stay updated:
 
 If you use this book in your research or teaching, please cite as:
 
-Moses, J. (2025). *Data Analysis in Natural Sciences: An R-Based Approach*. Retrieved from https://jm0535.github.io/Data-Analysis-in-Natural-Sciences/
+Moses, J. (2025). *Data Analysis in Natural Sciences: An R-Based Approach*. Retrieved from https://jm0535.github.io/dains/
 
 BibTeX entry:
 ```
@@ -152,7 +152,7 @@ BibTeX entry:
   author={Moses, Jimmy},
   year={2025},
   publisher={Self-published},
-  url={https://jm0535.github.io/Data-Analysis-in-Natural-Sciences/}
+  url={https://jm0535.github.io/dains/}
 }
 ```
 

@@ -10,8 +10,10 @@ book:
   author: "Jimmy Moses"
   date: "2025-03-27"
   cover-image: "images/dans_coverpage_final.png"
-  site-url: https://jm0535.github.io/Data-Analysis-in-Natural-Sciences/
-  repo-url: https://github.com/jm0535/Data-Analysis-in-Natural-Sciences/tree/main
+  site-url: https://jm0535.github.io/dains/
+  repo-url: https://github.com/jm0535/dains/tree/main
+  repo-actions: [edit, issue]
+  sharing: [twitter, facebook, linkedin]
   chapters:
     - index.qmd
     - preface.qmd
@@ -30,7 +32,7 @@ book:
         - chapters/07-advanced-visualization.qmd
     - part: "Advanced Topics"
       chapters:
-        - chapters/08-regression.qmd  # Rendering issues fixed with distributed professional tips
+        - chapters/08-regression.qmd
         - chapters/09-conservation.qmd
     - references.qmd
 
@@ -39,7 +41,11 @@ format:
     theme: cosmo
     code-fold: true
     code-tools: true
+    code-copy: true
+    code-link: true
     toc: true
+    toc-depth: 3
+    number-sections: true
     fig-width: 8
     fig-height: 6
     fig-dpi: 300
@@ -52,7 +58,9 @@ format:
     crossref:
       fig-title: "Figure"
       tbl-title: "Table"
+      eq-prefix: "Equation"
     footer-text: "⚠️ DRAFT - EDITION 1 ⚠️ | This book is currently in development. Content is subject to change before final publication. | © 2025 Jimmy Moses"
+    link-external-newwindow: true
 
 bibliography: references.bib
 csl: apa.csl
@@ -62,9 +70,13 @@ execute:
   warning: false
   message: false
   eval: true
-  always_allow_html: true
-  prefer-html: true
-  knitr:
-    opts_chunk:
-      dev: "png"
-      screenshot.force: true
+  freeze: auto
+  cache: true
+
+knitr:
+  opts_chunk:
+    dev: "png"
+    fig.align: "center"
+    out.width: "100%"
+    R.options:
+      width: 80

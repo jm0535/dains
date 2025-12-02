@@ -11,14 +11,53 @@
 /_book/
 /.ipynb_checkpoints/
 /quarto-cli/
+*_cache/
+*_files/
+!chapters/*_files/
+
+# LaTeX artifacts
+*.aux
+*.log
+*.toc
+*.tex
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.lot
+*.lof
+*.idx
+*.ilg
+*.ind
+*.nav
+*.snm
+*.vrb
 
 # OS specific
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
 
 # Editor specific
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# VS Code local history
+.history/
 
 # Large data files
 *.csv
@@ -26,11 +65,62 @@ Thumbs.db
 *.xls
 *.zip
 *.tar.gz
+*.gz
+*.7z
+*.rar
 
 # Exceptions - include specific data files needed for examples
-!data/*/sample_*.csv
+!data/**/*.csv
+!data/**/CITATION.txt
 
 # Temporary files
-*.log
 *.tmp
-*~
+*.temp
+*.bak
+*.backup
+temp/
+tmp/
+scratch/
+
+# Python (if any notebooks are used)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.egg-info/
+.eggs/
+.env
+.venv
+venv/
+
+# renv (R package management)
+renv/library/
+renv/staging/
+renv/python/
+renv/sandbox/
+
+# Package locks (uncomment if not using renv)
+# renv.lock
+
+# Logs
+logs/
+*.log
+
+# Build outputs (keep docs for GitHub Pages)
+# /docs/
+
+# Secrets and credentials
+.env
+.env.local
+*.pem
+*.key
+secrets/
+
+# Test outputs
+testthat/
+coverage/
+
+# Trunk (linter)
+.trunk/out/
+.trunk/logs/
+.trunk/plugins/

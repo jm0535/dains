@@ -113,7 +113,6 @@ jobs:
             any::sf
             any::vegan
           cache-version: 2
-          extra-packages: local::.
 
       - name: Render Quarto book
         run: |

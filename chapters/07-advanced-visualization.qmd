@@ -279,24 +279,28 @@ The `plotly` package allows you to convert ggplot2 graphics to interactive versi
 ```{r interactive-plotly, fig.width=8, fig.height=6, fig.cap="Interactive scatter plot of iris dataset. In the HTML version, you can hover over points to see details, zoom, and pan."}
 library(plotly)
 
-# Create a ggplot object
-p <- ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
-  geom_point(size = 3, alpha = 0.7) +
-  labs(title = "Relationship between Sepal Length and Petal Length",
-       x = "Sepal Length (cm)",
-       y = "Petal Length (cm)") +
-  theme_minimal() +
-  scale_color_viridis_d()
-
 # Check if we're in HTML output mode
 if (knitr::is_html_output()) {
-  # For HTML output, use the interactive plotly version
-  ggplotly(p)
+  # For HTML output, use plotly directly (more compatible)
+  plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, color = ~Species,
+          type = "scatter", mode = "markers",
+          marker = list(size = 10, opacity = 0.7),
+          colors = viridis::viridis(3)) |>
+    layout(title = "Relationship between Sepal Length and Petal Length",
+           xaxis = list(title = "Sepal Length (cm)"),
+           yaxis = list(title = "Petal Length (cm)"))
 } else {
-  # For PDF output, use the static ggplot version
-  p + annotate("text", x = 6, y = 6,
-               label = "Note: Interactive version available in HTML output",
-               fontface = "italic", size = 3)
+  # For PDF output, use static ggplot version
+  ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
+    geom_point(size = 3, alpha = 0.7) +
+    labs(title = "Relationship between Sepal Length and Petal Length",
+         x = "Sepal Length (cm)",
+         y = "Petal Length (cm)") +
+    theme_minimal() +
+    scale_color_viridis_d() +
+    annotate("text", x = 6, y = 6,
+             label = "Note: Interactive version available in HTML output",
+             fontface = "italic", size = 3)
 }
 ```
 

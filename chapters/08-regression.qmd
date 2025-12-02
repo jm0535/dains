@@ -219,12 +219,26 @@ plot(check_multi_model)
 library(effects)
 plot(allEffects(multi_model), ask = FALSE)
 
-# Compare models
-library(modelsummary)
-modelsummary(list("Simple Model" = model, "Multiple Model" = multi_model),
-             stars = TRUE,
-             gof_map = c("nobs", "r.squared", "adj.r.squared", "AIC", "BIC"),
-             title = "Comparison of Regression Models")
+# Compare models using base R
+model_comparison <- data.frame(
+  Metric = c("R²", "Adjusted R²", "AIC", "BIC", "N"),
+  `Simple Model` = c(
+    round(summary(model)$r.squared, 3),
+    round(summary(model)$adj.r.squared, 3),
+    round(AIC(model), 1),
+    round(BIC(model), 1),
+    nobs(model)
+  ),
+  `Multiple Model` = c(
+    round(summary(multi_model)$r.squared, 3),
+    round(summary(multi_model)$adj.r.squared, 3),
+    round(AIC(multi_model), 1),
+    round(BIC(multi_model), 1),
+    nobs(multi_model)
+  ),
+  check.names = FALSE
+)
+knitr::kable(model_comparison, caption = "Comparison of Regression Models")
 
 # Create a visualization of predicted vs. actual values
 predicted_values <- augment(multi_model, data = penguins_clean)
@@ -245,7 +259,7 @@ ggplot(predicted_values, aes(x = .fitted, y = body_mass_g, color = species)) +
 
 # Create a partial dependence plot for flipper length
 pdp_flipper <- ggeffects::ggpredict(multi_model, terms = "flipper_length_mm")
-plot(pdp_flipper, add.data = TRUE) +
+plot(pdp_flipper) +
   labs(
     title = "Effect of Flipper Length on Body Mass",
     subtitle = "Controlling for other variables in the model",

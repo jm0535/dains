@@ -6,22 +6,35 @@ prefer-html: true
 
 ```{r setup, include=FALSE}
 # Load required packages for data analysis and visualization
-library(tidyverse)
-library(ggplot2)
-library(knitr)
-library(kableExtra)
-library(magrittr)  # For the pipe operator %>%
-library(reshape2)  # For data reshaping functions
+library(tidyverse)    # Core tidyverse (includes ggplot2, dplyr, tidyr, readr, etc.)
+library(rstatix)      # Pipe-friendly statistical tests
+library(knitr)        # Document generation
+library(kableExtra)   # Enhanced tables
+library(broom)        # Tidy model outputs
+library(car)          # Companion to Applied Regression (for Levene's test)
 
 # Set global knitr options
 knitr::opts_chunk$set(
-  echo = TRUE,        # Display code chunks
-  warning = FALSE,    # Suppress warnings
-  message = FALSE,    # Suppress messages
-  fig.width = 8,      # Default figure width
-  fig.height = 5,     # Default figure height
-  fig.align = "center" # Center figures
+
+  echo = TRUE,
+
+  warning = FALSE,
+
+  message = FALSE,
+  fig.width = 8,
+  fig.height = 6,
+  fig.align = "center",
+  comment = "#>"
 )
+
+# Set a consistent theme for all plots
+theme_set(theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    legend.position = "bottom"
+  ))
 ```
 
 ## Introduction

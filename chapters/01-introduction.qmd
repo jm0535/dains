@@ -6,19 +6,51 @@ prefer-html: true
 
 ## Overview
 
-Data analysis is a critical skill in modern natural sciences research [@wickham2016r; @zuur2009mixed]. This chapter introduces the fundamental concepts, tools, and approaches that form the foundation of effective data analysis across various scientific disciplines.
+Data analysis is a critical skill in modern natural sciences research. This chapter introduces the fundamental concepts, tools, and approaches that form the foundation of effective data analysis across various scientific disciplines. By the end of this chapter, you will understand:
+
+- Why data analysis matters in natural sciences
+- How to set up R and RStudio
+- The tidyverse philosophy and its advantages
+- Basic R programming concepts
+- How to work with data using modern R practices
 
 ## Why Data Analysis Matters in Natural Sciences
 
-Data analysis plays a pivotal role in natural sciences research for several reasons:
+Data analysis plays a pivotal role in natural sciences research for several important reasons:
 
-1. **Evidence-Based Decision Making**: Data analysis transforms raw observations into actionable insights, enabling researchers and practitioners to make informed decisions about conservation strategies, resource management practices, agricultural planning, environmental interventions, and more [@bolker2009generalized].
+### Evidence-Based Decision Making
 
-2. **Pattern Recognition**: Through statistical analysis, researchers can identify patterns, trends, and relationships within natural systems that might not be apparent from casual observation alone [@zuur2007analyzing]. This applies to diverse fields including ecology, geology, marine biology, atmospheric science, and agriculture.
+Data analysis transforms raw observations into actionable insights, enabling researchers and practitioners to make informed decisions about:
 
-3. **Hypothesis Testing**: Data analysis provides rigorous methods to test hypotheses about natural phenomena, allowing researchers to build and refine scientific theories about how natural systems function [@gotelli2004null]. This is fundamental across all scientific disciplines.
+- **Conservation strategies**: Identifying priority areas and species for protection
+- **Resource management**: Optimizing sustainable use of natural resources
+- **Agricultural planning**: Improving crop yields and farming practices
+- **Environmental interventions**: Designing effective pollution control measures
+- **Climate adaptation**: Planning for changing environmental conditions
 
-4. **Prediction and Modeling**: Advanced analytical techniques enable the development of predictive models that can forecast changes in natural systems, such as species distribution shifts under climate change, crop yield predictions, geological processes, weather patterns, and more [@elith2009species].
+### Pattern Recognition
+
+Through statistical analysis, researchers can identify patterns, trends, and relationships within natural systems that might not be apparent from casual observation alone. This applies to diverse fields including:
+
+- Ecology and population dynamics
+- Geology and earth processes
+- Marine biology and oceanography
+- Atmospheric science and climatology
+- Agriculture and food systems
+
+### Hypothesis Testing
+
+Data analysis provides rigorous methods to test hypotheses about natural phenomena, allowing researchers to build and refine scientific theories about how natural systems function. This is fundamental across all scientific disciplines.
+
+### Prediction and Modeling
+
+Advanced analytical techniques enable the development of predictive models that can forecast changes in natural systems, such as:
+
+- Species distribution shifts under climate change
+- Crop yield predictions based on weather patterns
+- Disease outbreak forecasting
+- Resource depletion projections
+- Ecosystem responses to disturbance
 
 ::: {.callout-tip}
 ## PROFESSIONAL TIP: Principles of Robust Experimental Design
@@ -28,200 +60,510 @@ Before diving into data analysis, ensure your experimental design follows these 
 - **Formulate clear hypotheses**: Define specific, testable hypotheses before collecting data
 - **Control for confounding variables**: Identify and account for factors that might influence your results
 - **Randomize appropriately**: Randomly assign treatments to experimental units to reduce bias
-- **Include adequate replication**: Ensure sufficient sample sizes for statistical power (use power analysis)
-- **Consider spatial and temporal scales**: Match your sampling design to the scales of the processes being studied
+- **Include adequate replication**: Ensure sufficient sample sizes for statistical power
+- **Consider spatial and temporal scales**: Match your sampling design to the processes being studied
 - **Plan for appropriate controls**: Include positive, negative, and procedural controls as needed
-- **Use factorial designs when appropriate**: Efficiently test multiple factors and their interactions
-- **Consider blocking**: Group experimental units to account for known sources of variation
 - **Pre-register your study**: Document your hypotheses and analysis plan before collecting data
-- **Plan for appropriate statistical analysis**: Select statistical methods based on your design, not just your results
+- **Plan for data analysis**: Select statistical methods based on your design, not just your results
 :::
 
-## Tools for Data Analysis
+## Introduction to R and RStudio
 
-This book focuses on R and RStudio as the primary tools for data analysis:
+### Why R?
 
-### R and RStudio
+R is a powerful programming language and environment specifically designed for statistical computing and graphics. It has become the standard tool for data analysis in many scientific disciplines.
 
-R is a powerful programming language and environment specifically designed for statistical computing and graphics. RStudio is an integrated development environment (IDE) that makes working with R more accessible and efficient.
+**Key advantages of R include:**
 
-Key advantages of R include:
-
-- **Open-source and free**: Available to anyone without cost
-- **Extensive package ecosystem**: Thousands of specialized packages for various types of analyses across all scientific disciplines
-- **Reproducibility**: Code-based approach ensures analyses can be repeated and verified
-- **Flexibility**: Can be adapted to virtually any analytical need in the natural sciences
-- **Active community**: Large user base provides support and continuous development
-
-```{r}
-#| label: r-example
-#| echo: true
-
-# A simple example of R code using real-world data
-# Load the Palmer penguins dataset (a subset of climate_data.csv)
-penguins <- read.csv("../data/environmental/climate_data.csv")
-
-# View the first few rows
-head(penguins)
-
-# Get a summary of bill length measurements
-summary(penguins$bill_length_mm)
-```
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates basic data loading and exploration in R:
-
-1. **Data Loading**:
-   - `read.csv()` imports data from a CSV file
-   - The path "../data/environmental/climate_data.csv" points to the data file
-
-2. **Data Exploration**:
-   - `head()` displays the first 6 rows of the dataset
-   - `summary()` provides statistical summaries of the bill length measurements
-
-3. **Variable Access**:
-   - The `$` operator accesses the bill_length_mm column from the penguins data frame
-:::
-
-::: {.callout-important}
-## Results Interpretation
-
-The output shows:
-
-1. **Data Structure**:
-   - The dataset contains multiple columns including species, island, bill measurements, and body mass
-   - Each row represents a single penguin measurement
-
-2. **Bill Length Statistics**:
-   - Minimum: 32.10 mm
-   - Maximum: 59.60 mm
-   - Mean: 43.92 mm
-   - Median: 44.45 mm
-   - 2 missing values (NA's)
-
-3. **Data Quality**:
-   - The presence of missing values suggests the need for data cleaning
-   - The range of values appears reasonable for penguin bill measurements
-:::
-
-::: {.callout-tip}
-## PROFESSIONAL TIP: Data Loading Best Practices
-
-When loading data in R:
-
-1. **File Organization**:
-   - Keep data files in a dedicated directory (e.g., "data/")
-   - Use clear, descriptive file names
-   - Maintain consistent file naming conventions
-
-2. **Data Import**:
-   - Always check file paths are correct
-   - Verify data format matches expectations
-   - Consider using `readr` package for more robust data import
-
-3. **Initial Checks**:
-   - Examine data structure with `str()`
-   - Check for missing values
-   - Verify data types are correct
-   - Look for obvious errors or outliers
-:::
-
-## Setting Up Your Environment
+| Advantage | Description |
+|-----------|-------------|
+| **Open-source and free** | Available to anyone without cost |
+| **Extensive package ecosystem** | Over 20,000 packages for specialized analyses |
+| **Reproducibility** | Code-based approach ensures analyses can be repeated |
+| **Flexibility** | Adaptable to virtually any analytical need |
+| **Active community** | Large user base provides support and development |
+| **Publication-quality graphics** | Create professional visualizations |
+| **Cross-platform** | Works on Windows, macOS, and Linux |
 
 ### Installing R and RStudio
 
-To install R and RStudio:
+To get started with R, you need to install two pieces of software:
+
+1. **R** - The programming language itself
+2. **RStudio** - An integrated development environment (IDE) that makes working with R easier
+
+**Installation Steps:**
 
 1. Download and install R from [CRAN](https://cran.r-project.org/)
-2. Download and install RStudio from [RStudio's website](https://www.rstudio.com/products/rstudio/download/)
+   - Choose your operating system (Windows, macOS, or Linux)
+   - Follow the installation instructions
 
-### Essential R Packages
+2. Download and install RStudio from [Posit](https://posit.co/download/rstudio-desktop/)
+   - Choose the free Desktop version
+   - Follow the installation instructions
 
-For the analyses in this book, you'll need several R packages. You can install them with the following code:
+::: {.callout-note}
+## Note: Install R First
+
+You must install R before installing RStudio. RStudio is just an interface to R—it won't work without R installed on your computer.
+:::
+
+### The RStudio Interface
+
+When you open RStudio, you'll see four main panels:
+
+1. **Source Editor** (top-left): Where you write and edit R scripts
+2. **Console** (bottom-left): Where R commands are executed
+3. **Environment/History** (top-right): Shows your data objects and command history
+4. **Files/Plots/Packages/Help** (bottom-right): File browser, plot viewer, package manager, and help documentation
+
+## The Tidyverse: A Modern Approach to Data Science
+
+### What is the Tidyverse?
+
+The **tidyverse** is a collection of R packages designed for data science that share a common philosophy, grammar, and data structures. It represents a modern, coherent approach to data analysis that emphasizes:
+
+- **Readability**: Code that is easy to read and understand
+- **Consistency**: Functions that work in predictable ways
+- **Composability**: Tools that work well together
+- **Human-centered design**: Focused on the analyst's workflow
+
+### Core Tidyverse Packages
+
+```{r}
+#| label: load-tidyverse
+#| message: true
+#| warning: false
+
+# Load the tidyverse (this loads multiple packages at once)
+library(tidyverse)
+```
+
+The tidyverse includes these core packages:
+
+| Package | Purpose |
+|---------|---------|
+| **ggplot2** | Data visualization |
+| **dplyr** | Data manipulation |
+| **tidyr** | Data tidying |
+| **readr** | Data import |
+| **purrr** | Functional programming |
+| **tibble** | Modern data frames |
+| **stringr** | String manipulation |
+| **forcats** | Factor handling |
+
+### The Pipe Operator
+
+One of the most powerful features of the tidyverse is the pipe operator `%>%` (or the native R pipe `|>`). The pipe allows you to chain operations together in a readable, left-to-right flow:
+
+```{r}
+#| label: pipe-example
+#| eval: false
+
+# Without pipes (nested functions - hard to read)
+round(mean(sqrt(c(1, 4, 9, 16, 25))), 2)
+
+# With pipes (left-to-right flow - easy to read)
+c(1, 4, 9, 16, 25) %>%
+  sqrt() %>%
+  mean() %>%
+  round(2)
+```
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Pipe Operator Shortcuts
+
+- **Keyboard shortcut**: Use `Ctrl+Shift+M` (Windows/Linux) or `Cmd+Shift+M` (macOS) to insert `%>%`
+- **Native pipe**: In R 4.1+, you can use the native pipe `|>` instead of `%>%`
+- **Best practice**: Put each function on its own line for readability
+:::
+
+### Tidy Data Principles
+
+The tidyverse is built around the concept of **tidy data**:
+
+1. Each **variable** forms a column
+2. Each **observation** forms a row
+3. Each type of **observational unit** forms a table
+
+Tidy data makes analysis easier because it provides a consistent structure that all tidyverse tools expect.
+
+## Installing Required Packages
+
+For the analyses in this book, you'll need several R packages. Install them with the following code:
 
 ```{r}
 #| label: install-packages
 #| eval: false
 
-install.packages(c(
-  "tidyverse",  # Data manipulation and visualization
-  "rstatix",    # Statistical tests
-  "ggplot2",    # Advanced plotting
-  "knitr",      # Document generation
-  "rmarkdown"   # Document formatting
-))
+# Core tidyverse packages
+install.packages("tidyverse")
+
+# Statistical analysis
+install.packages(c("rstatix", "car", "performance"))
+
+# Visualization enhancements
+install.packages(c("viridis", "patchwork", "scales"))
+
+# Table formatting
+install.packages(c("knitr", "kableExtra", "gt"))
+
+# For this book's datasets
+install.packages("readr")
+```
+
+::: {.callout-important}
+## Important: Run This Once
+
+You only need to install packages once on your computer. After installation, you just need to load them with `library()` at the start of each R session.
+:::
+
+## Your First R Analysis
+
+Let's walk through a complete analysis using real data to see R and the tidyverse in action.
+
+### Loading Data
+
+We'll use the Palmer Penguins dataset, which contains measurements of penguins from Antarctica:
+
+```{r}
+#| label: load-data
+#| message: false
+
+# Load the tidyverse
+library(tidyverse)
+
+# Load the penguin dataset
+penguins <- read_csv("../data/environmental/climate_data.csv")
+
+# View the first few rows
+head(penguins)
+```
+
+::: {.callout-note}
+## Code Explanation
+
+- `library(tidyverse)`: Loads all core tidyverse packages
+- `read_csv()`: A tidyverse function for reading CSV files (faster and smarter than base R's `read.csv()`)
+- `head()`: Shows the first 6 rows of the dataset
+:::
+
+### Exploring the Data Structure
+
+```{r}
+#| label: explore-structure
+
+# Get an overview of the data structure
+glimpse(penguins)
+
+# Summary statistics
+summary(penguins)
+```
+
+::: {.callout-note}
+## Code Explanation
+
+- `glimpse()`: A tidyverse function that provides a transposed view of the data, showing each column's name, type, and first values
+- `summary()`: Provides basic summary statistics for each column
+:::
+
+### Data Manipulation with dplyr
+
+The `dplyr` package provides intuitive verbs for data manipulation:
+
+```{r}
+#| label: dplyr-basics
+#| message: false
+
+# Filter: Keep rows that match a condition
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Select: Keep only certain columns
+measurements <- penguins %>%
+  select(species, bill_length_mm, bill_depth_mm, body_mass_g)
+
+# Mutate: Create new columns
+penguins_with_ratio <- penguins %>%
+  mutate(bill_ratio = bill_length_mm / bill_depth_mm)
+
+# Arrange: Sort rows
+sorted_penguins <- penguins %>%
+  arrange(desc(body_mass_g))
+
+# Summarize: Calculate summary statistics
+species_summary <- penguins %>%
+  filter(!is.na(body_mass_g)) %>%
+  group_by(species) %>%
+  summarize(
+    n = n(),
+    mean_mass = mean(body_mass_g),
+    sd_mass = sd(body_mass_g),
+    min_mass = min(body_mass_g),
+    max_mass = max(body_mass_g)
+  )
+
+# Display the summary
+species_summary
+```
+
+::: {.callout-important}
+## Results Interpretation
+
+The summary table shows key statistics for each penguin species:
+
+- **n**: Sample size (number of observations)
+- **mean_mass**: Average body mass in grams
+- **sd_mass**: Standard deviation, measuring variability
+- **min_mass/max_mass**: Range of body masses
+
+This summary reveals that Gentoo penguins are the largest on average, while Chinstrap and Adelie penguins are more similar in size.
+:::
+
+### Visualization with ggplot2
+
+The `ggplot2` package creates beautiful, publication-quality graphics:
+
+```{r}
+#| label: ggplot-basics
+#| fig-width: 10
+#| fig-height: 6
+#| fig-cap: "Body mass distribution across three penguin species from Palmer Station, Antarctica."
+
+# Create a boxplot of body mass by species
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +
+  geom_boxplot(alpha = 0.7) +
+  geom_jitter(width = 0.2, alpha = 0.3, size = 1) +
+  scale_fill_viridis_d() +
+  labs(
+    title = "Body Mass Distribution by Penguin Species",
+    subtitle = "Data from Palmer Station, Antarctica (2007-2009)",
+    x = "Species",
+    y = "Body Mass (g)",
+    fill = "Species",
+    caption = "Source: Palmer Penguins dataset"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "none"
+  )
+```
+
+::: {.callout-note}
+## Code Explanation
+
+The ggplot2 syntax follows a layered grammar of graphics:
+
+1. **`ggplot()`**: Initialize the plot with data and aesthetic mappings
+2. **`aes()`**: Define how variables map to visual properties
+3. **`geom_boxplot()`**: Add a boxplot layer
+4. **`geom_jitter()`**: Add individual points with slight horizontal spread
+5. **`scale_fill_viridis_d()`**: Apply a colorblind-friendly color palette
+6. **`labs()`**: Add labels and titles
+7. **`theme_minimal()`**: Apply a clean, minimal theme
+8. **`theme()`**: Further customize appearance
+:::
+
+### A Scatter Plot with Regression
+
+```{r}
+#| label: scatter-regression
+#| fig-width: 10
+#| fig-height: 7
+#| fig-cap: "Relationship between bill length and body mass in three penguin species, showing positive correlations within each species."
+
+# Create a scatter plot with regression lines
+ggplot(penguins, aes(x = bill_length_mm, y = body_mass_g, color = species)) +
+  geom_point(alpha = 0.7, size = 2) +
+  geom_smooth(method = "lm", se = TRUE, alpha = 0.2) +
+  scale_color_viridis_d() +
+  labs(
+    title = "Relationship Between Bill Length and Body Mass",
+    subtitle = "Linear relationships shown for each species",
+    x = "Bill Length (mm)",
+    y = "Body Mass (g)",
+    color = "Species",
+    caption = "Source: Palmer Penguins dataset"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "bottom"
+  )
 ```
 
 ## The Data Analysis Workflow
 
 Effective data analysis typically follows a structured workflow:
 
-1. **Define the Question**: Clearly articulate what you want to learn from your data
-2. **Collect Data**: Gather the necessary data through fieldwork, experiments, laboratory measurements, or existing datasets
-3. **Clean and Prepare Data**: Handle missing values, correct errors, and format data appropriately
-4. **Explore Data**: Conduct exploratory data analysis to understand patterns and distributions
-5. **Analyze Data**: Apply appropriate statistical methods to address your research questions
-6. **Interpret Results**: Draw conclusions based on your analysis
-7. **Communicate Findings**: Present your results through visualizations, reports, or publications
+```{r}
+#| label: workflow-diagram
+#| echo: false
+#| eval: false
 
-Throughout this book, we'll follow this workflow as we explore various datasets from across the natural sciences.
+# This represents the conceptual workflow
+# 1. Import → 2. Tidy → 3. Transform → 4. Visualize → 5. Model → 6. Communicate
+```
 
-## Types of Data in Natural Sciences Research
+### 1. Import
 
-Research across the natural sciences involves several types of data:
+Bring your data into R from files, databases, or APIs:
+
+```{r}
+#| label: import-example
+#| eval: false
+
+# CSV files
+data <- read_csv("path/to/file.csv")
+
+# Excel files (requires readxl package)
+data <- readxl::read_excel("path/to/file.xlsx")
+
+# From URLs
+data <- read_csv("https://example.com/data.csv")
+```
+
+### 2. Tidy
+
+Restructure data into a consistent format:
+
+- Each variable in its own column
+- Each observation in its own row
+- Each value in its own cell
+
+### 3. Transform
+
+Manipulate data to create the variables you need:
+
+- Filter observations
+- Create new variables
+- Calculate summaries
+- Join multiple datasets
+
+### 4. Visualize
+
+Create graphics to understand patterns:
+
+- Explore distributions
+- Identify relationships
+- Detect outliers
+- Generate hypotheses
+
+### 5. Model
+
+Apply statistical methods to test hypotheses:
+
+- Fit regression models
+- Perform hypothesis tests
+- Estimate parameters
+- Make predictions
+
+### 6. Communicate
+
+Share your findings effectively:
+
+- Create reports with R Markdown or Quarto
+- Build interactive dashboards
+- Write scientific papers
+- Present to stakeholders
+
+## Types of Data in Natural Sciences
+
+Understanding your data type is crucial for choosing appropriate analytical methods:
 
 ### Categorical Data
 
-Categorical data represent qualitative characteristics, such as:
-- Species names or taxonomic classifications
-- Habitat or ecosystem types
-- Rock or soil classifications
-- Land-use categories
-- Treatment groups in experiments
-- Genetic markers
+Categorical data represent qualitative characteristics:
+
+- **Nominal**: Categories with no inherent order (species names, habitat types)
+- **Ordinal**: Categories with a meaningful order (pollution levels: low, medium, high)
 
 ### Numerical Data
 
 Numerical data involve measurements or counts:
-- Continuous measurements (e.g., temperature, pH, concentration, biomass, wavelength)
-- Discrete counts (e.g., number of individuals, species richness, occurrence frequency)
-- Rates (e.g., growth rates, reaction rates, decomposition rates)
-- Ratios and indices (e.g., diversity indices, chemical ratios)
+
+- **Continuous**: Can take any value within a range (temperature, pH, biomass)
+- **Discrete**: Can only take specific values, usually counts (number of individuals)
 
 ### Spatial Data
 
 Spatial data describe geographical distributions:
+
 - Coordinates (latitude/longitude)
 - Elevation or depth
-- Topographic features
 - Land cover maps
 - Remote sensing data
-- Geological formations
 
 ### Temporal Data
 
 Temporal data track changes over time:
-- Time series of measurements
+
+- Time series measurements
 - Seasonal patterns
 - Long-term monitoring data
 - Growth curves
-- Decay rates
-- Historical records
 
-Understanding the type of data you're working with is crucial for selecting appropriate analytical methods across all natural science disciplines.
+## Best Practices for Reproducible Research
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Reproducible Research Practices
+
+Adopt these practices from the start of your research career:
+
+1. **Use R projects**: Organize your work in self-contained RStudio projects
+2. **Use relative paths**: Never use absolute file paths like `C:/Users/Name/...`
+3. **Document your code**: Add comments explaining *why*, not just *what*
+4. **Version control**: Use Git to track changes to your scripts
+5. **Save your environment**: Record package versions with `sessionInfo()`
+6. **Write functions**: Avoid copying and pasting code; write reusable functions
+7. **Use R Markdown/Quarto**: Combine code, results, and narrative in one document
+8. **Set seeds for reproducibility**: Use `set.seed()` before any random operations
+:::
+
+### Session Information
+
+Always record your R environment for reproducibility:
+
+```{r}
+#| label: session-info
+
+# Display session information
+sessionInfo()
+```
 
 ## Summary
 
-In this chapter, we've introduced the importance of data analysis in natural sciences research and the tools we'll be using throughout this book. We've also outlined the typical data analysis workflow and the types of data commonly encountered across scientific disciplines.
+In this chapter, we introduced:
 
-In the next chapter, we'll dive deeper into data basics, learning how to import, clean, and prepare data for analysis.
+- The importance of data analysis in natural sciences research
+- R and RStudio as powerful tools for data analysis
+- The tidyverse philosophy and its core packages
+- Basic data manipulation with `dplyr`
+- Data visualization with `ggplot2`
+- The data analysis workflow
+- Types of data in natural sciences
+- Best practices for reproducible research
+
+In the next chapter, we'll dive deeper into data basics, learning more about data structures, importing various file formats, and preparing data for analysis.
 
 ## Exercises
 
-1. Install R and RStudio on your computer.
-2. Install the required R packages listed in this chapter.
-3. Open RStudio and create a new R script. Try running a simple command like `summary(iris)`.
-4. Think about a research question in your field of natural science that interests you. What type of data would you need to address this question?
-5. Explore one of R's built-in datasets (e.g., `mtcars`, `iris`, or `trees`) using functions like `head()`, `summary()`, and `plot()`.
+1. **Install and explore**: Install R and RStudio on your computer. Open RStudio and explore the interface.
+
+2. **Load the tidyverse**: Run `library(tidyverse)` and note which packages are loaded.
+
+3. **Explore built-in data**: Use `head()`, `glimpse()`, and `summary()` on R's built-in `iris` dataset.
+
+4. **Practice pipes**: Rewrite this nested code using pipes:
+   ```r
+   round(mean(sqrt(c(4, 9, 16, 25, 36))), 2)
+   ```
+
+5. **Create a summary**: Using the penguins data (or `iris`), calculate the mean and standard deviation of a numerical variable for each group of a categorical variable.
+
+6. **Make a plot**: Create a scatter plot of two numerical variables from the `iris` dataset, colored by species.
+
+7. **Research question**: Think about a research question in your field. What type of data would you need? What visualizations might help you explore the data?
+
+## References

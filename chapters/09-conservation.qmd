@@ -716,9 +716,10 @@ ggplot(threat_data, aes(x = reorder(threat, magnitude), y = magnitude)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-# Visualize the components
-threat_data_long <- reshape2::melt(threat_data[, c("threat", "severity", "scope", "irreversibility")],
-                                 id.vars = "threat")
+# Visualize the components (using tidyr for data reshaping)
+threat_data_long <- threat_data %>%
+  select(threat, severity, scope, irreversibility) %>%
+  pivot_longer(cols = -threat, names_to = "variable", values_to = "value")
 
 ggplot(threat_data_long, aes(x = reorder(threat, -value), y = value, fill = variable)) +
   geom_bar(stat = "identity", position = "dodge") +
@@ -1015,7 +1016,7 @@ ggplot(vulnerability_data, aes(x = reorder(species, -vulnerability), y = vulnera
 
 # Visualize components
 vulnerability_components <- vulnerability_data[, c("species", "sensitivity", "adaptive_capacity", "exposure")]
-vulnerability_long <- reshape2::melt(vulnerability_components, id.vars = "species")
+vulnerability_long <- vulnerability_components %>% pivot_longer(cols = -species, names_to = "variable", values_to = "value")
 
 ggplot(vulnerability_long, aes(x = reorder(species, -value), y = value, fill = variable)) +
   geom_bar(stat = "identity", position = "dodge") +

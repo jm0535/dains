@@ -5,65 +5,125 @@ project:
     - html
 
 book:
-  title: "Data Analysis in Natural Sciences: An R-Based Approach"
-  subtitle: "From Field to Figures: Essential Methods for Environmental and Life Sciences"
-  author: "Jimmy Moses"
-  date: "2025-03-27"
+  title: "Data Analysis in Natural Sciences"
+  subtitle: "An R-Based Approach"
+  author:
+    - name: "Dr. Jimmy Moses"
+      affiliation: "Papua New Guinea University of Technology"
+      orcid: ""
+  date: last-modified
+  date-format: "MMMM YYYY"
   cover-image: "images/dans_coverpage_final.png"
+  favicon: "images/Rlogo.jpg"
   site-url: https://jm0535.github.io/dains/
-  repo-url: https://github.com/jm0535/dains/tree/main
-  repo-actions: [edit, issue]
+  repo-url: https://github.com/jm0535/dains
+  repo-branch: main
+  repo-actions: [edit, issue, source]
   sharing: [twitter, facebook, linkedin]
+  downloads: [pdf]
+  search:
+    location: navbar
+    type: overlay
+  page-navigation: true
+  back-to-top-navigation: true
+  reader-mode: true
+
+  navbar:
+    background: "#1b5e20"
+    foreground: light
+    logo: "images/Rlogo.jpg"
+    title: "DAINS"
+    collapse-below: lg
+    right:
+      - icon: github
+        href: https://github.com/jm0535/dains
+        aria-label: GitHub
+
+  sidebar:
+    style: floating
+    collapse-level: 2
+    border: true
+
   chapters:
     - index.qmd
     - preface.qmd
-    - part: "Getting Started"
+    - part: "Part I: Getting Started"
       chapters:
         - chapters/01-introduction.qmd
         - chapters/02-data-basics.qmd
-    - part: "Data Analysis Fundamentals"
+    - part: "Part II: Data Analysis Fundamentals"
       chapters:
         - chapters/03-exploratory-analysis.qmd
         - chapters/04-hypothesis-testing.qmd
         - chapters/05-statistical-tests.qmd
-    - part: "Data Visualization"
+    - part: "Part III: Data Visualization"
       chapters:
         - chapters/06-visualization.qmd
         - chapters/07-advanced-visualization.qmd
-    - part: "Advanced Topics"
+    - part: "Part IV: Advanced Topics"
       chapters:
         - chapters/08-regression.qmd
         - chapters/09-conservation.qmd
+    - "---"
     - references.qmd
+
+  page-footer:
+    left: |
+      © 2025 Dr. Jimmy Moses
+    center: |
+      ⚠️ **DRAFT - EDITION 1** ⚠️
+    right: |
+      Built with [Quarto](https://quarto.org/)
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: cosmo
     code-fold: true
-    code-tools: true
-    code-copy: true
+    code-tools:
+      source: true
+      toggle: true
+    code-copy: hover
     code-link: true
+    code-overflow: wrap
+    code-line-numbers: false
+    highlight-style: github
     toc: true
     toc-depth: 3
+    toc-title: "On this page"
+    toc-expand: 2
     number-sections: true
+    number-depth: 3
+    anchor-sections: true
+    smooth-scroll: true
     fig-width: 8
     fig-height: 6
     fig-dpi: 300
     fig-format: "png"
     fig-cap-location: bottom
+    fig-align: center
+    fig-responsive: true
     tbl-cap-location: top
     css: styles.css
-    prefer-html: true
-    include-after-body: _footer.html
+    include-in-header:
+      - text: |
+          <meta name="description" content="A comprehensive guide to data analysis in natural sciences using R. Learn statistical methods, data visualization, and reproducible research practices.">
+          <meta name="keywords" content="R programming, data analysis, statistics, ecology, natural sciences, ggplot2, tidyverse, data visualization">
+          <meta name="author" content="Dr. Jimmy Moses">
     crossref:
       fig-title: "Figure"
       tbl-title: "Table"
       eq-prefix: "Equation"
-    footer-text: "⚠️ DRAFT - EDITION 1 ⚠️ | This book is currently in development. Content is subject to change before final publication. | © 2025 Jimmy Moses"
+      sec-prefix: "Section"
+      ref-hyperlink: true
+    link-external-icon: true
     link-external-newwindow: true
+    link-external-filter: "^(?:http:|https:)\/\/jm0535\.github\.io\/dains"
 
 bibliography: references.bib
 csl: apa.csl
+citation-location: margin
+reference-location: margin
 
 execute:
   echo: true
@@ -72,11 +132,16 @@ execute:
   eval: true
   freeze: auto
   cache: true
+  error: false
 
 knitr:
   opts_chunk:
     dev: "png"
     fig.align: "center"
     out.width: "100%"
+    collapse: true
+    comment: "#>"
     R.options:
       width: 80
+
+lang: en

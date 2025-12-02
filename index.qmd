@@ -1,70 +1,168 @@
 ---
+pagetitle: "Data Analysis in Natural Sciences"
 prefer-html: true
 ---
 
-# Preface {.unnumbered}
+::: {.hero-banner}
 
-Welcome to **Data Analysis in Natural Sciences: An R-Based Approach**, a comprehensive guide designed for students, professionals, and researchers across the natural sciences. This book provides practical methods for analyzing and visualizing data using R, with applications spanning forestry, agriculture, ecology, marine biology, environmental science, geology, atmospheric science, hydrology, and more.
+# Data Analysis in Natural Sciences {.hero-title}
 
-## About the Author
+### An R-Based Approach {.hero-subtitle}
 
-This book has been developed by **Jimmy Moses** from the School of Forestry, Faculty of Natural Resources, Papua New Guinea University of Technology. With extensive experience in ecological research and data analysis, the author has created this resource to support students and researchers in developing essential analytical skills for natural science disciplines.
+*From Field to Figures: Essential Methods for Environmental and Life Sciences*
 
-## Target Audience
+:::
 
-This book is designed for:
+::: {.content-block}
 
-- **Undergraduate and postgraduate students** in natural science disciplines
-- **Researchers** seeking to enhance their data analysis capabilities
-- **Technicians** working in laboratories and field settings
-- **Professionals** in government agencies, NGOs, and private sector
-- **Hobbyists** with an interest in analyzing scientific data
+## Welcome {.unnumbered}
 
-The content is relevant to those working in:
+Welcome to **Data Analysis in Natural Sciences: An R-Based Approach** — a comprehensive, practical guide designed for students, professionals, and researchers across the natural sciences. This book provides hands-on methods for analyzing and visualizing data using R, with real-world applications spanning ecology, forestry, agriculture, marine biology, environmental science, and beyond.
 
-- Forestry and agroforestry
-- Agriculture and agronomy
-- Ecology and conservation
-- Environmental science
-- Geography and GIS/remote sensing
-- Marine biology and fisheries
-- Botany and plant sciences
-- Entomology and zoology
-- Epidemiology and veterinary sciences
-- Geology and earth sciences
-- Atmospheric and climate sciences
-- Hydrology and water resources
-- Natural resource management
-- Conservation biology
+::: {.callout-note appearance="simple" icon=false}
+## 📘 About This Book
 
-## What You Will Learn
+This is an **open-access online textbook** that teaches modern data analysis techniques using the R programming language. Whether you're a beginner learning R for the first time or an experienced researcher looking to adopt tidyverse workflows, this book offers practical guidance with reproducible code examples.
+:::
 
-This book will guide you through:
+## What You'll Learn {.unnumbered}
 
-- The fundamentals of data analysis with R
-- Data preparation and management techniques
-- Exploratory data analysis approaches
-- Statistical hypothesis testing
-- Advanced visualization methods
-- Specialized analyses for environmental and scientific data
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+### 📊 Data Analysis Fundamentals
+- Import, clean, and transform data
+- Exploratory data analysis techniques
+- Working with the tidyverse ecosystem
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### 📈 Statistical Methods
+- Hypothesis testing frameworks
+- Parametric and non-parametric tests
+- Regression analysis with tidymodels
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### 🎨 Data Visualization
+- Publication-quality graphics with ggplot2
+- Interactive visualizations
+- Effective scientific communication
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### 🌍 Real-World Applications
+- Conservation case studies
+- Environmental data analysis
 - Reproducible research practices
+:::
 
-## How to Use This Book
+:::
 
-This book is designed to be both a learning resource and a reference guide. You can read it from start to finish to build your skills progressively, or use specific chapters as needed for particular tasks.
+## Book Structure {.unnumbered}
 
-Code examples are provided throughout, and you can run them directly in R or RStudio. Each chapter includes practical examples using real datasets from various natural science disciplines.
+| Part | Chapters | Topics |
+|------|----------|--------|
+| **Getting Started** | 1-2 | Introduction to R, data structures, importing data |
+| **Data Analysis Fundamentals** | 3-5 | EDA, hypothesis testing, statistical tests |
+| **Data Visualization** | 6-7 | ggplot2, advanced graphics, interactive plots |
+| **Advanced Topics** | 8-9 | Regression analysis, conservation applications |
 
-## Prerequisites
+## Who Is This Book For? {.unnumbered}
+
+This book is designed for anyone working with data in the natural sciences:
+
+- 🎓 **Students** — Undergraduate and postgraduate students in biology, ecology, forestry, agriculture, and environmental sciences
+- 🔬 **Researchers** — Scientists seeking to enhance their data analysis and visualization skills
+- 🌿 **Practitioners** — Conservation professionals, environmental consultants, and natural resource managers
+- 📊 **Data Enthusiasts** — Anyone interested in learning R for scientific data analysis
+
+::: {.callout-tip}
+## Getting Started
+
+New to R? Start with [Chapter 1: Introduction to Data Analysis](chapters/01-introduction.qmd) for installation instructions and your first steps with R and RStudio.
+:::
+
+## Features {.unnumbered}
+
+✅ **Complete code examples** — All code is fully reproducible
+✅ **Real datasets** — Learn with actual data from ecological and environmental research
+✅ **Modern R practices** — Tidyverse and tidymodels workflows throughout
+✅ **Professional tips** — Best practices from experienced researchers
+✅ **Exercises** — Practice problems to reinforce learning
+✅ **Open access** — Free to read online
+
+## About the Author {.unnumbered}
+
+**Dr. Jimmy Moses** is a Papua New Guinean entomologist and lecturer at the Papua New Guinea University of Technology's School of Forestry. He specializes in ant ecology, biostatistics, and geospatial analysis, with a Ph.D. in Entomology from the University of South Bohemia (2021).
+
+His research combines ecological field studies with modern analytical approaches, resulting in publications in journals including *Global Ecology and Biogeography* and *Proceedings of the Royal Society B*. His passion for making complex analytical methods accessible drives both his teaching and this book.
+
+## How to Use This Book {.unnumbered}
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-4}
+### 📖 Read Online
+Browse chapters directly in your web browser. Use the navigation menu to move between sections.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### 💻 Run the Code
+Copy code examples into R or RStudio. All code is designed to be reproducible with the included datasets.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### 🔧 Adapt & Apply
+Modify examples for your own data and research questions. The techniques are broadly applicable.
+:::
+
+:::
+
+## Prerequisites {.unnumbered}
 
 To get the most out of this book, you should have:
 
 - Basic computer skills
-- R and RStudio installed (instructions provided in Chapter 1)
-- A basic understanding of statistics (helpful but not required)
+- R and RStudio installed (instructions in Chapter 1)
+- Curiosity about data and natural sciences!
+
+*No prior programming experience is required* — we start from the basics and build up progressively.
+
+## Get Involved {.unnumbered}
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+### 🐛 Found an Issue?
+Report errors or suggest improvements on [GitHub Issues](https://github.com/jm0535/dains/issues)
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### 🤝 Want to Contribute?
+Contributions welcome! See our [Contributing Guide](https://github.com/jm0535/dains/blob/main/CONTRIBUTING.md)
+:::
+
+:::
 
 ## Acknowledgments {.unnumbered}
 
-I would like to thank all those who contributed to the development of this book, including colleagues, students, and the open-source community that makes tools like R and RStudio possible.
+This book would not be possible without:
 
-Let's begin our journey into the world of data analysis for natural sciences!
+- The **R Core Team** and the incredible R community
+- The **tidyverse** and **tidymodels** teams for transforming how we work with data
+- **RStudio/Posit** for excellent development tools
+- The **Quarto** team for this beautiful publishing system
+- All the **data providers** whose open datasets make the examples possible
+- **Students and colleagues** who provided feedback and inspiration
+
+---
+
+::: {.text-center}
+**Ready to start your data analysis journey?**
+
+[Begin with Chapter 1 →](chapters/01-introduction.qmd){.btn .btn-primary .btn-lg}
+
+:::
+
+:::

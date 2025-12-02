@@ -208,16 +208,7 @@ print(multi_tidy)
 # Check for multicollinearity
 library(car)
 vif_values <- car::vif(multi_model)
-# Handle both vector and matrix outputs from vif()
-if (is.matrix(vif_values)) {
-  vif_df <- as.data.frame(vif_values)
-  vif_df$Variable <- rownames(vif_df)
-  vif_df <- vif_df[, c("Variable", "GVIF")]
-  names(vif_df)[2] <- "VIF"
-} else {
-  vif_df <- data.frame(Variable = names(vif_values), VIF = as.numeric(vif_values))
-}
-knitr::kable(vif_df, row.names = FALSE,
+knitr::kable(vif_values, digits = 3,
              caption = "Variance Inflation Factors (VIF)")
 
 # Check for model assumptions

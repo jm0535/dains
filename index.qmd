@@ -94,7 +94,7 @@ New to R? Start with [Chapter 1: Introduction to Data Analysis](chapters/01-intr
 
 ## About the Author {.unnumbered}
 
-**Dr. Jimmy Moses** is a Papua New Guinean entomologist and lecturer at the Papua New Guinea University of Technology's School of Forestry. He specializes in ant ecology, biostatistics, and geospatial analysis, with a Ph.D. in Entomology from the University of South Bohemia (2021).
+**Jimmy Moses** is a Papua New Guinean entomologist and lecturer at the Papua New Guinea University of Technology's School of Forestry. He specializes in ant ecology, biostatistics, and geospatial analysis, with a Ph.D. in Entomology from the University of South Bohemia (2021).
 
 His research combines ecological field studies with modern analytical approaches, resulting in publications in journals including *Global Ecology and Biogeography* and *Proceedings of the Royal Society B*. His passion for making complex analytical methods accessible drives both his teaching and this book.
 
@@ -127,7 +127,7 @@ To get the most out of this book, you should have:
 - R and RStudio installed (instructions in Chapter 1)
 - Curiosity about data and natural sciences!
 
-*No prior programming experience is required* — we start from the basics and build up progressively.
+*No prior programming experience is required* — I start from the basics and build up progressively.
 
 ## Get Involved {.unnumbered}
 
@@ -150,7 +150,7 @@ Contributions welcome! See our [Contributing Guide](https://github.com/jm0535/da
 This book would not be possible without:
 
 - The **R Core Team** and the incredible R community
-- The **tidyverse** and **tidymodels** teams for transforming how we work with data
+- The **tidyverse** and **tidymodels** teams for transforming how I work with data
 - **RStudio/Posit** for excellent development tools
 - The **Quarto** team for this beautiful publishing system
 - All the **data providers** whose open datasets make the examples possible

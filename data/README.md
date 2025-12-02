@@ -1,6 +1,6 @@
 # Data Analysis in Natural Sciences: Datasets
 
- This directory contains datasets used in the book "Data Analysis in Natural Sciences: An R-Based Approach" by Dr. Jimmy Moses.
+ This directory contains datasets used in the book "Data Analysis in Natural Sciences: An R-Based Approach" by Jimmy Moses.
 
  ## Dataset Overview
 

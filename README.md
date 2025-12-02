@@ -80,10 +80,10 @@ Each dataset directory contains a `CITATION.txt` file with source information an
    ```r
    install.packages(c(
      "tidyverse",
-     "tidymodels", 
-     "ggplot2", 
-     "rstatix", 
-     "knitr", 
+     "tidymodels",
+     "ggplot2",
+     "rstatix",
+     "knitr",
      "rmarkdown",
      "performance",
      "see"
@@ -155,9 +155,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ✍️ Author
 
-**Dr. Jimmy Moses (PhD)**  
-School of Forestry, Faculty of Natural Resources  
-Papua New Guinea University of Technology  
+**Jimmy Moses**
+School of Forestry, Faculty of Natural Resources
+Papua New Guinea University of Technology
 PMB 411, Lae, Morobe Province, Papua New Guinea
 
 ## 🙏 Acknowledgments

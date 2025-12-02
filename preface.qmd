@@ -18,7 +18,7 @@ The landscape of data analysis in natural sciences has evolved dramatically in r
 
 ## About the Author
 
-This book has been developed by **Dr. Jimmy Moses** from the School of Forestry, Faculty of Natural Resources, Papua New Guinea University of Technology. With extensive experience in ecological research and data analysis, Dr. Moses has created this resource to support students and researchers in developing essential analytical skills for natural science disciplines.
+This book has been developed by **Jimmy Moses** from the School of Forestry, Faculty of Natural Resources, Papua New Guinea University of Technology. With extensive experience in ecological research and data analysis, I have created this resource to support students and researchers in developing essential analytical skills for natural science disciplines.
 
 ## Target Audience
 
@@ -248,7 +248,7 @@ This book is a living document that will evolve based on feedback from readers a
 
 - **Report issues**: Use the GitHub repository's issue tracker
 - **Suggest improvements**: Submit pull requests
-- **Share your applications**: We'd love to hear how you've applied these methods in your research
+- **Share your applications**: I'd love to hear how you've applied these methods in your research
 
 ## License
 
@@ -264,10 +264,10 @@ Let's embark on this journey into the world of data analysis for natural science
 
 ---
 
-**Dr.Jimmy Moses**  
-School of Forestry  
-Faculty of Natural Resources  
-Papua New Guinea University of Technology  
+**Dr.Jimmy Moses**
+School of Forestry
+Faculty of Natural Resources
+Papua New Guinea University of Technology
 PMB 411, Lae, Morobe Province, Papua New Guinea
 
 *Last updated: December 2025*

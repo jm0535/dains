@@ -371,6 +371,27 @@ Box plots are particularly useful in ecological research for comparing distribut
 Heatmaps are powerful for visualizing complex relationships in multivariate data:
 
 ```{r heatmap, fig.width=9, fig.height=7, dpi=300, fig.cap="Heatmap visualizing the correlation matrix between different threat types. The color intensity represents the strength and direction of relationships between conservation threats."}
+# Create a simulated biodiversity dataset
+set.seed(123)  # For reproducibility
+
+# Create sample data with 200 observations
+biodiversity_data <- tibble(
+  species_id = paste0("SP", sprintf("%03d", 1:200)),
+  continent = sample(c("North America", "South America", "Europe", "Africa", "Asia", "Oceania"), 200, replace = TRUE),
+  # Simulate threat variables (0-10 scale)
+  threat_habitat_loss = runif(200, 0, 10),
+  threat_pollution = runif(200, 0, 8),
+  threat_climate = runif(200, 0, 9),
+  threat_invasive = runif(200, 0, 7),
+  threat_hunting = runif(200, 0, 6),
+  threat_disease = runif(200, 0, 5),
+  threat_human_disturbance = runif(200, 0, 8),
+  # Add a binary variable for missing data (with probability favoring non-missing)
+  has_missing = rbinom(200, 1, 0.1)
+) %>%
+  # Introduce some missing values based on has_missing
+  mutate(across(starts_with("threat_"), ~ifelse(has_missing == 1, NA, .)))
+
 # Use the biodiversity data we've already loaded
 # We'll reuse the real dataset and focus on the threat columns
 

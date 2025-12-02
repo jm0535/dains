@@ -60,10 +60,11 @@ cat(paste0("F-statistic: ", round(model_glance$statistic, 2),
           " DF, p-value: ", format.pval(model_glance$p.value, digits = 3), "\n\n"))
 
 # Create a more professional table of coefficients
-knitr::kable(model_tidy,
-             caption = "Linear Regression Coefficients",
-             digits = c(0, 3, 3, 3, 3, 3, 3),
-             col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value", "95% CI Lower", "95% CI Upper"))
+library(gt)
+model_tidy %>%
+  gt() %>%
+  tab_header(title = "Linear Regression Coefficients") %>%
+  fmt_number(columns = c("estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high"), decimals = 3)
 
 # Create an enhanced scatter plot with regression line
 ggplot(penguins_clean, aes(x = bill_length_mm, y = body_mass_g)) +
@@ -179,6 +180,11 @@ When conducting regression analysis:
 Multiple regression extends linear regression to include multiple predictors:
 
 ```{r}
+# Load required packages
+library(broom)
+library(knitr)
+library(dplyr)
+
 # Create multiple regression model
 multi_model <- lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species,
                  data = penguins_clean)
@@ -196,11 +202,8 @@ cat(paste0("F-statistic: ", round(multi_glance$statistic, 2),
           " on ", multi_glance$df, " and ", multi_glance$df.residual,
           " DF, p-value: ", format.pval(multi_glance$p.value, digits = 3), "\n\n"))
 
-# Create a more professional table of coefficients
-knitr::kable(multi_tidy,
-             caption = "Multiple Regression Coefficients",
-             digits = c(0, 3, 3, 3, 3, 3, 3),
-             col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value", "95% CI Lower", "95% CI Upper"))
+# Create a simple table of coefficients
+print(multi_tidy)
 
 # Check for multicollinearity
 library(car)
@@ -354,11 +357,10 @@ pseudo_r2 <- 1 - (log_glance$deviance / log_glance$null.deviance)
 cat(paste0("McFadden's Pseudo R²: ", round(pseudo_r2, 3), "\n\n"))
 
 # Create a table of odds ratios with CI
-knitr::kable(log_tidy,
-            caption = "Logistic Regression Results (Odds Ratios)",
-            digits = c(0, 3, 3, 3, 3, 3, 3),
-            col.names = c("Term", "Odds Ratio", "Std. Error", "z value", "p-value",
-                         "95% CI Lower", "95% CI Upper"))
+log_tidy %>%
+  gt() %>%
+  tab_header(title = "Logistic Regression Results (Odds Ratios)") %>%
+  fmt_number(columns = c("estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high"), decimals = 3)
 
 # Add predictions to the data
 penguins_pred <- penguins_binary %>%

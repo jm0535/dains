@@ -118,7 +118,7 @@ format:
       ref-hyperlink: true
     link-external-icon: true
     link-external-newwindow: true
-    link-external-filter: "^(?:http:|https:)\/\/jm0535\.github\.io\/dains"
+    link-external-filter: '^(?:http:|https:)\/\/jm0535\.github\.io\/dains'
 
 bibliography: references.bib
 csl: apa.csl

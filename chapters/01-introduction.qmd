@@ -6,13 +6,19 @@ prefer-html: true
 
 ## Overview
 
-Data analysis is a critical skill in modern natural sciences research. This chapter introduces the fundamental concepts, tools, and approaches that form the foundation of effective data analysis across various scientific disciplines. By the end of this chapter, you will understand:
+::: {.callout-note}
+## Learning Objectives
 
-- Why data analysis matters in natural sciences
-- How to set up R and RStudio
-- The tidyverse philosophy and its advantages
-- Basic R programming concepts
-- How to work with data using modern R practices
+By the end of this chapter, you will be able to:
+
+1.  Explain the importance of data analysis in natural sciences
+2.  Install and configure R and RStudio
+3.  Describe the tidyverse philosophy and its core packages
+4.  Understand the basic data analysis workflow
+5.  Identify different types of data used in natural sciences
+:::
+
+Data analysis is a critical skill in modern natural sciences research. This chapter introduces the fundamental concepts, tools, and approaches that form the foundation of effective data analysis across various scientific disciplines.
 
 ## Why Data Analysis Matters in Natural Sciences
 

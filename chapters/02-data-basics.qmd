@@ -6,6 +6,18 @@ prefer-html: true
 
 ## Introduction
 
+::: {.callout-note}
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+
+1.  Distinguish between different data types and structures in R
+2.  Import data from CSV and other file formats
+3.  Clean datasets by handling missing values and inconsistencies
+4.  Transform data using `dplyr` verbs (filter, select, mutate, summarize)
+5.  Perform initial exploratory data analysis to understand dataset properties
+:::
+
 This chapter covers the fundamental concepts of working with data in R. You'll learn how to import, clean, and prepare data for analysis, which are essential skills for any data analysis project across all natural science disciplines.
 
 ## Understanding Data Structures

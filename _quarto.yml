@@ -8,7 +8,7 @@ book:
   title: "Data Analysis in Natural Sciences"
   subtitle: "An R-Based Approach"
   author:
-    - name: "Dr. Jimmy Moses"
+    - name: "Jimmy Moses"
       affiliation: "Papua New Guinea University of Technology"
       orcid: ""
   date: last-modified
@@ -60,16 +60,19 @@ book:
       chapters:
         - chapters/06-visualization.qmd
         - chapters/07-advanced-visualization.qmd
-    - part: "Part IV: Advanced Topics"
+    - part: "Part IV: Statistical Modeling"
       chapters:
         - chapters/08-regression.qmd
+        - chapters/10-advanced-modeling.qmd
+    - part: "Part V: Applied Ecology"
+      chapters:
         - chapters/09-conservation.qmd
     - "---"
     - references.qmd
 
   page-footer:
     left: |
-      © 2025 Dr. Jimmy Moses
+      © 2025 Jimmy Moses
     center: |
       ⚠️ **DRAFT - EDITION 1** ⚠️
     right: |
@@ -109,7 +112,7 @@ format:
       - text: |
           <meta name="description" content="A comprehensive guide to data analysis in natural sciences using R. Learn statistical methods, data visualization, and reproducible research practices.">
           <meta name="keywords" content="R programming, data analysis, statistics, ecology, natural sciences, ggplot2, tidyverse, data visualization">
-          <meta name="author" content="Dr. Jimmy Moses">
+          <meta name="author" content="Jimmy Moses">
     crossref:
       fig-title: "Figure"
       tbl-title: "Table"

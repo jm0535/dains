@@ -6,6 +6,19 @@ prefer-html: true
 
 ## Introduction
 
+::: {.callout-note}
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+
+1.  Understand the logic of hypothesis testing, including null and alternative hypotheses
+2.  Interpret p-values and significance levels in the context of ecological research
+3.  Distinguish between Type I and Type II errors and understand their implications
+4.  Perform and interpret one-sample, two-sample, and paired t-tests in R
+5.  Check assumptions for parametric tests, including normality
+6.  Calculate and interpret confidence intervals for population parameters
+:::
+
 Hypothesis testing is a fundamental statistical approach used to make inferences about populations based on sample data. In ecological and forestry research, hypothesis testing helps researchers determine whether observed patterns or differences are statistically significant or merely due to random chance.
 
 ```{r setup, include=FALSE}

@@ -4,6 +4,19 @@ prefer-html: true
 
 # Regression Analysis
 
+::: {.callout-note}
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+
+1.  Fit and interpret linear and multiple regression models in R
+2.  Check regression assumptions using diagnostic plots
+3.  Implement logistic regression for binary classification
+4.  Apply the `tidymodels` framework for machine learning workflows
+5.  Perform cross-validation to estimate model performance
+6.  Tune hyperparameters to optimize model accuracy
+:::
+
 ## Introduction
 
 Regression analysis is a powerful statistical tool for modeling relationships between variables. This chapter explores different types of regression models and their applications in natural sciences research.
@@ -866,608 +879,30 @@ collect_metrics(final_fit)
 Grid search explores a defined set of parameters. For more complex models, consider `tune_bayes()` for Bayesian optimization which can be more efficient.
 :::
 
-## Model Interpretation and Explainability
+## Chapter Summary
 
-While machine learning models like Random Forest can achieve high predictive accuracy, understanding *why* they make specific predictions is crucial for ecological applications. Model interpretation helps us extract ecological insights and communicate results to stakeholders.
+### Key Concepts
 
-### Variable Importance
+-   **Linear Regression**: Models continuous outcomes as a linear combination of predictors
+-   **Logistic Regression**: Models binary outcomes using the log-odds transformation
+-   **Tidymodels**: A unified framework for modeling in R (parsnip, recipes, rsample, tune, yardstick)
+-   **Cross-Validation**: Resampling method to estimate model performance on unseen data
+-   **Hyperparameter Tuning**: Optimizing model configuration to improve predictive power
+-   **Model Diagnostics**: Checking assumptions (normality, homoscedasticity, linearity) is essential
 
-```{r}
-# Load packages for model interpretation
-library(DALEX)
-library(DALEXtra)
-library(tidymodels)
+### R Functions Learned
 
-# Use the final Random Forest model from earlier
-# Create an explainer object
-explainer_rf <- explain_tidymodels(
-  final_fit,
-  data = penguin_test %>% select(-body_mass_g),
-  y = penguin_test$body_mass_g,
-  label = "Random Forest",
-  verbose = FALSE
-)
+-   `lm()` / `glm()` - Base R regression functions
+-   `linear_reg()` / `logistic_reg()` / `rand_forest()` - Parsnip model specifications
+-   `recipe()` - Define preprocessing steps
+-   `vfold_cv()` - Create cross-validation folds
+-   `fit_resamples()` - Evaluate models with resampling
+-   `tune_grid()` - Optimize hyperparameters
+-   `collect_metrics()` - Extract performance statistics
 
-# Calculate variable importance using permutation
-vi_rf <- model_parts(explainer_rf, loss_function = loss_root_mean_square)
+### Next Steps
 
-# Visualize variable importance
-plot(vi_rf) +
-  labs(title = "Variable Importance for Body Mass Prediction",
-       subtitle = "Permutation-based importance shows contribution of each predictor") +
-  theme_minimal()
-
-# Get the importance values
-vi_df <- as.data.frame(vi_rf)
-vi_summary <- vi_df %>%
-  filter(variable != "_baseline_", variable != "_full_model_") %>%
-  group_by(variable) %>%
-  summarize(
-    mean_dropout_loss = mean(dropout_loss),
-    .groups = "drop"
-  ) %>%
-  arrange(desc(mean_dropout_loss))
-
-print(vi_summary)
-```
-
-::: {.callout-note}
-## Code Explanation
-
-This code demonstrates model-agnostic variable importance:
-
-1. **DALEX Framework**
-   - Creates an "explainer" object that wraps the tidymodels workflow
-   - Provides a unified interface for model interpretation
-   - Works with any model type (linear, tree-based, neural networks)
-
-2. **Permutation Importance**
-   - Measures how much model performance decreases when a variable is randomly shuffled
-   - Higher dropout loss = more important variable
-   - Unlike tree-based importance, this works for any model and accounts for correlations
-
-3. **Interpretation**
-   - Variables are ranked by their contribution to predictions
-   - Helps identify which morphological features are most predictive of body mass
-   - Provides ecological insights into species morphology
-:::
-
-### Partial Dependence Plots
-
-Partial dependence plots show how predictions change as a single variable varies, while averaging over all other variables.
-
-```{r}
-# Create partial dependence profiles for key variables
-pdp_flipper <- model_profile(
-  explainer_rf,
-  variables = "flipper_length_mm",
-  N = NULL  # Use all observations
-)
-
-pdp_bill <- model_profile(
-  explainer_rf,
-  variables = "bill_length_mm",
-  N = NULL
-)
-
-# Plot partial dependence
-plot(pdp_flipper) +
-  labs(title = "Partial Dependence: Flipper Length",
-       subtitle = "Shows average effect of flipper length on predicted body mass",
-       x = "Flipper Length (mm)",
-       y = "Predicted Body Mass (g)") +
-  theme_minimal()
-
-plot(pdp_bill) +
-  labs(title = "Partial Dependence: Bill Length",
-       subtitle = "Shows average effect of bill length on predicted body mass",
-       x = "Bill Length (mm)",
-       y = "Predicted Body Mass (g)") +
-  theme_minimal()
-
-# Create 2D partial dependence plot for interactions
-pdp_2d <- model_profile(
-  explainer_rf,
-  variables = c("flipper_length_mm", "bill_length_mm"),
-  N = 100
-)
-
-# Note: 2D plots require additional processing
-# For simplicity, we'll show individual effects
-```
-
-::: {.callout-important}
-## Results Interpretation
-
-Partial dependence plots reveal important ecological relationships:
-
-1. **Marginal Effects**
-   - Shows how each predictor affects the response on average
-   - Accounts for correlations between predictors
-   - Reveals non-linear relationships that linear models would miss
-
-2. **Ecological Insights**
-   - Flipper length typically shows a strong positive relationship with body mass
-   - The relationship may be non-linear (e.g., diminishing returns at large sizes)
-   - Different species may show different patterns (captured by species variable)
-
-3. **Model Behavior**
-   - Helps validate that the model learned sensible relationships
-   - Can reveal unexpected patterns that warrant further investigation
-   - Useful for communicating model predictions to non-technical audiences
-:::
-
-### Individual Conditional Expectation (ICE) Plots
-
-While partial dependence shows average effects, ICE plots show how predictions change for individual observations.
-
-```{r}
-# Create ICE plots for flipper length
-ice_flipper <- model_profile(
-  explainer_rf,
-  variables = "flipper_length_mm",
-  N = 50,  # Use 50 observations for clarity
-  type = "conditional"
-)
-
-# Plot ICE curves
-plot(ice_flipper) +
-  labs(title = "Individual Conditional Expectation: Flipper Length",
-       subtitle = "Each line shows how prediction changes for one penguin",
-       x = "Flipper Length (mm)",
-       y = "Predicted Body Mass (g)") +
-  theme_minimal()
-
-# Compare with partial dependence (average)
-plot(ice_flipper, geom = "profiles") +
-  labs(title = "ICE Plots with Partial Dependence (yellow line)",
-       subtitle = "Individual effects vs. average effect",
-       x = "Flipper Length (mm)",
-       y = "Predicted Body Mass (g)") +
-  theme_minimal()
-```
-
-::: {.callout-tip}
-## PROFESSIONAL TIP: Choosing Interpretation Methods
-
-When interpreting machine learning models for ecological applications:
-
-1. **Variable Importance**
-   - Use permutation importance for model-agnostic assessment
-   - Compare with domain knowledge to validate model behavior
-   - Consider both statistical and ecological importance
-   - Report confidence intervals when possible
-
-2. **Partial Dependence Plots**
-   - Show average marginal effects of predictors
-   - Useful for understanding overall patterns
-   - Can mask heterogeneous effects across observations
-   - Best for communicating general relationships
-
-3. **ICE Plots**
-   - Reveal individual-level heterogeneity
-   - Identify subgroups with different response patterns
-   - More complex to interpret than PDP
-   - Useful for detecting interactions
-
-4. **Break-Down Plots** (for individual predictions)
-   - Explain specific predictions step-by-step
-   - Useful for understanding outliers or unusual cases
-   - Helps build trust in model predictions
-   - Essential for high-stakes conservation decisions
-:::
-
-### Explaining Individual Predictions
-
-For specific conservation decisions, we often need to understand why the model made a particular prediction.
-
-```{r}
-# Select an interesting observation to explain
-observation_to_explain <- penguin_test[1, ]
-
-cat("Explaining prediction for:\n")
-print(observation_to_explain %>% select(species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g))
-
-# Create a break-down explanation
-bd <- predict_parts(
-  explainer_rf,
-  new_observation = observation_to_explain,
-  type = "break_down"
-)
-
-# Plot the break-down
-plot(bd) +
-  labs(title = "Break-Down Plot for Individual Prediction",
-       subtitle = "Shows contribution of each variable to the final prediction") +
-  theme_minimal()
-
-# Create SHAP values for more robust attribution
-shap <- predict_parts(
-  explainer_rf,
-  new_observation = observation_to_explain,
-  type = "shap",
-  B = 25  # Number of random orderings
-)
-
-# Plot SHAP values
-plot(shap) +
-  labs(title = "SHAP Values for Individual Prediction",
-       subtitle = "Average contribution across all possible variable orderings") +
-  theme_minimal()
-```
-
-::: {.callout-note}
-## Code Explanation
-
-Individual prediction explanations help understand specific cases:
-
-1. **Break-Down Plots**
-   - Show step-by-step how each variable contributes to the prediction
-   - Start from the average prediction and add each variable's effect
-   - Order matters: variables are added in order of importance
-
-2. **SHAP Values**
-   - Shapley Additive exPlanations from game theory
-   - Average contribution across all possible orderings of variables
-   - More robust than break-down plots but computationally intensive
-   - Provides fair attribution of prediction to each feature
-
-3. **Ecological Applications**
-   - Explain why a particular species is predicted in a certain location
-   - Understand which factors drive high/low abundance predictions
-   - Communicate model reasoning to stakeholders and decision-makers
-   - Identify data quality issues or model failures
-:::
-
-::: {.callout-important}
-## Communicating ML Results in Ecology
-
-When presenting machine learning results to ecological audiences:
-
-1. **Focus on Ecological Meaning**
-   - Translate statistical importance to ecological significance
-   - Connect model patterns to known ecological processes
-   - Discuss biological plausibility of relationships
-   - Relate findings to conservation implications
-
-2. **Visualize Effectively**
-   - Use partial dependence plots for main effects
-   - Show uncertainty in predictions
-   - Include actual data points alongside model predictions
-   - Use colors and labels that resonate with ecological context
-
-3. **Acknowledge Limitations**
-   - Discuss what the model cannot capture (e.g., biotic interactions)
-   - Explain extrapolation risks
-   - Mention data quality and sampling bias issues
-   - Suggest validation approaches
-
-4. **Provide Actionable Insights**
-   - Link predictions to management recommendations
-   - Identify key variables that can be monitored or manipulated
-   - Suggest priority areas for conservation action
-   - Propose adaptive management strategies based on model uncertainty
-:::
-
-Model interpretation transforms "black box" machine learning into a tool for ecological understanding. By explaining how models make predictions, we gain insights into ecological processes and build confidence in using ML for conservation decision-making.
-
-## Time Series Analysis for Ecological Data
-
-Time series data—observations collected sequentially over time—are common in ecology. Population counts, climate measurements, and phenological observations all have temporal structure that standard regression methods cannot properly handle.
-
-### Understanding Temporal Autocorrelation
-
-```{r}
-#| warning: false
-#| message: false
-
-# Load packages for time series analysis
-library(forecast)
-library(tsibble)
-library(feasts)
-library(ggplot2)
-library(dplyr)
-
-# Create simulated population time series
-set.seed(2024)
-years <- 1990:2023
-n_years <- length(years)
-
-# Simulate population with trend, seasonality, and noise
-trend <- 100 + 2 * (1:n_years)  # Increasing trend
-seasonal <- 10 * sin(2 * pi * (1:n_years) / 5)  # 5-year cycle
-noise <- rnorm(n_years, 0, 5)
-population <- trend + seasonal + noise
-
-# Create time series data frame
-pop_ts_data <- data.frame(
-  year = years,
-  population = round(population)
-)
-
-# Visualize the time series
-ggplot(pop_ts_data, aes(x = year, y = population)) +
-  geom_line(color = "steelblue", linewidth = 1) +
-  geom_point(color = "steelblue", size = 2) +
-  labs(
-    title = "Simulated Population Time Series",
-    subtitle = "Shows trend and cyclic pattern typical of ecological data",
-    x = "Year",
-    y = "Population Size"
-  ) +
-  theme_minimal()
-
-# Test for temporal autocorrelation
-# Create ACF and PACF plots
-par(mfrow = c(2, 1))
-acf(pop_ts_data$population, main = "Autocorrelation Function (ACF)")
-pacf(pop_ts_data$population, main = "Partial Autocorrelation Function (PACF)")
-```
-
-::: {.callout-note}
-## Code Explanation
-
-This code introduces time series concepts for ecological data:
-
-1. **Time Series Components**
-   - **Trend**: Long-term increase or decrease (e.g., climate change effects)
-   - **Seasonality**: Regular cyclic patterns (e.g., annual breeding cycles)
-   - **Noise**: Random variation (e.g., environmental stochasticity)
-
-2. **Autocorrelation Functions**
-   - **ACF**: Shows correlation between observations at different time lags
-   - **PACF**: Shows direct correlation after removing indirect effects
-   - Significant spikes indicate temporal dependence
-
-3. **Ecological Relevance**
-   - Population dynamics often show autocorrelation due to age structure
-   - Climate variables have strong seasonal patterns
-   - Ignoring autocorrelation leads to invalid statistical inferences
-:::
-
-### Time Series Decomposition
-
-```{r}
-# Convert to ts object for decomposition
-pop_ts <- ts(pop_ts_data$population, start = 1990, frequency = 1)
-
-# Decompose the time series
-decomp <- stl(ts(pop_ts_data$population, frequency = 5), s.window = "periodic")
-
-# Plot decomposition
-plot(decomp, main = "Time Series Decomposition")
-
-# Extract components
-trend_component <- decomp$time.series[, "trend"]
-seasonal_component <- decomp$time.series[, "seasonal"]
-remainder <- decomp$time.series[, "remainder"]
-
-# Create a data frame for ggplot
-decomp_df <- data.frame(
-  year = years,
-  observed = pop_ts_data$population,
-  trend = as.numeric(trend_component),
-  seasonal = as.numeric(seasonal_component),
-  remainder = as.numeric(remainder)
-)
-
-# Visualize components with ggplot
-library(tidyr)
-decomp_long <- decomp_df %>%
-  pivot_longer(cols = c(observed, trend, seasonal, remainder),
-               names_to = "component",
-               values_to = "value")
-
-ggplot(decomp_long, aes(x = year, y = value)) +
-  geom_line(color = "steelblue") +
-  facet_wrap(~component, scales = "free_y", ncol = 1) +
-  labs(
-    title = "Time Series Decomposition Components",
-    x = "Year",
-    y = "Value"
-  ) +
-  theme_minimal()
-```
-
-::: {.callout-important}
-## Results Interpretation
-
-Time series decomposition reveals the structure of temporal data:
-
-1. **Trend Component**
-   - Shows the long-term direction of the population
-   - Increasing trend suggests population growth
-   - Can be linear or non-linear
-   - Important for long-term conservation planning
-
-2. **Seasonal Component**
-   - Reveals cyclic patterns in the data
-   - In this example, shows a 5-year cycle
-   - Could represent environmental cycles (e.g., El Niño)
-   - Helps identify optimal monitoring times
-
-3. **Remainder (Residuals)**
-   - Random variation after removing trend and seasonality
-   - Should be approximately white noise if decomposition is appropriate
-   - Large residuals may indicate unusual events or data quality issues
-
-4. **Ecological Applications**
-   - Separate long-term trends from natural cycles
-   - Identify critical periods in species life cycles
-   - Detect anomalies or regime shifts
-   - Inform sampling design for monitoring programs
-:::
-
-### Forecasting with ARIMA Models
-
-```{r}
-# Fit an ARIMA model
-# auto.arima selects the best model automatically
-arima_model <- auto.arima(pop_ts)
-
-# Display model summary
-summary(arima_model)
-
-# Make forecasts for the next 5 years
-forecast_result <- forecast(arima_model, h = 5)
-
-# Plot the forecast
-autoplot(forecast_result) +
-  labs(
-    title = "Population Forecast (ARIMA Model)",
-    subtitle = "5-year forecast with 80% and 95% confidence intervals",
-    x = "Year",
-    y = "Population Size"
-  ) +
-  theme_minimal()
-
-# Extract forecast values
-forecast_df <- data.frame(
-  year = 2024:2028,
-  point_forecast = as.numeric(forecast_result$mean),
-  lower_80 = as.numeric(forecast_result$lower[, 1]),
-  upper_80 = as.numeric(forecast_result$upper[, 1]),
-  lower_95 = as.numeric(forecast_result$lower[, 2]),
-  upper_95 = as.numeric(forecast_result$upper[, 2])
-)
-
-print(forecast_df)
-```
-
-::: {.callout-tip}
-## PROFESSIONAL TIP: Time Series Forecasting in Ecology
-
-When forecasting ecological time series:
-
-1. **Model Selection**
-   - Use `auto.arima()` for automatic model selection
-   - Consider seasonal ARIMA for data with clear seasonality
-   - Evaluate multiple models and compare AIC/BIC
-   - Check residual diagnostics to validate model assumptions
-
-2. **Forecast Interpretation**
-   - Point forecasts are the expected values
-   - Confidence intervals quantify uncertainty
-   - Uncertainty increases with forecast horizon
-   - Consider biological constraints (e.g., populations can't be negative)
-
-3. **Ecological Considerations**
-   - Short-term forecasts are more reliable than long-term
-   - Regime shifts or environmental changes can invalidate models
-   - Incorporate external covariates when available (e.g., climate indices)
-   - Use ensemble forecasts for robust predictions
-
-4. **Communication**
-   - Always show uncertainty in forecasts
-   - Explain assumptions and limitations
-   - Relate forecasts to management thresholds
-   - Update forecasts as new data become available
-:::
-
-### Ecological Example: Phenology Trends
-
-```{r}
-# Simulate phenological data (e.g., first flowering date)
-set.seed(123)
-years_pheno <- 1980:2023
-n_years_pheno <- length(years_pheno)
-
-# Earlier flowering over time due to climate change
-flowering_doy <- 120 - 0.3 * (1:n_years_pheno) + rnorm(n_years_pheno, 0, 3)
-
-pheno_data <- data.frame(
-  year = years_pheno,
-  flowering_day = round(flowering_doy)
-)
-
-# Visualize the trend
-ggplot(pheno_data, aes(x = year, y = flowering_day)) +
-  geom_point(color = "darkgreen", size = 2) +
-  geom_smooth(method = "lm", color = "red", se = TRUE) +
-  labs(
-    title = "Phenological Shift: First Flowering Date",
-    subtitle = "Earlier flowering over time suggests climate warming",
-    x = "Year",
-    y = "Day of Year (First Flowering)"
-  ) +
-  theme_minimal()
-
-# Fit a linear model to quantify the trend
-pheno_model <- lm(flowering_day ~ year, data = pheno_data)
-summary(pheno_model)
-
-# Calculate the rate of change
-rate_per_decade <- coef(pheno_model)["year"] * 10
-cat(sprintf("Flowering is occurring %.2f days earlier per decade\n", abs(rate_per_decade)))
-
-# Test for autocorrelation in residuals
-dwtest(pheno_model)
-
-# If autocorrelation is present, use GLS
-library(nlme)
-gls_model <- gls(flowering_day ~ year,
-                 correlation = corAR1(form = ~ year),
-                 data = pheno_data)
-summary(gls_model)
-```
-
-::: {.callout-important}
-## Phenological Trends and Climate Change
-
-Phenological shifts provide powerful evidence of climate change impacts:
-
-1. **Trend Detection**
-   - Linear regression can detect long-term trends
-   - Rate of change quantifies the magnitude of shifts
-   - Statistical significance indicates confidence in the trend
-
-2. **Temporal Autocorrelation**
-   - Phenological data often show autocorrelation
-   - Durbin-Watson test detects autocorrelation in residuals
-   - Generalized Least Squares (GLS) accounts for autocorrelation
-   - Proper modeling prevents inflated Type I error rates
-
-3. **Ecological Implications**
-   - Earlier flowering can lead to phenological mismatches
-   - Pollinators may not be active when plants flower
-   - Affects reproductive success and population dynamics
-   - Indicates ecosystem-wide climate change responses
-
-4. **Conservation Applications**
-   - Monitor phenological shifts as climate change indicators
-   - Identify species vulnerable to phenological mismatches
-   - Inform assisted migration decisions
-   - Guide adaptive management strategies
-:::
-
-::: {.callout-note}
-## Code Explanation
-
-The phenology example demonstrates practical time series analysis:
-
-1. **Trend Analysis**
-   - Linear regression quantifies the rate of phenological shift
-   - Confidence intervals indicate precision of the estimate
-   - Visual inspection confirms the trend pattern
-
-2. **Autocorrelation Testing**
-   - Durbin-Watson test checks for temporal autocorrelation
-   - Significant autocorrelation requires specialized models
-   - GLS with AR(1) correlation structure accounts for autocorrelation
-
-3. **Model Comparison**
-   - Compare standard linear model with GLS
-   - GLS provides more accurate standard errors
-   - Prevents false positives in trend detection
-:::
-
-Time series analysis is essential for understanding temporal dynamics in ecological systems. By properly accounting for temporal structure, we can detect trends, make forecasts, and understand how ecosystems respond to environmental change.
-
-
-
-
-
-```
+In the next chapter, we will explore **Advanced Modeling Techniques**, including how to interpret complex "black box" models and how to analyze data collected over time (time series).
 
 ### Logistic Regression with Tidymodels
 
@@ -1587,7 +1022,7 @@ The tidymodels classification workflow provides:
 ### Feature Comparison
 
 | Feature | Base R | Tidymodels |
-|---------|--------|------------|
+|---------|--------|------------
 | **Learning Curve** | Moderate | Steeper initially |
 | **Consistency** | Varies by package | Unified interface |
 | **Preprocessing** | Manual | Automated with recipes |
@@ -1602,10 +1037,10 @@ The tidymodels classification workflow provides:
 
 Many practitioners use both approaches:
 
-1. **Exploration**: Use base R for quick model fitting and diagnostics
-2. **Refinement**: Transition to tidymodels for rigorous evaluation
-3. **Production**: Deploy tidymodels workflows for consistency
-4. **Communication**: Use base R output for traditional audiences, tidymodels for modern reports
+1.  **Exploration**: Use base R for quick model fitting and diagnostics
+2.  **Refinement**: Transition to tidymodels for rigorous evaluation
+3.  **Production**: Deploy tidymodels workflows for consistency
+4.  **Communication**: Use base R output for traditional audiences, tidymodels for modern reports
 :::
 
 ## Exercises

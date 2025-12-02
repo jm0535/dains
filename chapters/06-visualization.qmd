@@ -6,6 +6,19 @@ prefer-html: true
 
 ## Introduction
 
+::: {.callout-note}
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+
+1.  Understand the importance of data visualization in scientific communication
+2.  Choose appropriate plot types for different data structures (categorical, numerical, spatial)
+3.  Create publication-quality bar charts, histograms, and scatter plots using `ggplot2`
+4.  Visualize distributions and group comparisons with box plots
+5.  Explore complex relationships using heatmaps and time series plots
+6.  Apply best practices for design, accessibility, and data integrity in visualizations
+:::
+
 Data visualization is a crucial skill for communicating scientific findings effectively. In this chapter, you will:
 
 - Learn various data visualization techniques

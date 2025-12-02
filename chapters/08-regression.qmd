@@ -96,7 +96,7 @@ ggplot(penguins_clean, aes(x = bill_length_mm, y = body_mass_g)) +
   # Use a colorblind-friendly palette
   scale_color_viridis_d() +
   # Adjust axis limits for better visualization
-  coord_cartesian(expand = 0.05)
+  coord_cartesian(expand = TRUE)
 
 # Create diagnostic plots using the performance package
 check_model <- check_model(model)

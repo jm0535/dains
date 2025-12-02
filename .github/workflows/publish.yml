@@ -112,7 +112,14 @@ jobs:
             any::emmeans
             any::sf
             any::vegan
-          cache-version: 2
+            any::gt
+            any::modelsummary
+            any::effects
+            any::pROC
+            any::pheatmap
+            any::downlit
+            any::xml2
+          cache-version: 3
 
       - name: Render Quarto book
         run: |

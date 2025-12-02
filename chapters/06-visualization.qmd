@@ -245,7 +245,7 @@ ggplot(biodiversity_for_scatter, aes(x = year_numeric, y = threat_score, color =
   ) +
   theme(
     legend.position = "right",
-    panel.grid.major = element_line(color = "gray90", size = 0.3)
+    panel.grid.major = element_line(color = "gray90", linewidth = 0.3)
   )
 ```
 
@@ -318,7 +318,7 @@ ggplot(biodiversity_with_scores, aes(x = reorder(continent, threat_score, FUN = 
   theme(
     legend.position = "none",
     axis.text.x = element_text(angle = 0, hjust = 0.5, face = "bold"),
-    panel.grid.major.y = element_line(color = "gray90", size = 0.3)
+    panel.grid.major.y = element_line(color = "gray90", linewidth = 0.3)
   ) +
   coord_flip()  # Flip coordinates for horizontal box plots
 ```
@@ -437,7 +437,7 @@ threat_cor_long$Threat2 <- factor(threat_cor_long$Threat2,
 
 # Create a publication-quality heatmap
 ggplot(threat_cor_long, aes(x = Threat1, y = Threat2, fill = Correlation)) +
-  geom_tile(color = "white", size = 0.5) +
+  geom_tile(color = "white", linewidth = 0.5) +
   scale_fill_gradient2(
     low = "#4575b4",
     mid = "white",
@@ -548,7 +548,7 @@ time_series_data <- crop_yields %>%
 if(length(wheat_col) > 0) {
   # If we have a wheat column, use it
   ggplot(time_series_data, aes(x = Year, y = .data[[wheat_col[1]]], color = Entity)) +
-    geom_line(size = 1, na.rm = TRUE) +
+    geom_line(linewidth = 1, na.rm = TRUE) +
     geom_point(size = 2, alpha = 0.7, na.rm = TRUE) +
     scale_color_viridis_d(option = "turbo", begin = 0.1, end = 0.9) +
     scale_x_continuous(breaks = seq(1970, 2020, by = 10)) +
@@ -562,7 +562,7 @@ if(length(wheat_col) > 0) {
     ) +
     theme(
       legend.position = "right",
-      panel.grid.major = element_line(color = "gray90", size = 0.3),
+      panel.grid.major = element_line(color = "gray90", linewidth = 0.3),
       axis.text.x = element_text(angle = 0)
     )
 } else {
@@ -574,7 +574,7 @@ if(length(wheat_col) > 0) {
     selected_col <- numeric_col_names[1]
 
     ggplot(time_series_data, aes(x = Year, y = .data[[selected_col]], color = Entity)) +
-      geom_line(size = 1, na.rm = TRUE) +
+      geom_line(linewidth = 1, na.rm = TRUE) +
       geom_point(size = 2, alpha = 0.7, na.rm = TRUE) +
       scale_color_viridis_d(option = "turbo", begin = 0.1, end = 0.9) +
       labs(
@@ -587,7 +587,7 @@ if(length(wheat_col) > 0) {
       ) +
       theme(
         legend.position = "right",
-        panel.grid.major = element_line(color = "gray90", size = 0.3)
+        panel.grid.major = element_line(color = "gray90", linewidth = 0.3)
       )
   } else {
     # If no suitable numeric column found
@@ -615,7 +615,7 @@ This code creates a time series plot to visualize agricultural yield trends over
    - This approach makes the code more robust when working with datasets that might have different structures.
 
 3. **Creating the Time Series Plot**
-   - We use `geom_line()` to connect data points across years, with `size = 1` for visibility.
+   - We use `geom_line()` to connect data points across years, with `linewidth = 1` for visibility.
    - We add `geom_point()` to highlight individual data points, with slight transparency (`alpha = 0.7`).
    - The `na.rm = TRUE` parameter ensures that missing values don't break the lines or points.
    - We use the "turbo" color palette from the viridis package to distinguish between countries.

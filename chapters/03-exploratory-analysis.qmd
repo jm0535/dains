@@ -317,7 +317,7 @@ ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
 
 # Histogram with density overlay
 ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
-  geom_histogram(aes(y = ..density..), bins = 30, fill = "darkgreen", color = "white", na.rm = TRUE) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "darkgreen", color = "white", na.rm = TRUE) +
   geom_density(color = "darkgreen", linewidth = 1, na.rm = TRUE) +
   labs(title = "Distribution of Wheat Yields",
        x = "Wheat Yield (tonnes per hectare)",
@@ -341,7 +341,7 @@ This code demonstrates three approaches to visualizing distributions:
    - Density plots show the probability density function of the data
 
 3. **Combined Visualization**:
-   - The histogram is converted to density scale with `aes(y = ..density..)`
+   - The histogram is converted to density scale with `aes(y = after_stat(density))`
    - `geom_density()` overlays a smoothed curve on the histogram
    - This combination shows both the raw data structure and the smoothed distribution
 :::

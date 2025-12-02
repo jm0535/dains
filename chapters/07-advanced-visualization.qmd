@@ -43,7 +43,7 @@ custom_theme <- theme_minimal() +
 
     # Grid lines and panel
     panel.grid.minor = element_blank(),
-    panel.border = element_rect(color = "gray80", fill = NA, size = 0.5)
+    panel.border = element_rect(color = "gray80", fill = NA, linewidth = 0.5)
   )
 
 # Apply the custom theme

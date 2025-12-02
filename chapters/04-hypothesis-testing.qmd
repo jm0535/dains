@@ -451,7 +451,7 @@ print(paired_result)
 ggplot(paired_data, aes(x = difference)) +
   geom_histogram(binwidth = 0.5, fill = "forestgreen", color = "black", alpha = 0.7) +
   geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
-  geom_vline(xintercept = mean(paired_data$difference), color = "blue", size = 1) +
+  geom_vline(xintercept = mean(paired_data$difference), color = "blue", linewidth = 1) +
   labs(title = "Distribution of Height Differences (After - Before)",
        x = "Difference (m)",
        y = "Frequency") +
@@ -654,7 +654,7 @@ knitr::kable(ci_table,
 ggplot(data.frame(x = c(ci_result$conf.int[1] - 1, ci_result$conf.int[2] + 1)), aes(x = x)) +
   stat_function(fun = dnorm, args = list(mean = ci_result$estimate, sd = sd(site_A)/sqrt(length(site_A))),
                 geom = "line", color = "blue") +
-  geom_vline(xintercept = ci_result$estimate, color = "blue", size = 1) +
+  geom_vline(xintercept = ci_result$estimate, color = "blue", linewidth = 1) +
   geom_vline(xintercept = ci_result$conf.int[1], color = "red", linetype = "dashed") +
   geom_vline(xintercept = ci_result$conf.int[2], color = "red", linetype = "dashed") +
   annotate("rect", xmin = ci_result$conf.int[1], xmax = ci_result$conf.int[2],
@@ -741,14 +741,14 @@ Remember that hypothesis testing is just one component of a comprehensive resear
 
 ## Exercises
 
-1. Using the tree growth dataset (`../data/forestry/tree_growth.csv`), perform a two-sample t-test to compare growth rates between two different species.
+1. Using the forest inventory dataset (`../data/forestry/forest_inventory.csv`), perform a two-sample t-test to compare tree measurements between two different species or sites.
 
 2. For the biodiversity dataset (`../data/ecology/biodiversity.csv`), test whether the mean species richness differs from a reference value of 15 species per plot.
 
-3. Using the soil chemistry dataset (`../data/soil/soil_chemistry.csv`), conduct a paired t-test to compare nutrient levels before and after a treatment.
+3. Using the crop yields dataset (`../data/agriculture/crop_yields.csv`), conduct a paired t-test to compare wheat and rice yields for the same countries.
 
 4. For any dataset of your choice, check the normality assumption using both visual methods (Q-Q plot) and statistical tests (Shapiro-Wilk).
 
-5. Calculate and interpret a 95% confidence interval for a parameter of interest in the climate dataset (`../data/climate/temperature.csv`).
+5. Calculate and interpret a 95% confidence interval for a parameter of interest in the environmental dataset (`../data/environmental/climate_data.csv`).
 
 6. Design a hypothesis test for a research question of your choice related to natural sciences. Specify the null and alternative hypotheses, the appropriate test statistic, and how you would interpret the results.

@@ -30,7 +30,7 @@ theme_set(theme_minimal(base_size = 12) +
     axis.title = element_text(face = "bold"),
     legend.position = "bottom",
     panel.grid.minor = element_blank(),
-    panel.border = element_rect(color = "gray90", fill = NA, size = 0.5)
+    panel.border = element_rect(color = "gray90", fill = NA, linewidth = 0.5)
   ))
 
 # Load the Palmer penguins dataset (stored as climate_data.csv)

@@ -587,7 +587,7 @@ pa_data <- data.frame(
 # Visualize the data
 ggplot(pa_data, aes(x = year, y = biodiversity, color = protected, group = interaction(site, protected))) +
   geom_line(alpha = 0.3) +
-  stat_summary(aes(group = protected), fun = mean, geom = "line", size = 1.5) +
+  stat_summary(aes(group = protected), fun = mean, geom = "line", linewidth = 1.5) +
   geom_vline(xintercept = 2018, linetype = "dashed") +
   labs(title = "Biodiversity Trends in Protected and Unprotected Sites",
        subtitle = "Vertical line indicates when protection was implemented",

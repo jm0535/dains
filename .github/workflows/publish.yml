@@ -76,50 +76,13 @@ jobs:
       - name: Install R packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: |
-            any::knitr
-            any::rmarkdown
-            any::tidyverse
-            any::tidymodels
-            any::ggplot2
-            any::dplyr
-            any::tidyr
-            any::readr
-            any::purrr
-            any::tibble
-            any::stringr
-            any::forcats
-            any::broom
-            any::plotly
-            any::leaflet
-            any::rstatix
-            any::kableExtra
-            any::viridis
-            any::RColorBrewer
-            any::scales
-            any::patchwork
-            any::performance
-            any::see
-            any::parameters
-            any::effectsize
-            any::corrplot
-            any::GGally
-            any::ggeffects
-            any::ggrepel
-            any::car
-            any::lme4
-            any::MASS
-            any::emmeans
-            any::sf
-            any::vegan
-            any::gt
-            any::modelsummary
-            any::effects
-            any::pROC
-            any::pheatmap
-            any::downlit
-            any::xml2
           cache-version: 3
+          # Use renv if lockfile is present
+          use-renv: true
+
+      - name: Run chapter tests
+        run: |
+          Rscript tests/test-chapters.R
 
       - name: Render Quarto book
         run: |

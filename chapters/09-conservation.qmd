@@ -247,6 +247,292 @@ When developing SDMs for conservation applications:
 - **Include biotic interactions**: When possible, incorporate variables representing key competitors, predators, or mutualists
 :::
 
+## Spatial Autocorrelation in Ecological Data
+
+Spatial autocorrelation—the tendency for nearby locations to have similar values—is ubiquitous in ecological data. Ignoring it can lead to inflated Type I error rates and incorrect inferences about ecological processes.
+
+### Understanding Spatial Autocorrelation
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+
+# Load required packages
+library(spdep)
+library(sf)
+library(ggplot2)
+library(dplyr)
+
+# Create simulated spatial data with autocorrelation
+set.seed(2024)
+n_sites <- 50
+
+# Generate spatial coordinates
+coords <- data.frame(
+  x = runif(n_sites, 0, 100),
+  y = runif(n_sites, 0, 100)
+)
+
+# Create spatially autocorrelated species abundance
+# Using distance-based autocorrelation
+dist_matrix <- as.matrix(dist(coords))
+spatial_effect <- numeric(n_sites)
+
+for(i in 1:n_sites) {
+  # Influence from nearby sites (exponential decay with distance)
+  weights <- exp(-dist_matrix[i,] / 20)
+  weights[i] <- 0  # Don't include self
+  spatial_effect[i] <- sum(weights * rnorm(n_sites, 0, 1)) / sum(weights)
+}
+
+# Combine spatial effect with environmental gradient and noise
+environmental_gradient <- coords$x / 100
+abundance <- 50 + 30 * environmental_gradient + 20 * spatial_effect + rnorm(n_sites, 0, 5)
+abundance <- pmax(abundance, 0)  # Ensure non-negative
+
+# Create spatial data frame
+spatial_data <- data.frame(
+  site_id = 1:n_sites,
+  x = coords$x,
+  y = coords$y,
+  abundance = round(abundance),
+  environment = environmental_gradient
+)
+
+# Visualize the spatial pattern
+ggplot(spatial_data, aes(x = x, y = y, color = abundance, size = abundance)) +
+  geom_point(alpha = 0.7) +
+  scale_color_viridis_c() +
+  scale_size_continuous(range = c(2, 8)) +
+  labs(
+    title = "Spatially Autocorrelated Species Abundance",
+    subtitle = "Nearby sites tend to have similar abundance values",
+    x = "X Coordinate (km)",
+    y = "Y Coordinate (km)",
+    color = "Abundance",
+    size = "Abundance"
+  ) +
+  theme_minimal() +
+  coord_fixed()
+```
+
+::: {.callout-note}
+## Code Explanation
+
+This code demonstrates spatial autocorrelation in ecological data:
+
+1. **Data Simulation**
+   - Creates 50 sampling sites with random spatial coordinates
+   - Generates abundance values influenced by three factors:
+     - Environmental gradient (east-west trend)
+     - Spatial autocorrelation (nearby sites are similar)
+     - Random noise (natural variation)
+
+2. **Spatial Autocorrelation Mechanism**
+   - Uses distance-based weighting with exponential decay
+   - Sites closer together have more similar values
+   - Mimics real ecological processes like dispersal and habitat similarity
+
+3. **Visualization**
+   - Maps show both location and abundance
+   - Color and size represent abundance
+   - Visual clustering indicates spatial autocorrelation
+:::
+
+### Testing for Spatial Autocorrelation
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+
+# Convert to sf object for spatial analysis
+spatial_sf <- st_as_sf(spatial_data, coords = c("x", "y"))
+
+# Create spatial weights matrix (k-nearest neighbors)
+coords_matrix <- st_coordinates(spatial_sf)
+knn_weights <- knearneigh(coords_matrix, k = 4)
+nb <- knn2nb(knn_weights)
+listw <- nb2listw(nb, style = "W")
+
+# Calculate Moran's I
+moran_test <- moran.test(spatial_data$abundance, listw)
+print(moran_test)
+
+# Calculate Moran's I for different distance classes (correlogram)
+# Create distance-based neighbors
+dist_classes <- seq(0, 50, by = 10)
+moran_correlogram <- data.frame(
+  distance = numeric(),
+  morans_i = numeric(),
+  p_value = numeric()
+)
+
+for(i in 1:(length(dist_classes)-1)) {
+  # Create distance-based neighbors for this class
+  dnb <- dnearneigh(coords_matrix, dist_classes[i], dist_classes[i+1])
+
+  # Only calculate if there are neighbors in this distance class
+  if(sum(card(dnb)) > 0) {
+    dlistw <- nb2listw(dnb, style = "W", zero.policy = TRUE)
+    moran_i <- moran.test(spatial_data$abundance, dlistw, zero.policy = TRUE)
+
+    moran_correlogram <- rbind(moran_correlogram, data.frame(
+      distance = mean(c(dist_classes[i], dist_classes[i+1])),
+      morans_i = moran_i$estimate["Moran I statistic"],
+      p_value = moran_i$p.value
+    ))
+  }
+}
+
+# Plot the correlogram
+ggplot(moran_correlogram, aes(x = distance, y = morans_i)) +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(aes(color = p_value < 0.05), size = 3) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  scale_color_manual(values = c("gray70", "red"),
+                     labels = c("Not significant", "Significant (p < 0.05)")) +
+  labs(
+    title = "Spatial Correlogram (Moran's I)",
+    subtitle = "Autocorrelation decreases with distance",
+    x = "Distance (km)",
+    y = "Moran's I",
+    color = "Significance"
+  ) +
+  theme_minimal()
+```
+
+::: {.callout-important}
+## Results Interpretation
+
+The spatial autocorrelation analysis reveals critical information for ecological modeling:
+
+1. **Moran's I Test Results**
+   - Positive Moran's I (typically 0.3-0.7) indicates positive spatial autocorrelation
+   - Significant p-value (< 0.05) confirms autocorrelation is not due to chance
+   - This violates the independence assumption of standard statistical tests
+
+2. **Correlogram Interpretation**
+   - Shows how autocorrelation changes with distance
+   - Typically decreases as distance increases
+   - The distance at which autocorrelation becomes non-significant indicates the "range" of spatial dependence
+   - This range informs appropriate sampling design and modeling approaches
+
+3. **Ecological Implications**
+   - Spatial autocorrelation can arise from:
+     - Dispersal processes (organisms spread to nearby areas)
+     - Environmental gradients (similar environments are spatially clustered)
+     - Biotic interactions (species interactions create spatial patterns)
+   - Understanding the cause helps inform conservation strategies
+
+4. **Statistical Consequences**
+   - Ignoring spatial autocorrelation leads to:
+     - Underestimated standard errors
+     - Inflated Type I error rates (false positives)
+     - Incorrect confidence in model predictions
+   - Must account for it in statistical models
+:::
+
+### Accounting for Spatial Autocorrelation in Models
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+
+# Fit a naive model (ignoring spatial autocorrelation)
+naive_model <- lm(abundance ~ environment, data = spatial_data)
+
+# Test residuals for spatial autocorrelation
+lm.morantest(naive_model, listw)
+
+# Fit a spatial lag model (accounts for spatial autocorrelation)
+library(spatialreg)
+spatial_lag_model <- lagsarlm(abundance ~ environment, data = spatial_data, listw = listw)
+
+# Compare models
+cat("Naive Model Summary:\n")
+summary(naive_model)
+
+cat("\n\nSpatial Lag Model Summary:\n")
+summary(spatial_lag_model)
+
+# Visualize residuals
+spatial_data$naive_residuals <- residuals(naive_model)
+spatial_data$spatial_residuals <- residuals(spatial_lag_model)
+
+# Plot naive model residuals
+p1 <- ggplot(spatial_data, aes(x = x, y = y, color = naive_residuals, size = abs(naive_residuals))) +
+  geom_point(alpha = 0.7) +
+  scale_color_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  scale_size_continuous(range = c(2, 6)) +
+  labs(
+    title = "Naive Model Residuals",
+    subtitle = "Spatial pattern in residuals indicates unmodeled autocorrelation",
+    x = "X Coordinate (km)",
+    y = "Y Coordinate (km)",
+    color = "Residual"
+  ) +
+  theme_minimal() +
+  coord_fixed() +
+  theme(legend.position = "bottom")
+
+# Plot spatial model residuals
+p2 <- ggplot(spatial_data, aes(x = x, y = y, color = spatial_residuals, size = abs(spatial_residuals))) +
+  geom_point(alpha = 0.7) +
+  scale_color_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  scale_size_continuous(range = c(2, 6)) +
+  labs(
+    title = "Spatial Lag Model Residuals",
+    subtitle = "Reduced spatial pattern indicates better model fit",
+    x = "X Coordinate (km)",
+    y = "Y Coordinate (km)",
+    color = "Residual"
+  ) +
+  theme_minimal() +
+  coord_fixed() +
+  theme(legend.position = "bottom")
+
+# Display plots
+library(patchwork)
+p1 / p2
+```
+
+::: {.callout-tip}
+## PROFESSIONAL TIP: Dealing with Spatial Autocorrelation
+
+When analyzing spatially structured ecological data:
+
+1. **Detection**
+   - Always test for spatial autocorrelation before analysis
+   - Use Moran's I or Geary's C for global autocorrelation
+   - Create correlograms to understand spatial scale
+   - Examine residual plots for spatial patterns
+
+2. **Modeling Approaches**
+   - **Spatial lag models**: When autocorrelation is due to diffusion/dispersal processes
+   - **Spatial error models**: When autocorrelation is due to unmeasured environmental variables
+   - **Generalized Least Squares (GLS)**: Flexible approach for various correlation structures
+   - **Spatial random effects**: Mixed models with spatial random effects
+
+3. **Study Design**
+   - Space sampling sites beyond the range of autocorrelation when possible
+   - Use stratified random sampling to ensure coverage of environmental gradients
+   - Consider spatial autocorrelation in power analyses
+   - Document spatial coordinates for all samples
+
+4. **Reporting**
+   - Report Moran's I and significance tests
+   - Show correlograms to illustrate spatial scale
+   - Compare models with and without spatial structure
+   - Discuss ecological mechanisms causing autocorrelation
+:::
+
+Spatial autocorrelation is not just a statistical nuisance—it provides valuable information about ecological processes. By properly accounting for it, we improve both the validity of our inferences and our understanding of the mechanisms structuring ecological communities.
+
+
+
 ## Population Trend Analysis
 
 Analyzing population trends is crucial for conservation planning and evaluating management effectiveness.

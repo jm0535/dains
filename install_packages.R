@@ -103,8 +103,27 @@ exploration_packages <- c(
 
 # Reproducibility packages
 repro_packages <- c(
-  "renv", # Package management for reproducibility
-  "here" # Project-relative file paths
+  "renv",         # Package management for reproducibility
+  "here"          # Project-relative file paths
+)
+
+# Time series analysis packages
+timeseries_packages <- c(
+  "forecast",     # Time series forecasting
+  "tsibble",      # Time series data structures
+  "feasts"        # Time series features and statistics
+)
+
+# Model interpretation packages
+interpretation_packages <- c(
+  "DALEX",        # Model explainability
+  "DALEXtra"      # tidymodels integration for DALEX
+)
+
+# Spatial analysis packages (additional)
+spatial_advanced_packages <- c(
+  "spdep",        # Spatial dependence analysis
+  "spatialreg"    # Spatial regression models
 )
 
 # Optional advanced packages (uncomment if needed)
@@ -129,7 +148,10 @@ all_packages <- c(
   viz_packages,
   eco_packages,
   exploration_packages,
-  repro_packages
+  repro_packages,
+  timeseries_packages,
+  interpretation_packages,
+  spatial_advanced_packages
 )
 
 # Remove duplicates

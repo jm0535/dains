@@ -811,6 +811,7 @@ model_comparison %>%
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ### Hyperparameter Tuning
 

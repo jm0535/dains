@@ -30,12 +30,47 @@ While machine learning models like Random Forest can achieve high predictive acc
 ### Variable Importance
 
 ```{r}
+#| message: false
+#| warning: false
+
 # Load packages for model interpretation
 library(DALEX)
 library(DALEXtra)
 library(tidymodels)
+library(palmerpenguins)
 
-# Use the final Random Forest model from earlier
+# Prepare the penguins data (same as chapter 08)
+penguins <- palmerpenguins::penguins %>%
+  drop_na()
+
+# Split data into training and testing sets
+set.seed(123)
+penguin_split <- initial_split(penguins, prop = 0.75, strata = species)
+penguin_train <- training(penguin_split)
+penguin_test <- testing(penguin_split)
+
+# Define a recipe for preprocessing
+penguin_recipe <- recipe(body_mass_g ~ bill_length_mm + bill_depth_mm +
+                         flipper_length_mm + species,
+                         data = penguin_train) %>%
+  step_dummy(species) %>%
+  step_normalize(all_numeric_predictors()) %>%
+  step_zv(all_predictors())
+
+# Define Random Forest model specification
+rf_spec <- rand_forest(trees = 100) %>%
+  set_engine("ranger") %>%
+  set_mode("regression")
+
+# Create workflow
+rf_wf <- workflow() %>%
+  add_recipe(penguin_recipe) %>%
+  add_model(rf_spec)
+
+# Fit the final model
+final_fit <- rf_wf %>%
+  fit(data = penguin_train)
+
 # Create an explainer object
 explainer_rf <- explain_tidymodels(
   final_fit,
@@ -524,6 +559,11 @@ When forecasting ecological time series:
 ### Ecological Example: Phenology Trends
 
 ```{r}
+#| warning: false
+#| message: false
+
+library(lmtest)  # For dwtest()
+
 # Simulate phenological data (e.g., first flowering date)
 set.seed(123)
 years_pheno <- 1980:2023

@@ -986,6 +986,8 @@ Conservation resources are limited, so prioritizing threats and actions is essen
 ### Example: Multi-Criteria Decision Analysis
 
 ```{r}
+library(tidyr)  # For pivot_longer
+
 # Create a threat assessment dataset
 threats <- c("Habitat Loss", "Invasive Species", "Climate Change", "Pollution", "Overexploitation")
 severity <- c(0.9, 0.7, 0.8, 0.6, 0.7)

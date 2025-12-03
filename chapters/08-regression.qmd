@@ -902,7 +902,7 @@ Grid search explores a defined set of parameters. For more complex models, consi
 
 ### Next Steps
 
-In the next chapter, we will explore **Advanced Modeling Techniques**, including how to interpret complex "black box" models and how to analyze data collected over time (time series).
+In the next chapter, we will explore [Advanced Modeling Techniques](09-advanced-modeling.qmd), including how to interpret complex "black box" models and how to analyze data collected over time (time series).
 
 ### Logistic Regression with Tidymodels
 

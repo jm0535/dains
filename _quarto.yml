@@ -63,10 +63,10 @@ book:
     - part: "Part IV: Statistical Modeling"
       chapters:
         - chapters/08-regression.qmd
-        - chapters/10-advanced-modeling.qmd
+        - chapters/09-advanced-modeling.qmd
     - part: "Part V: Applied Ecology"
       chapters:
-        - chapters/09-conservation.qmd
+        - chapters/10-conservation.qmd
     - "---"
     - references.qmd
 

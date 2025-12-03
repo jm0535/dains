@@ -641,12 +641,10 @@ Time series analysis is essential for understanding temporal dynamics in ecologi
 - `model_profile()` - Create partial dependence and ICE plots
 - `predict_parts()` - Explain individual predictions
 - `auto.arima()` - Automatic ARIMA model selection
-- `forecast()` - Generate forecasts from time series models
-- `stl()` - Seasonal-trend decomposition
-- `gls()` - Generalized least squares regression
-- `dwtest()` - Durbin-Watson test for autocorrelation
+- `forecast()` - Generate forecasts
+## Introduction
 
-### Next Steps
+This chapter explores advanced modeling techniques that extend beyond traditional regression (covered in [Chapter 8](08-regression.qmd)). We'll cover model interpretation methods that help us understand "black box" machine learning models, and time series analysis for data collected sequentially over time.
 
 ### Next Steps
 
@@ -657,6 +655,8 @@ To continue your journey:
 -   Explore the documentation for packages like `tidymodels`, `DALEX`, and `fable`
 -   Join the R for Data Science community to keep learning
 -   Contribute to open-source projects in ecology and conservation
+
+For applied examples in conservation science, check out [Chapter 10: Conservation Applications](10-conservation.qmd).
 
 
 ## Exercises

@@ -139,7 +139,7 @@ execute:
 
 knitr:
   opts_chunk:
-    dev: "png"
+    dev: "ragg_png"
     fig.align: "center"
     out.width: "100%"
     collapse: true

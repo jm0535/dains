@@ -1,5 +1,7 @@
 ---
 prefer-html: true
+reference-location: document
+citation-location: document
 ---
 
 # Conservation Applications

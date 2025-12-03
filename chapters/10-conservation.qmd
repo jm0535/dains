@@ -1019,7 +1019,7 @@ ggplot(threat_data, aes(x = reorder(threat, magnitude), y = magnitude)) +
 
 # Visualize the components (using tidyr for data reshaping)
 threat_data_long <- threat_data %>%
-  select(threat, severity, scope, irreversibility) %>%
+  dplyr::select(threat, severity, scope, irreversibility) %>%
   pivot_longer(cols = -threat, names_to = "variable", values_to = "value")
 
 ggplot(threat_data_long, aes(x = reorder(threat, -value), y = value, fill = variable)) +
@@ -1542,6 +1542,200 @@ When implementing community-based conservation monitoring:
    - Develop long-term funding strategies and institutional support
 :::
 
+## Environmental Pollution Analysis
+
+Understanding pollution patterns is crucial for environmental conservation. Here we analyze plastic pollution data to identify major contributors and trends.
+
+### Example: Analyzing Plastic Pollution Data
+
+```{r}
+#| warning: false
+#| message: false
+
+library(tidyverse)
+
+# Load the plastic pollution dataset
+# This dataset contains information about plastic waste collected during cleanup events
+plastic_data <- read_csv("../data/botany/plant_traits.csv", show_col_types = FALSE)
+
+# View the structure
+cat("Dataset dimensions:", nrow(plastic_data), "rows,", ncol(plastic_data), "columns\n")
+
+# Summarize total plastic by country
+country_totals <- plastic_data %>%
+  group_by(country) %>%
+  summarize(
+    total_plastic = sum(grand_total, na.rm = TRUE),
+    total_events = sum(num_events, na.rm = TRUE),
+    total_volunteers = sum(volunteers, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(total_plastic)) %>%
+  head(15)
+
+# Visualize top polluting countries
+ggplot(country_totals, aes(x = reorder(country, total_plastic), y = total_plastic)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "Plastic Pollution by Country",
+    subtitle = "Total plastic items collected during cleanup events",
+    x = "Country",
+    y = "Total Plastic Items"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::comma)
+
+# Analyze plastic types
+plastic_types <- plastic_data %>%
+  summarize(
+    HDPE = sum(hdpe, na.rm = TRUE),
+    LDPE = sum(ldpe, na.rm = TRUE),
+    PET = sum(pet, na.rm = TRUE),
+    PP = sum(pp, na.rm = TRUE),
+    PS = sum(ps, na.rm = TRUE),
+    PVC = sum(pvc, na.rm = TRUE),
+    Other = sum(o, na.rm = TRUE)
+  ) %>%
+  pivot_longer(everything(), names_to = "plastic_type", values_to = "count")
+
+# Visualize plastic types
+ggplot(plastic_types, aes(x = reorder(plastic_type, -count), y = count, fill = plastic_type)) +
+  geom_col() +
+  labs(
+    title = "Distribution of Plastic Types in Pollution",
+    subtitle = "PET (bottles) is the most common pollutant",
+    x = "Plastic Type",
+    y = "Total Count"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = scales::comma)
+
+# Top corporate contributors
+top_companies <- plastic_data %>%
+  filter(parent_company != "Grand Total", parent_company != "Unbranded") %>%
+  group_by(parent_company) %>%
+  summarize(total = sum(grand_total, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(total)) %>%
+  head(10)
+
+ggplot(top_companies, aes(x = reorder(parent_company, total), y = total)) +
+  geom_col(fill = "coral") +
+  coord_flip() +
+  labs(
+    title = "Top Corporate Contributors to Plastic Pollution",
+    subtitle = "Based on branded plastic items collected",
+    x = "Company",
+    y = "Total Plastic Items"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::comma)
+```
+
+::: {.callout-important}
+## Conservation Implications
+
+Plastic pollution analysis reveals important patterns for environmental management:
+
+1. **Geographic Hotspots**: Identifying countries with highest pollution levels helps target intervention efforts
+2. **Plastic Types**: Understanding which plastics dominate (e.g., PET bottles) informs recycling and reduction strategies
+3. **Corporate Responsibility**: Tracking branded items helps hold companies accountable for their environmental impact
+4. **Volunteer Engagement**: Cleanup events provide both data and community engagement opportunities
+:::
+
+## Extreme Weather and Climate Events
+
+Climate change is increasing the frequency and intensity of extreme weather events, which have significant impacts on ecosystems and conservation efforts.
+
+### Example: Analyzing Storm Data
+
+```{r}
+#| warning: false
+#| message: false
+
+# Load the storm/hurricane dataset
+storms <- read_csv("../data/epidemiology/disease_data.csv", show_col_types = FALSE)
+
+# View structure
+cat("Storm records:", nrow(storms), "\n")
+cat("Years covered:", min(storms$year), "-", max(storms$year), "\n")
+
+# Summarize storms by year
+annual_storms <- storms %>%
+  group_by(year) %>%
+  summarize(
+    n_storms = n_distinct(name),
+    max_wind = max(wind, na.rm = TRUE),
+    avg_pressure = mean(pressure, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Visualize storm frequency over time
+ggplot(annual_storms, aes(x = year, y = n_storms)) +
+  geom_line(color = "darkblue", linewidth = 1) +
+  geom_smooth(method = "loess", color = "red", se = TRUE, alpha = 0.2) +
+  labs(
+    title = "Annual Storm Frequency (1975-2020)",
+    subtitle = "Trend line shows potential increase in storm activity",
+    x = "Year",
+    y = "Number of Named Storms"
+  ) +
+  theme_minimal()
+
+# Analyze storm intensity by category
+category_summary <- storms %>%
+  filter(!is.na(category)) %>%
+  group_by(category) %>%
+  summarize(
+    count = n(),
+    avg_wind = mean(wind, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+ggplot(category_summary, aes(x = factor(category), y = count, fill = factor(category))) +
+  geom_col() +
+  scale_fill_viridis_d(option = "plasma") +
+  labs(
+    title = "Storm Observations by Hurricane Category",
+    x = "Hurricane Category",
+    y = "Number of Observations",
+    fill = "Category"
+  ) +
+  theme_minimal()
+
+# Spatial distribution of storms
+ggplot(storms %>% filter(!is.na(lat), !is.na(long)), 
+       aes(x = long, y = lat, color = wind)) +
+  geom_point(alpha = 0.3, size = 0.5) +
+  scale_color_viridis_c(option = "inferno") +
+  labs(
+    title = "Spatial Distribution of Storm Activity",
+    subtitle = "Color indicates wind speed (knots)",
+    x = "Longitude",
+    y = "Latitude",
+    color = "Wind Speed"
+  ) +
+  theme_minimal() +
+  coord_fixed(ratio = 1.3)
+
+# Test for trend in maximum wind speeds
+wind_trend <- lm(max_wind ~ year, data = annual_storms)
+summary(wind_trend)
+```
+
+::: {.callout-note}
+## Ecological Relevance
+
+Extreme weather events have profound impacts on ecosystems:
+
+1. **Habitat Destruction**: Hurricanes can devastate coastal habitats, coral reefs, and forests
+2. **Species Displacement**: Storm surges and flooding force wildlife to relocate
+3. **Ecosystem Recovery**: Understanding storm patterns helps predict recovery timelines
+4. **Conservation Planning**: Storm frequency data informs the design of resilient protected areas
+5. **Climate Adaptation**: Trends in storm intensity guide climate adaptation strategies
+:::
+
 ## Summary
 
 In this chapter, we've explored how data analysis techniques can be applied to conservation challenges:
@@ -1554,6 +1748,8 @@ In this chapter, we've explored how data analysis techniques can be applied to c
 - Systematic conservation planning using complementarity analysis
 - Climate change vulnerability assessment based on species traits
 - Community-based conservation monitoring to track threats
+- Environmental pollution analysis to identify hotspots and corporate contributors
+- Extreme weather event analysis to understand climate impacts on ecosystems
 
 These applications demonstrate how the statistical methods covered throughout this book can help address real-world conservation problems, inform management decisions, and ultimately contribute to biodiversity conservation.
 

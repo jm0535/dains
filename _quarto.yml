@@ -33,10 +33,6 @@ book:
     logo: "images/Rlogo.jpg"
     title: "DAINS"
     collapse-below: lg
-    right:
-      - icon: github
-        href: https://github.com/jm0535/dains
-        aria-label: GitHub
 
   sidebar:
     style: floating

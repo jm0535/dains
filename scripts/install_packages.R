@@ -1,15 +1,18 @@
 # Install required packages for "Data Analysis in Natural Sciences: An R-Based Approach"
 # Author: Jimmy Moses
-# Last updated: 2025-10-22
-# Run this script once to set up all necessary packages
+# Repository: https://github.com/jm0535/dains
+# Last updated: December 2025
+#
+# Run this script once to set up all necessary packages:
+#   source("install_packages.R")
 
 # Set CRAN mirror
 options(repos = c(CRAN = "https://cloud.r-project.org"))
 
 # Function to install packages if not already installed
 install_if_missing <- function(packages) {
-  new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
-  if(length(new_packages)) {
+  new_packages <- packages[!(packages %in% installed.packages()[, "Package"])]
+  if (length(new_packages)) {
     message("Installing packages: ", paste(new_packages, collapse = ", "))
     install.packages(new_packages, dependencies = TRUE)
   } else {
@@ -18,94 +21,124 @@ install_if_missing <- function(packages) {
 }
 
 # Print R session information
-message("\n=== R Session Information ===")
+message("\n", strrep("=", 50))
+message("R Session Information")
+message(strrep("=", 50))
 message("R version: ", R.version.string)
-message("Platform: ", Sys.info()["sysname"], " ", Sys.info()["release"])
-message("==========================\n")
+message("Platform:  ", Sys.info()["sysname"], " ", Sys.info()["release"])
+message("Date:      ", Sys.Date())
+message(strrep("=", 50), "\n")
+
+# =============================================================================
+# PACKAGE DEFINITIONS
+# =============================================================================
 
 # Core tidyverse packages
 tidyverse_packages <- c(
-  "tidyverse",      # Meta-package including dplyr, ggplot2, tidyr, readr, purrr, tibble, stringr, forcats
-  "tidymodels",     # Meta-package for modeling (parsnip, recipes, rsample, tune, workflows, yardstick)
-  "broom",          # Tidy model outputs
-  "broom.mixed"     # Tidy mixed models
+  "tidyverse", # Meta-package: dplyr, ggplot2, tidyr, readr, purrr, tibble, stringr, forcats
+  "tidymodels", # Meta-package: parsnip, recipes, rsample, tune, workflows, yardstick
+  "broom", # Tidy model outputs
+  "broom.mixed" # Tidy mixed model outputs
 )
 
 # Document generation packages
 document_packages <- c(
-  "rmarkdown",      # R Markdown documents
-  "knitr",          # Dynamic report generation
-  "quarto",         # Next-gen scientific publishing
-  "kableExtra"      # Enhanced table formatting
+  "rmarkdown", # R Markdown documents
+  "knitr", # Dynamic report generation
+  "kableExtra" # Enhanced table formatting
 )
 
 # Statistical analysis packages
 stats_packages <- c(
-  "rstatix",        # Pipe-friendly statistical tests
-  "car",            # Companion to Applied Regression
-  "lme4",           # Linear mixed-effects models
-  "MASS",           # Modern Applied Statistics
-  "pwr",            # Power analysis
-  "FSA",            # Fisheries Stock Assessment
-  "Kendall",        # Kendall correlation
-  "corrplot",       # Correlation plots
-  "GGally",         # ggplot2 extensions
-  "performance",    # Model assessment
-  "parameters",     # Model parameters
-  "see",            # Visualization for model diagnostics
-  "effectsize",     # Effect size calculations
-  "pROC",           # ROC curve analysis
-  "emmeans"         # Estimated marginal means
+  "rstatix", # Pipe-friendly statistical tests
+  "car", # Companion to Applied Regression
+  "lme4", # Linear mixed-effects models
+  "MASS", # Modern Applied Statistics
+  "pwr", # Power analysis
+  "FSA", # Fisheries Stock Assessment methods
+  "Kendall", # Kendall correlation and trend tests
+  "corrplot", # Correlation plots
+  "GGally", # ggplot2 extensions for pairs plots
+  "performance", # Model assessment and diagnostics
+  "parameters", # Model parameters extraction
+  "see", # Visualization for easystats
+  "effectsize", # Effect size calculations
+  "pROC", # ROC curve analysis
+  "emmeans" # Estimated marginal means
 )
 
 # Visualization packages
 viz_packages <- c(
-  "ggplot2",        # Grammar of graphics (included in tidyverse but listed for clarity)
-  "patchwork",      # Compose multiple plots
-  "DiagrammeR",     # Create diagrams and flowcharts
-  "plotly",         # Interactive plots
-  "viridis",        # Colorblind-friendly palettes
-  "RColorBrewer",   # Color schemes for maps
-  "pheatmap",       # Pretty heatmaps
-  "ggeffects",      # Marginal effects plots
-  "scales",         # Scale functions for visualization
-  "ggrepel",        # Better text labels for ggplot2
-  "ggridges"        # Ridge plots
+  "ggplot2", # Grammar of graphics
+
+  "patchwork", # Compose multiple ggplots
+  "DiagrammeR", # Diagrams and flowcharts
+  "plotly", # Interactive plots
+
+  "viridis", # Colorblind-friendly palettes
+  "RColorBrewer", # Color schemes
+  "pheatmap", # Pretty heatmaps
+  "ggeffects", # Marginal effects plots
+  "scales", # Scale functions for visualization
+  "ggrepel", # Better text labels
+  "ggridges" # Ridge plots
 )
 
 # Spatial and ecological packages
 eco_packages <- c(
-  "sf",             # Simple features for spatial data
-  "rnaturalearth",  # Natural Earth map data
+  "sf", # Simple features for spatial data
+  "rnaturalearth", # Natural Earth map data
   "rnaturalearthdata", # Natural Earth high resolution data
-  "leaflet",        # Interactive maps
-  "terra",          # Spatial data analysis
-  "vegan"           # Community ecology package
+  "leaflet", # Interactive maps
+  "vegan" # Community ecology package
 )
 
 # Data exploration and quality packages
 exploration_packages <- c(
-  "skimr",          # Quick data summaries
-  "DataExplorer",   # Automated EDA
-  "naniar",         # Missing data visualization
-  "janitor"         # Data cleaning
+  "skimr", # Quick data summaries
+  "DataExplorer", # Automated EDA reports
+  "naniar", # Missing data visualization
+  "janitor" # Data cleaning utilities
 )
 
 # Reproducibility packages
 repro_packages <- c(
-  "renv",           # Package management
-  "here",           # Project-relative paths
-  "usethis"         # Project setup utilities
+  "renv",         # Package management for reproducibility
+  "here"          # Project-relative file paths
+)
+
+# Time series analysis packages
+timeseries_packages <- c(
+  "forecast",     # Time series forecasting
+  "tsibble",      # Time series data structures
+  "feasts"        # Time series features and statistics
+)
+
+# Model interpretation packages
+interpretation_packages <- c(
+  "DALEX",        # Model explainability
+  "DALEXtra"      # tidymodels integration for DALEX
+)
+
+# Spatial analysis packages (additional)
+spatial_advanced_packages <- c(
+  "spdep",        # Spatial dependence analysis
+  "spatialreg"    # Spatial regression models
 )
 
 # Optional advanced packages (uncomment if needed)
-# optional_packages <- c(
+# advanced_packages <- c(
 #   "randomForest",   # Random forest models
 #   "xgboost",        # Gradient boosting
-#   "glmnet",         # Regularized regression
-#   "caret",          # Classification and regression training
+#   "glmnet",         # Regularized regression (ridge, lasso)
+#   "ranger",         # Fast random forests
+#   "terra",          # Modern spatial data analysis
 #   "mlr3"            # Machine learning framework
 # )
+
+# =============================================================================
+# INSTALLATION
+# =============================================================================
 
 # Combine all packages
 all_packages <- c(
@@ -115,52 +148,81 @@ all_packages <- c(
   viz_packages,
   eco_packages,
   exploration_packages,
-  repro_packages
+  repro_packages,
+  timeseries_packages,
+  interpretation_packages,
+  spatial_advanced_packages
 )
 
-# Print summary of packages to be installed
-message("\n=== Package Installation Summary ===")
+# Remove duplicates
+all_packages <- unique(all_packages)
+
+# Print summary
+message("\n", strrep("=", 50))
+message("Package Installation Summary")
+message(strrep("=", 50))
 message("Total packages to check: ", length(all_packages))
-message("=====================================\n")
+message(strrep("=", 50), "\n")
 
 # Install missing packages
 install_if_missing(all_packages)
 
-# Verify critical packages
-critical_packages <- c("tidyverse", "tidymodels", "rstatix", "ggplot2", "knitr")
-missing_critical <- critical_packages[!(critical_packages %in% installed.packages()[,"Package"])]
+# =============================================================================
+# VERIFICATION
+# =============================================================================
 
-if(length(missing_critical) > 0) {
+# Define critical packages that must be installed
+critical_packages <- c(
+  "tidyverse",
+  "tidymodels",
+  "rstatix",
+  "ggplot2",
+  "knitr",
+  "performance"
+)
+
+# Check for missing critical packages
+missing_critical <- critical_packages[!(critical_packages %in% installed.packages()[, "Package"])]
+
+if (length(missing_critical) > 0) {
   warning("Critical packages not installed: ", paste(missing_critical, collapse = ", "))
-  message("\nPlease try installing them manually with: install.packages(c(\"", 
-          paste(missing_critical, collapse = "\", \""), "\"))")
+  message("\nPlease try installing them manually with:")
+  message('install.packages(c("', paste(missing_critical, collapse = '", "'), '"))')
 } else {
   message("\n✓ All critical packages successfully installed!")
 }
 
 # Print package versions for reproducibility
-message("\n=== Core Package Versions ===")
-for(pkg in critical_packages) {
-  if(pkg %in% installed.packages()[,"Package"]) {
-    message(sprintf("%-15s: %s", pkg, packageVersion(pkg)))
+message("\n", strrep("=", 50))
+message("Core Package Versions")
+message(strrep("=", 50))
+for (pkg in critical_packages) {
+  if (pkg %in% installed.packages()[, "Package"]) {
+    message(sprintf("  %-15s %s", pkg, packageVersion(pkg)))
   }
 }
+message(strrep("=", 50))
 
-# Print completion message
-message("\n======================================")
-message("Package installation complete!")
-message("Your environment is now set up for")
+# =============================================================================
+# COMPLETION MESSAGE
+# =============================================================================
+
+message("\n", strrep("=", 50))
+message("Installation Complete!")
+message(strrep("=", 50))
+message("\nYour R environment is now set up for:")
 message("'Data Analysis in Natural Sciences: An R-Based Approach'")
-message("=====================================\n")
+message("\nOnline book: https://jm0535.github.io/dains/")
+message("Repository:  https://github.com/jm0535/dains")
+message(strrep("=", 50), "\n")
 
-# Optional: Initialize renv for reproducibility
-if(interactive()) {
-  response <- readline(prompt = "\nWould you like to initialize renv for reproducibility? (y/n): ")
-  if(tolower(response) == "y") {
-    if("renv" %in% installed.packages()[,"Package"]) {
-      message("Initializing renv...")
-      renv::init()
-      message("\nrenv initialized! Run renv::snapshot() to save package versions.")
-    }
-  }
+# =============================================================================
+# OPTIONAL: Initialize renv for reproducibility
+# =============================================================================
+
+if (interactive()) {
+  message("\nFor reproducible research, consider using renv:")
+  message("  renv::init()      # Initialize renv in your project")
+  message("  renv::snapshot()  # Save current package versions")
+  message("  renv::restore()   # Restore packages from lockfile\n")
 }

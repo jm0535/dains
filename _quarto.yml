@@ -28,7 +28,7 @@ book:
     background: "#1b5e20"
     foreground: light
     logo: "images/Rlogo.jpg"
-    title: "DAINS"
+    title: "Data Analysis in Natural Sciences"
     collapse-below: lg
 
   sidebar:

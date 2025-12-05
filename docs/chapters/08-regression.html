@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
     <img src="../images/Rlogo.jpg" alt="" class="navbar-logo"></a>
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">DAINS</span>
+    <span class="navbar-title">Data Analysis in Natural Sciences</span>
     </a>
   </div>
         <div class="quarto-navbar-tools tools-wide tools-end">
@@ -1083,16 +1083,86 @@ PROFESSIONAL TIP: Regression Analysis Best Practices
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; Multiple Regression Model Summary:
 #&gt; R² = 0.847, Adjusted R² = 0.845
-#&gt; F-statistic: 372.37 on 5 and 336 DF, p-value: &lt;2e-16
-#&gt; # A tibble: 6 × 7
-#&gt;   term              estimate std.error statistic  p.value conf.low conf.high
-#&gt;   &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept)        -4327.     495.       -8.74 1.09e-16  -5301.    -3354. 
-#&gt; 2 bill_length_mm        41.5      7.16      5.79 1.62e- 8     27.4      55.6
-#&gt; 3 bill_depth_mm        140.      19.0       7.40 1.14e-12    103.      178. 
-#&gt; 4 flipper_length_mm     20.2      3.11      6.52 2.61e-10     14.1      26.3
-#&gt; 5 speciesChinstrap    -513.      82.1      -6.25 1.25e- 9   -675.     -352. 
-#&gt; 6 speciesGentoo        935.     141.        6.64 1.26e-10    658.     1212.</code></pre>
+#&gt; F-statistic: 372.37 on 5 and 336 DF, p-value: &lt;2e-16</code></pre>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Multiple Regression Coefficients</caption>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-4327.327</td>
+<td style="text-align: right;">494.866</td>
+<td style="text-align: right;">-8.744</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-5300.752</td>
+<td style="text-align: right;">-3353.902</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bill_length_mm</td>
+<td style="text-align: right;">41.468</td>
+<td style="text-align: right;">7.163</td>
+<td style="text-align: right;">5.789</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">27.379</td>
+<td style="text-align: right;">55.558</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bill_depth_mm</td>
+<td style="text-align: right;">140.328</td>
+<td style="text-align: right;">18.976</td>
+<td style="text-align: right;">7.395</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">103.001</td>
+<td style="text-align: right;">177.655</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">flipper_length_mm</td>
+<td style="text-align: right;">20.241</td>
+<td style="text-align: right;">3.105</td>
+<td style="text-align: right;">6.518</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14.133</td>
+<td style="text-align: right;">26.349</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">speciesChinstrap</td>
+<td style="text-align: right;">-513.247</td>
+<td style="text-align: right;">82.140</td>
+<td style="text-align: right;">-6.248</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-674.819</td>
+<td style="text-align: right;">-351.674</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">speciesGentoo</td>
+<td style="text-align: right;">934.887</td>
+<td style="text-align: right;">140.778</td>
+<td style="text-align: right;">6.641</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">657.971</td>
+<td style="text-align: right;">1211.804</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="cell" data-layout-align="center">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check for multicollinearity</span></span>
@@ -2014,7 +2084,7 @@ Figure&nbsp;8.7: ROC curve for Adelie penguin classification
 </div>
 <div class="cell" data-layout-align="center">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create a visualization of predicted probabilities by species</span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">penguins_pred</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">bill_depth_mm</span>, color <span class="op">=</span> <span class="va">predicted_prob</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">penguins_pred</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">body_mass_g</span>, color <span class="op">=</span> <span class="va">predicted_prob</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Add decision boundary (0.5 probability contour)</span></span>
 <span>  <span class="fu">geom_contour</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>z <span class="op">=</span> <span class="va">predicted_prob</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fl">0.5</span>, color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2029,7 +2099,7 @@ Figure&nbsp;8.7: ROC curve for Adelie penguin classification
 <span>    title <span class="op">=</span> <span class="st">"Classification of Adelie vs. Other Penguins"</span>,</span>
 <span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"AUC = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">auc_value</span>, <span class="fl">3</span><span class="op">)</span>, <span class="st">", Accuracy = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"%"</span><span class="op">)</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Bill Length (mm)"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Bill Depth (mm)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Body Mass (g)"</span>,</span>
 <span>    color <span class="op">=</span> <span class="st">"Probability\nof Adelie"</span>,</span>
 <span>    caption <span class="op">=</span> <span class="st">"Black line: decision boundary (p=0.5), ✗: misclassified points"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
@@ -2091,7 +2161,7 @@ Code Explanation
 <ul>
 <li>Creates a binary outcome variable (Adelie vs.&nbsp;Other species)</li>
 <li>Uses <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> with a binomial family and logit link</li>
-<li>Incorporates multiple predictors (bill length, bill depth, flipper length)</li>
+<li>Incorporates multiple predictors (bill length, body mass)</li>
 </ul>
 </li>
 <li>
@@ -2923,7 +2993,7 @@ Tuning Strategy
 <span><span class="va">binary_test</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">binary_split</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create recipe</span></span>
-<span><span class="va">logistic_recipe</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">is_adelie</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">bill_depth_mm</span> <span class="op">+</span> <span class="va">flipper_length_mm</span>,</span>
+<span><span class="va">logistic_recipe</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">is_adelie</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">body_mass_g</span>,</span>
 <span>                         data <span class="op">=</span> <span class="va">binary_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -3034,7 +3104,7 @@ Figure&nbsp;8.17: ROC curve for tidymodels logistic regression
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">logistic_pred</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">bill_depth_mm</span>,</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">logistic_pred</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">body_mass_g</span>,</span>
 <span>                         color <span class="op">=</span> <span class="va">.pred_Adelie</span>, shape <span class="op">=</span> <span class="va">is_adelie</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_color_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"navy"</span>, mid <span class="op">=</span> <span class="st">"white"</span>, high <span class="op">=</span> <span class="st">"red"</span>,</span>
@@ -3043,7 +3113,7 @@ Figure&nbsp;8.17: ROC curve for tidymodels logistic regression
 <span>    title <span class="op">=</span> <span class="st">"Predicted Probabilities: Adelie Classification"</span>,</span>
 <span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"AUC = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">auc_value</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Bill Length (mm)"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Bill Depth (mm)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Body Mass (g)"</span>,</span>
 <span>    color <span class="op">=</span> <span class="st">"P(Adelie)"</span>,</span>
 <span>    shape <span class="op">=</span> <span class="st">"Actual Species"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
@@ -3916,7 +3986,7 @@ PROFESSIONAL TIP: Best of Both Worlds
 <span id="cb39-257"><a href="#cb39-257" aria-hidden="true" tabindex="-1"></a>          <span class="st">" DF, p-value: "</span>, <span class="fu">format.pval</span>(multi_glance<span class="sc">$</span>p.value, <span class="at">digits =</span> <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>))</span>
 <span id="cb39-258"><a href="#cb39-258" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-259"><a href="#cb39-259" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a simple table of coefficients</span></span>
-<span id="cb39-260"><a href="#cb39-260" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(multi_tidy)</span>
+<span id="cb39-260"><a href="#cb39-260" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(multi_tidy, <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">"Multiple Regression Coefficients"</span>)</span>
 <span id="cb39-261"><a href="#cb39-261" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb39-262"><a href="#cb39-262" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-265"><a href="#cb39-265" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
@@ -4096,7 +4166,7 @@ PROFESSIONAL TIP: Best of Both Worlds
 <span id="cb39-451"><a href="#cb39-451" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Other"</span>, <span class="st">"Adelie"</span>)))</span>
 <span id="cb39-452"><a href="#cb39-452" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-453"><a href="#cb39-453" aria-hidden="true" tabindex="-1"></a><span class="co"># Create logistic regression model</span></span>
-<span id="cb39-454"><a href="#cb39-454" aria-hidden="true" tabindex="-1"></a>log_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(is_adelie <span class="sc">~</span> bill_length_mm <span class="sc">+</span> bill_depth_mm <span class="sc">+</span> flipper_length_mm,</span>
+<span id="cb39-454"><a href="#cb39-454" aria-hidden="true" tabindex="-1"></a>log_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(is_adelie <span class="sc">~</span> bill_length_mm <span class="sc">+</span> body_mass_g,</span>
 <span id="cb39-455"><a href="#cb39-455" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
 <span id="cb39-456"><a href="#cb39-456" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> penguins_binary)</span>
 <span id="cb39-457"><a href="#cb39-457" aria-hidden="true" tabindex="-1"></a></span>
@@ -4187,7 +4257,7 @@ PROFESSIONAL TIP: Best of Both Worlds
 <span id="cb39-554"><a href="#cb39-554" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Classification visualization by species"</span></span>
 <span id="cb39-555"><a href="#cb39-555" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-556"><a href="#cb39-556" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a visualization of predicted probabilities by species</span></span>
-<span id="cb39-557"><a href="#cb39-557" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_pred, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm, <span class="at">color =</span> predicted_prob)) <span class="sc">+</span></span>
+<span id="cb39-557"><a href="#cb39-557" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_pred, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> body_mass_g, <span class="at">color =</span> predicted_prob)) <span class="sc">+</span></span>
 <span id="cb39-558"><a href="#cb39-558" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
 <span id="cb39-559"><a href="#cb39-559" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add decision boundary (0.5 probability contour)</span></span>
 <span id="cb39-560"><a href="#cb39-560" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="fu">aes</span>(<span class="at">z =</span> predicted_prob), <span class="at">breaks =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
@@ -4202,7 +4272,7 @@ PROFESSIONAL TIP: Best of Both Worlds
 <span id="cb39-569"><a href="#cb39-569" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Classification of Adelie vs. Other Penguins"</span>,</span>
 <span id="cb39-570"><a href="#cb39-570" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"AUC = "</span>, <span class="fu">round</span>(auc_value, <span class="dv">3</span>), <span class="st">", Accuracy = "</span>, <span class="fu">round</span>(accuracy <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
 <span id="cb39-571"><a href="#cb39-571" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Bill Length (mm)"</span>,</span>
-<span id="cb39-572"><a href="#cb39-572" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Bill Depth (mm)"</span>,</span>
+<span id="cb39-572"><a href="#cb39-572" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Body Mass (g)"</span>,</span>
 <span id="cb39-573"><a href="#cb39-573" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Probability</span><span class="sc">\n</span><span class="st">of Adelie"</span>,</span>
 <span id="cb39-574"><a href="#cb39-574" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Black line: decision boundary (p=0.5), ✗: misclassified points"</span></span>
 <span id="cb39-575"><a href="#cb39-575" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
@@ -4234,7 +4304,7 @@ PROFESSIONAL TIP: Best of Both Worlds
 <span id="cb39-605"><a href="#cb39-605" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Model Construction**</span>
 <span id="cb39-606"><a href="#cb39-606" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Creates a binary outcome variable (Adelie vs. Other species)</span>
 <span id="cb39-607"><a href="#cb39-607" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Uses <span class="in">`glm()`</span> with a binomial family and logit link</span>
-<span id="cb39-608"><a href="#cb39-608" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Incorporates multiple predictors (bill length, bill depth, flipper length)</span>
+<span id="cb39-608"><a href="#cb39-608" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Incorporates multiple predictors (bill length, body mass)</span>
 <span id="cb39-609"><a href="#cb39-609" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-610"><a href="#cb39-610" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Professional Reporting**</span>
 <span id="cb39-611"><a href="#cb39-611" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Displays odds ratios with confidence intervals for interpretability</span>
@@ -4722,7 +4792,7 @@ PROFESSIONAL TIP: Best of Both Worlds
 <span id="cb39-1123"><a href="#cb39-1123" aria-hidden="true" tabindex="-1"></a>binary_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(binary_split)</span>
 <span id="cb39-1124"><a href="#cb39-1124" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-1125"><a href="#cb39-1125" aria-hidden="true" tabindex="-1"></a><span class="co"># Create recipe</span></span>
-<span id="cb39-1126"><a href="#cb39-1126" aria-hidden="true" tabindex="-1"></a>logistic_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(is_adelie <span class="sc">~</span> bill_length_mm <span class="sc">+</span> bill_depth_mm <span class="sc">+</span> flipper_length_mm,</span>
+<span id="cb39-1126"><a href="#cb39-1126" aria-hidden="true" tabindex="-1"></a>logistic_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(is_adelie <span class="sc">~</span> bill_length_mm <span class="sc">+</span> body_mass_g,</span>
 <span id="cb39-1127"><a href="#cb39-1127" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> binary_train) <span class="sc">%&gt;%</span></span>
 <span id="cb39-1128"><a href="#cb39-1128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
 <span id="cb39-1129"><a href="#cb39-1129" aria-hidden="true" tabindex="-1"></a></span>
@@ -4789,7 +4859,7 @@ PROFESSIONAL TIP: Best of Both Worlds
 <span id="cb39-1198"><a href="#cb39-1198" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-logistic-probs-rf</span></span>
 <span id="cb39-1199"><a href="#cb39-1199" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Predicted probabilities for Adelie classification"</span></span>
 <span id="cb39-1200"><a href="#cb39-1200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-1201"><a href="#cb39-1201" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(logistic_pred, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb39-1201"><a href="#cb39-1201" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(logistic_pred, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> body_mass_g,</span>
 <span id="cb39-1202"><a href="#cb39-1202" aria-hidden="true" tabindex="-1"></a>                         <span class="at">color =</span> .pred_Adelie, <span class="at">shape =</span> is_adelie)) <span class="sc">+</span></span>
 <span id="cb39-1203"><a href="#cb39-1203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
 <span id="cb39-1204"><a href="#cb39-1204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(<span class="at">low =</span> <span class="st">"navy"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">high =</span> <span class="st">"red"</span>,</span>
@@ -4798,7 +4868,7 @@ PROFESSIONAL TIP: Best of Both Worlds
 <span id="cb39-1207"><a href="#cb39-1207" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Predicted Probabilities: Adelie Classification"</span>,</span>
 <span id="cb39-1208"><a href="#cb39-1208" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"AUC = "</span>, <span class="fu">round</span>(auc_value, <span class="dv">3</span>)),</span>
 <span id="cb39-1209"><a href="#cb39-1209" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Bill Length (mm)"</span>,</span>
-<span id="cb39-1210"><a href="#cb39-1210" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Bill Depth (mm)"</span>,</span>
+<span id="cb39-1210"><a href="#cb39-1210" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Body Mass (g)"</span>,</span>
 <span id="cb39-1211"><a href="#cb39-1211" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"P(Adelie)"</span>,</span>
 <span id="cb39-1212"><a href="#cb39-1212" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Actual Species"</span></span>
 <span id="cb39-1213"><a href="#cb39-1213" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>

@@ -443,10 +443,8 @@ When conducting hypothesis tests:
 A paired t-test is used when measurements are taken from the same subjects under different conditions:
 
 ```{r}
-#| label: fig-paired-ttest
-#| fig-cap:
-#|   - "Tree heights before and after treatment"
-#|   - "Distribution of height differences"
+#| label: paired-data-setup
+#| echo: true
 
 # Simulate paired data: tree heights before and after treatment
 set.seed(456)
@@ -461,6 +459,11 @@ paired_data <- data.frame(
   height_after = trees_after,
   difference = trees_after - trees_before
 )
+```
+
+```{r}
+#| label: fig-paired-ttest-scatter
+#| fig-cap: "Tree heights before and after treatment"
 
 # Visualize the paired data
 ggplot(paired_data, aes(x = height_before, y = height_after)) +
@@ -471,13 +474,14 @@ ggplot(paired_data, aes(x = height_before, y = height_after)) +
        y = "Height After (m)") +
   theme_minimal() +
   coord_equal()  # Equal scaling on both axes
+```
+
+```{r}
+#| label: fig-paired-ttest-diff
+#| fig-cap: "Distribution of height differences"
 
 # Perform paired t-test
 paired_result <- t.test(paired_data$height_after, paired_data$height_before, paired = TRUE)
-print(paired_result)
-
-# Alternative formula notation
-# paired_result <- t.test(height_after ~ height_before, data = paired_data, paired = TRUE)
 
 # Visualize the differences
 ggplot(paired_data, aes(x = difference)) +
@@ -488,6 +492,11 @@ ggplot(paired_data, aes(x = difference)) +
        x = "Difference (m)",
        y = "Frequency") +
   theme_minimal()
+```
+
+```{r}
+#| label: tbl-paired-ttest
+#| tbl-cap: "Paired t-Test Results: Tree Heights Before and After Treatment"
 
 # Format the results table
 paired_table <- data.frame(
@@ -507,7 +516,6 @@ paired_table <- data.frame(
 
 # Display the formatted table
 knitr::kable(paired_table,
-             caption = "Paired t-Test Results: Tree Heights Before and After Treatment",
              align = c("l", "r"),
              format = "html") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
@@ -574,16 +582,17 @@ This analysis provides compelling evidence that the treatment had a significant 
 Before applying parametric tests like the t-test, we should check if the data meets the assumption of normality:
 
 ```{r}
-#| label: fig-normality-test
-#| fig-cap: "Q-Q plots for normality assessment"
+#| label: normality-tests
+#| echo: true
 
 # Shapiro-Wilk test for normality
 shapiro_A <- shapiro.test(site_A)
 shapiro_B <- shapiro.test(site_B)
+```
 
-# Print the results
-print(shapiro_A)
-print(shapiro_B)
+```{r}
+#| label: fig-normality-test
+#| fig-cap: "Q-Q plots for normality assessment"
 
 # QQ plots for visual assessment of normality
 par(mfrow = c(1, 2))  # Set up a 1x2 plotting area
@@ -594,6 +603,11 @@ qqline(site_B, col = "red")
 
 # Reset plotting area
 par(mfrow = c(1, 1))
+```
+
+```{r}
+#| label: tbl-normality-test
+#| tbl-cap: "Shapiro-Wilk Test Results for Normality"
 
 # Create a formatted table of normality test results
 normality_table <- data.frame(
@@ -608,7 +622,6 @@ normality_table <- data.frame(
 
 # Display the formatted table
 knitr::kable(normality_table,
-             caption = "Shapiro-Wilk Test Results for Normality",
              align = c("l", "c", "c", "l"),
              format = "html") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
@@ -665,11 +678,16 @@ The combined approach of statistical testing and visual assessment provides a ro
 Confidence intervals provide a range of plausible values for population parameters:
 
 ```{r}
-#| label: fig-confidence-interval
-#| fig-cap: "95% confidence interval for mean tree height"
+#| label: ci-calculation
+#| echo: true
 
 # Calculate 95% confidence interval for mean tree height in Site A
 ci_result <- t.test(site_A)
+```
+
+```{r}
+#| label: tbl-confidence-interval
+#| tbl-cap: "95% Confidence Interval for Mean Tree Height"
 
 # Create a formatted table for the confidence interval
 ci_table <- data.frame(
@@ -681,12 +699,16 @@ ci_table <- data.frame(
 
 # Display the formatted table
 knitr::kable(ci_table,
-             caption = "95% Confidence Interval for Mean Tree Height",
              align = c("l", "c", "c", "c"),
              format = "html") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),
                            full_width = FALSE,
                            position = "center")
+```
+
+```{r}
+#| label: fig-confidence-interval
+#| fig-cap: "95% confidence interval for mean tree height"
 
 # Visualize the confidence interval
 ggplot(data.frame(x = c(ci_result$conf.int[1] - 1, ci_result$conf.int[2] + 1)), aes(x = x)) +

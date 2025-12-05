@@ -26,6 +26,11 @@ Regression analysis is a powerful statistical tool for modeling relationships be
 Linear regression models the relationship between a dependent variable and one or more independent variables:
 
 ```{r}
+#| label: fig-linear-regression-intro
+#| fig-cap:
+#|   - "Relationship between bill length and body mass"
+#|   - "Model diagnostic plots"
+
 # Load required packages
 library(tidyverse)      # For data manipulation
 library(ggplot2)        # For visualization
@@ -193,6 +198,12 @@ When conducting regression analysis:
 Multiple regression extends linear regression to include multiple predictors:
 
 ```{r}
+#| label: fig-multiple-regression
+#| fig-cap:
+#|   - "Multiple regression diagnostic plots"
+#|   - "Predicted vs actual body mass"
+#|   - "Effect of flipper length on body mass"
+
 # Load required packages
 library(broom)
 library(knitr)
@@ -352,6 +363,13 @@ When conducting ecological multiple regression analyses:
 Logistic regression models binary outcomes:
 
 ```{r}
+#| label: fig-logistic-regression
+#| fig-cap:
+#|   - "ROC curve for Adelie penguin classification"
+#|   - "Classification visualization by species"
+#|   - "Marginal effects on probability"
+#|   - "DHARMa residual diagnostics"
+
 # Prepare data for logistic regression by creating a binary outcome
 # We'll predict whether a penguin is Adelie species or not
 penguins_binary <- penguins_clean %>%
@@ -551,6 +569,8 @@ The tidymodels ecosystem provides a modern, unified approach to statistical mode
 ### Setting Up Tidymodels
 
 ```{r}
+#| label: tidymodels-setup
+
 # Load tidymodels packages
 library(tidymodels)  # Meta-package loading parsnip, recipes, rsample, tune, workflows, yardstick
 library(tidyverse)    # For data manipulation
@@ -583,6 +603,9 @@ The tidymodels framework follows key principles:
 ### Linear Regression with Tidymodels
 
 ```{r}
+#| label: fig-tidymodels-linear
+#| fig-cap: "Tidymodels predicted vs actual body mass"
+
 # Step 1: Split data into training and testing sets
 penguin_split <- initial_split(penguins, prop = 0.75, strata = species)
 penguin_train <- training(penguin_split)
@@ -686,6 +709,11 @@ The test set RMSE and R² provide unbiased estimates of model performance on new
 ### Cross-Validation with Tidymodels
 
 ```{r}
+#| label: fig-cross-validation
+#| fig-cap:
+#|   - "Cross-validation performance distribution"
+#|   - "Cross-validation predictions"
+
 # Create cross-validation folds
 set.seed(456)
 penguin_folds <- vfold_cv(penguin_train, v = 10, strata = species)
@@ -751,6 +779,9 @@ Cross-validation provides:
 ### Model Comparison with Tidymodels
 
 ```{r}
+#| label: fig-model-comparison
+#| fig-cap: "Model performance comparison"
+
 # Define multiple model specifications
 lm_spec <- linear_reg() %>%
   set_engine("lm") %>%
@@ -818,6 +849,9 @@ model_comparison %>%
 Optimizing model parameters is crucial for machine learning models like Random Forest.
 
 ```{r}
+#| label: fig-hyperparameter-tuning
+#| fig-cap: "Hyperparameter tuning results"
+
 # Define a model specification with tunable parameters
 rf_tune_spec <- rand_forest(
   trees = 1000,
@@ -908,6 +942,11 @@ In the next chapter, we will explore [Advanced Modeling Techniques](09-advanced-
 ### Logistic Regression with Tidymodels
 
 ```{r}
+#| label: fig-tidymodels-logistic
+#| fig-cap:
+#|   - "Confusion matrix for Adelie classification"
+#|   - "ROC curve for tidymodels logistic regression"
+
 # Prepare binary classification data
 penguins_binary <- penguins %>%
   mutate(is_adelie = factor(ifelse(species == "Adelie", "Adelie", "Other"),

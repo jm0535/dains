@@ -36,6 +36,8 @@ R has several basic data types:
 - **Date/Time**: Temporal data (e.g., sampling dates, observation times, or seasonal markers)
 
 ```{r}
+#| label: data-types-examples
+
 # Examples of different data types
 numeric_example <- 25.4  # Temperature in Celsius
 character_example <- "Adelie"  # Penguin species
@@ -128,6 +130,8 @@ Proper data management is critical for reproducible research in natural sciences
 R has several data structures for organizing information:
 
 ```{r}
+#| label: data-structures
+
 # Load real datasets
 library(readr)
 penguins <- read_csv("../data/environmental/climate_data.csv")
@@ -220,6 +224,8 @@ The output reveals the structure and properties of different R data types:
 R provides several functions for importing data from different file formats:
 
 ```{r}
+#| label: import-data
+
 # CSV files - Palmer Penguins dataset
 penguins_csv <- read.csv("../data/environmental/climate_data.csv")
 head(penguins_csv, 3)
@@ -285,6 +291,8 @@ The output reveals differences between import methods and gives insight into the
 Let's explore some of the real-world datasets we have available:
 
 ```{r}
+#| label: explore-datasets
+
 # Palmer Penguins dataset
 penguins <- read_csv("../data/environmental/climate_data.csv")
 glimpse(penguins)
@@ -305,6 +313,8 @@ glimpse(crops)
 Missing values are common in scientific datasets and need to be addressed before analysis:
 
 ```{r}
+#| label: handle-missing-values
+
 # Check for missing values in the penguins dataset
 sum(is.na(penguins))
 colSums(is.na(penguins))
@@ -400,6 +410,8 @@ When dealing with missing values in ecological datasets:
 Often, you'll need to transform variables to meet statistical assumptions or for better visualization:
 
 ```{r}
+#| label: data-transformation
+
 # Load the biodiversity dataset
 biodiversity <- read_csv("../data/ecology/biodiversity.csv")
 glimpse(biodiversity)
@@ -431,6 +443,8 @@ head(select(penguins_std, species, bill_length_mm, bill_length_std,
 Creating new variables from existing ones is a common data preparation task:
 
 ```{r}
+#| label: create-variables
+
 # Create new variables in the penguins dataset
 penguins_derived <- penguins %>%
   filter(!is.na(bill_length_mm) & !is.na(bill_depth_mm)) %>%
@@ -453,6 +467,8 @@ head(select(penguins_derived, species, bill_length_mm, bill_depth_mm,
 The dplyr package provides a powerful grammar for data manipulation:
 
 ```{r}
+#| label: dplyr-manipulation
+
 library(dplyr)
 
 # Filter rows - only Adelie penguins
@@ -505,6 +521,12 @@ print(crop_summary)
 Before diving into formal statistical tests, it's essential to explore your data:
 
 ```{r}
+#| label: fig-eda-plots
+#| fig-cap:
+#|   - "Distribution of penguin bill lengths"
+#|   - "Body mass distribution by penguin species"
+#|   - "Relationship between bill length and flipper length"
+
 # Basic summary statistics
 summary(penguins$bill_length_mm)
 summary(penguins$flipper_length_mm)

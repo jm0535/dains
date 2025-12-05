@@ -30,8 +30,10 @@ While machine learning models like Random Forest can achieve high predictive acc
 ### Variable Importance
 
 ```{r}
+#| label: fig-variable-importance
 #| message: false
 #| warning: false
+#| fig-cap: "Variable importance for body mass prediction"
 
 # Load packages for model interpretation
 library(DALEX)
@@ -129,6 +131,11 @@ This code demonstrates model-agnostic variable importance:
 Partial dependence plots show how predictions change as a single variable varies, while averaging over all other variables.
 
 ```{r}
+#| label: fig-partial-dependence
+#| fig-cap:
+#|   - "Partial dependence: Flipper length"
+#|   - "Partial dependence: Bill length"
+
 # Create partial dependence profiles for key variables
 pdp_flipper <- model_profile(
   explainer_rf,
@@ -194,6 +201,11 @@ Partial dependence plots reveal important ecological relationships:
 While partial dependence shows average effects, ICE plots show how predictions change for individual observations.
 
 ```{r}
+#| label: fig-ice-plots
+#| fig-cap:
+#|   - "Individual conditional expectation curves"
+#|   - "ICE plots with partial dependence overlay"
+
 # Create ICE plots for flipper length
 ice_flipper <- model_profile(
   explainer_rf,
@@ -254,6 +266,11 @@ When interpreting machine learning models for ecological applications:
 For specific conservation decisions, we often need to understand why the model made a particular prediction.
 
 ```{r}
+#| label: fig-individual-predictions
+#| fig-cap:
+#|   - "Break-down plot for individual prediction"
+#|   - "SHAP values for individual prediction"
+
 # Select an interesting observation to explain
 observation_to_explain <- penguin_test[1, ]
 
@@ -350,8 +367,12 @@ Time series data—observations collected sequentially over time—are common in
 ### Understanding Temporal Autocorrelation
 
 ```{r}
+#| label: fig-time-series-intro
 #| warning: false
 #| message: false
+#| fig-cap:
+#|   - "Simulated population time series"
+#|   - "Autocorrelation and partial autocorrelation functions"
 
 # Load packages for time series analysis
 library(forecast)
@@ -420,6 +441,11 @@ This code introduces time series concepts for ecological data:
 ### Time Series Decomposition
 
 ```{r}
+#| label: fig-time-series-decomposition
+#| fig-cap:
+#|   - "Time series decomposition"
+#|   - "Decomposition components visualization"
+
 # Convert to ts object for decomposition
 pop_ts <- ts(pop_ts_data$population, start = 1990, frequency = 1)
 
@@ -493,6 +519,9 @@ Time series decomposition reveals the structure of temporal data:
 ### Forecasting with ARIMA Models
 
 ```{r}
+#| label: fig-arima-forecast
+#| fig-cap: "Population forecast with ARIMA model"
+
 # Fit an ARIMA model
 # auto.arima selects the best model automatically
 arima_model <- auto.arima(pop_ts)
@@ -559,8 +588,10 @@ When forecasting ecological time series:
 ### Ecological Example: Phenology Trends
 
 ```{r}
+#| label: fig-phenology-trends
 #| warning: false
 #| message: false
+#| fig-cap: "Phenological shift: First flowering date over time"
 
 library(lmtest)  # For dwtest()
 

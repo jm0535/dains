@@ -55,6 +55,9 @@ To ensure your exploratory data analysis is reproducible and transparent:
 Descriptive statistics provide a concise summary of your data's central tendency, dispersion, and shape:
 
 ```{r}
+#| label: fig-descriptive-stats
+#| fig-cap: "Distribution of global wheat yields"
+
 # Load necessary libraries
 library(tidyverse)
 
@@ -140,6 +143,8 @@ The summary statistics reveal several key insights about global wheat yields:
 Frequency tables are useful for understanding the distribution of categorical variables:
 
 ```{r}
+#| label: frequency-tables
+
 # Let's create a categorical variable based on wheat yield levels
 crop_yields_with_categories <- crop_yields %>%
   filter(!is.na(`Wheat (tonnes per hectare)`)) %>%
@@ -198,6 +203,11 @@ The frequency tables reveal important patterns in wheat yield categories:
 Box plots are excellent for comparing distributions across groups:
 
 ```{r}
+#| label: fig-boxplots-summary
+#| fig-cap:
+#|   - "Wheat yields by country"
+#|   - "Enhanced boxplot with data points"
+
 # Select a few major countries for comparison
 major_wheat_producers <- c("United States", "China", "India", "Russia", "France", "Australia")
 
@@ -262,6 +272,9 @@ The box plots reveal important comparisons between major wheat-producing countri
 Bar charts are useful for visualizing categorical data:
 
 ```{r}
+#| label: fig-barchart-yields
+#| fig-cap: "Top 10 countries by average wheat yield (2010-present)"
+
 # Calculate average wheat yield by country for the last decade
 recent_avg_yields <- crop_yields %>%
   filter(Year >= 2010, !is.na(`Wheat (tonnes per hectare)`)) %>%
@@ -312,6 +325,12 @@ The bar chart reveals the top 10 countries by average wheat yield:
 Histograms and density plots help visualize the distribution of continuous variables:
 
 ```{r}
+#| label: fig-distributions
+#| fig-cap:
+#|   - "Histogram of wheat yields"
+#|   - "Density plot of wheat yields"
+#|   - "Combined histogram with density overlay"
+
 # Histogram of wheat yields
 ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
   geom_histogram(bins = 30, fill = "darkgreen", color = "white", na.rm = TRUE) +
@@ -377,6 +396,11 @@ These distribution visualizations reveal key patterns in wheat yields:
 Box plots are excellent for comparing distributions across groups:
 
 ```{r}
+#| label: fig-boxplots-visualizing
+#| fig-cap:
+#|   - "Country comparison boxplot"
+#|   - "Boxplot with jittered observations"
+
 # Select a few major countries for comparison
 major_wheat_producers <- c("United States", "China", "India", "Russia", "France", "Australia")
 
@@ -441,6 +465,9 @@ The box plots reveal important comparisons between major wheat-producing countri
 Bar charts are useful for visualizing categorical data:
 
 ```{r}
+#| label: fig-barchart-distributions
+#| fig-cap: "Top 10 countries by average wheat yield"
+
 # Calculate average wheat yield by country for the last decade
 recent_avg_yields <- crop_yields %>%
   filter(Year >= 2010, !is.na(`Wheat (tonnes per hectare)`)) %>%
@@ -491,6 +518,11 @@ The bar chart reveals the top 10 countries by average wheat yield:
 Scatter plots help visualize relationships between two continuous variables:
 
 ```{r}
+#| label: fig-scatter-relationships
+#| fig-cap:
+#|   - "Relationship between wheat and rice yields"
+#|   - "Wheat vs rice yields by continent"
+
 # Let's compare wheat and rice yields
 crop_yields_filtered <- crop_yields %>%
   filter(!is.na(`Wheat (tonnes per hectare)`), !is.na(`Rice (tonnes per hectare)`)) %>%
@@ -567,6 +599,9 @@ The scatter plots reveal the relationship between wheat and rice yields:
 Correlation analysis quantifies the strength and direction of relationships between variables:
 
 ```{r}
+#| label: fig-correlation-matrix
+#| fig-cap: "Correlation matrix of crop yields"
+
 # Select numeric columns for correlation analysis
 crop_numeric <- crop_yields %>%
   select(`Wheat (tonnes per hectare)`, `Rice (tonnes per hectare)`, `Maize (tonnes per hectare)`, `Soybeans (tonnes per hectare)`, `Potatoes (tonnes per hectare)`, `Beans (tonnes per hectare)`) %>%
@@ -611,6 +646,11 @@ The correlation matrix reveals the strength and direction of relationships betwe
 Pair plots provide a comprehensive view of relationships between multiple variables:
 
 ```{r}
+#| label: fig-pair-plots
+#| fig-cap:
+#|   - "Basic pair plot of crop yields"
+#|   - "Enhanced pair plot with GGally"
+
 # Basic pair plot
 pairs(crop_numeric, pch = 19, col = "darkgreen")
 
@@ -649,6 +689,9 @@ The pair plots reveal the relationships between multiple variables:
 Box plots can help identify potential outliers:
 
 ```{r}
+#| label: fig-outlier-detection
+#| fig-cap: "Box plot showing potential outliers in wheat yields"
+
 # Box plot to identify outliers in wheat yield
 ggplot(crop_yields, aes(y = `Wheat (tonnes per hectare)`)) +
   geom_boxplot(fill = "darkgreen", alpha = 0.7, na.rm = TRUE) +
@@ -700,6 +743,8 @@ The box plot and outlier detection reveal potential outliers:
 Z-scores can also help identify outliers:
 
 ```{r}
+#| label: zscore-outliers
+
 # Calculate z-scores for wheat yields
 wheat_z_scores <- crop_yields %>%
   filter(!is.na(`Wheat (tonnes per hectare)`)) %>%
@@ -744,6 +789,9 @@ The z-scores reveal extreme values:
 Agricultural data often contains important temporal patterns:
 
 ```{r}
+#| label: fig-time-series
+#| fig-cap: "Wheat yield trends over time for major producers"
+
 # Select a few countries for time series analysis
 countries_for_ts <- c("United States", "China", "India", "France")
 
@@ -789,6 +837,11 @@ The time series plot reveals temporal patterns:
 Understanding patterns of missing data is crucial:
 
 ```{r}
+#| label: fig-missing-data
+#| fig-cap:
+#|   - "Missing values by variable"
+#|   - "Missing data pattern visualization"
+
 # Check for missing values in each column
 colSums(is.na(crop_yields))
 
@@ -862,6 +915,9 @@ These techniques provide a foundation for understanding your data before proceed
 6. Perform the same exploratory analyses in R for the spatial dataset in `docs/data/geography/spatial.csv`.
 
 ```{r}
+#| label: fig-conservation-status
+#| fig-cap: "Conservation status of plant species by region"
+
 # Load required packages
 library(tidyverse)
 library(ggplot2)

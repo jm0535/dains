@@ -55,7 +55,9 @@ Conservation science relies on various types of data:
 ### Data Sources
 
 ```{r}
+#| label: tbl-data-sources
 #| echo: false
+#| tbl-cap: "Common Data Sources in Conservation Science"
 library(knitr)
 
 data_sources <- data.frame(
@@ -93,9 +95,14 @@ Species distribution models (SDMs) predict where species are likely to occur bas
 ### Example: Simple Species Distribution Model
 
 ```{r}
+#| label: fig-sdm-analysis
 #| eval: true
 #| warning: false
 #| message: false
+#| fig-cap:
+#|   - "Species presence/absence in environmental space"
+#|   - "Predicted probability surface from SDM"
+#|   - "SDM predictions with observed presence points"
 
 # Load required packages
 library(ggplot2)
@@ -269,9 +276,11 @@ Spatial autocorrelation—the tendency for nearby locations to have similar valu
 ### Understanding Spatial Autocorrelation
 
 ```{r}
+#| label: fig-spatial-autocorrelation
 #| eval: true
 #| warning: false
 #| message: false
+#| fig-cap: "Spatially autocorrelated species abundance across sampling sites"
 
 # Load required packages
 library(spdep)
@@ -358,9 +367,11 @@ This code demonstrates spatial autocorrelation in ecological data:
 ### Testing for Spatial Autocorrelation
 
 ```{r}
+#| label: fig-moran-correlogram
 #| eval: true
 #| warning: false
 #| message: false
+#| fig-cap: "Spatial correlogram showing Moran's I at different distance classes"
 
 # Convert to sf object for spatial analysis
 spatial_sf <- st_as_sf(spatial_data, coords = c("x", "y"))
@@ -452,9 +463,11 @@ The spatial autocorrelation analysis reveals critical information for ecological
 ### Accounting for Spatial Autocorrelation in Models
 
 ```{r}
+#| label: fig-spatial-residuals
 #| eval: true
 #| warning: false
 #| message: false
+#| fig-cap: "Comparison of residual patterns from naive vs spatial lag models"
 
 # Fit a naive model (ignoring spatial autocorrelation)
 naive_model <- lm(abundance ~ environment, data = spatial_data)
@@ -555,6 +568,11 @@ Analyzing population trends is crucial for conservation planning and evaluating 
 ### Example: Linear Mixed Models for Population Trends
 
 ```{r}
+#| label: fig-population-trends
+#| fig-cap:
+#|   - "Population trajectories across monitoring sites"
+#|   - "Observed vs predicted population sizes from mixed model"
+
 # Simulate population monitoring data
 set.seed(456)
 n_sites <- 10
@@ -708,9 +726,15 @@ Habitat fragmentation is a major threat to biodiversity. Landscape metrics help 
 ### Example: Calculating Landscape Metrics
 
 ```{r}
+#| label: fig-landscape-fragmentation
 #| eval: true
 #| warning: false
 #| message: false
+#| fig-cap:
+#|   - "Simulated landscape with four land cover classes"
+#|   - "Percentage of landscape by land cover class"
+#|   - "Number of patches by land cover class"
+#|   - "Edge density by land cover class"
 
 # Load required packages
 library(terra)
@@ -856,6 +880,11 @@ Evaluating the effectiveness of protected areas is essential for conservation pl
 ### Example: Before-After-Control-Impact (BACI) Analysis
 
 ```{r}
+#| label: fig-baci-analysis
+#| fig-cap:
+#|   - "Biodiversity trends in protected vs unprotected sites"
+#|   - "BACI interaction plot showing protection effect"
+
 # Simulate protected area effectiveness data
 set.seed(789)
 n_sites <- 20
@@ -988,6 +1017,11 @@ Conservation resources are limited, so prioritizing threats and actions is essen
 ### Example: Multi-Criteria Decision Analysis
 
 ```{r}
+#| label: fig-threat-assessment
+#| fig-cap:
+#|   - "Threat prioritization based on composite magnitude score"
+#|   - "Component breakdown of threat assessment criteria"
+
 library(tidyr)  # For pivot_longer
 
 # Create a threat assessment dataset
@@ -1112,6 +1146,11 @@ Systematic conservation planning helps identify priority areas for conservation.
 ### Example: Complementarity Analysis
 
 ```{r}
+#| label: fig-conservation-planning
+#| fig-cap:
+#|   - "Species presence matrix across candidate sites"
+#|   - "Priority sites identified through complementarity analysis"
+
 # Create a species-by-site matrix
 set.seed(101)
 n_sites <- 10
@@ -1282,6 +1321,11 @@ Climate change poses significant threats to biodiversity. Vulnerability assessme
 ### Example: Trait-Based Vulnerability Analysis
 
 ```{r}
+#| label: fig-climate-vulnerability
+#| fig-cap:
+#|   - "Climate change vulnerability ranking by species"
+#|   - "Component breakdown of vulnerability assessment"
+
 # Create a species trait dataset
 species <- paste0("Species", 1:12)
 dispersal_ability <- c(1, 3, 2, 1, 3, 2, 1, 2, 3, 1, 2, 3)  # 1=low, 2=medium, 3=high
@@ -1413,6 +1457,9 @@ Involving local communities in conservation monitoring can improve data collecti
 ### Example: Analyzing Community Monitoring Data
 
 ```{r}
+#| label: fig-community-monitoring
+#| fig-cap: "Poaching incidents reported by community monitors over time"
+
 # Simulate community monitoring data
 set.seed(202)
 n_villages <- 5
@@ -1551,8 +1598,13 @@ Understanding pollution patterns is crucial for environmental conservation. Here
 ### Example: Analyzing Plastic Pollution Data
 
 ```{r}
+#| label: fig-plastic-pollution
 #| warning: false
 #| message: false
+#| fig-cap:
+#|   - "Plastic pollution by country"
+#|   - "Distribution of plastic types in pollution"
+#|   - "Top corporate contributors to plastic pollution"
 
 library(tidyverse)
 
@@ -1653,8 +1705,13 @@ Climate change is increasing the frequency and intensity of extreme weather even
 ### Example: Analyzing Storm Data
 
 ```{r}
+#| label: fig-storm-analysis
 #| warning: false
 #| message: false
+#| fig-cap:
+#|   - "Annual storm frequency trend (1975-2020)"
+#|   - "Storm observations by hurricane category"
+#|   - "Spatial distribution of storm activity"
 
 # Load the storm/hurricane dataset
 storms <- read_csv("../data/epidemiology/disease_data.csv", show_col_types = FALSE)

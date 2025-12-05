@@ -28,6 +28,9 @@ Building on the visualization techniques covered in Chapter 6, this chapter expl
 The ggplot2 package allows extensive customization of plot appearance:
 
 ```{r}
+#| label: fig-custom-theme
+#| fig-cap: "Customized ggplot2 scatter plot with professional theme"
+
 # Load necessary packages
 library(ggplot2)
 library(dplyr)
@@ -139,6 +142,14 @@ In ecological research, you might create different custom themes for field guide
 Choosing appropriate color palettes is crucial for effective visualization:
 
 ```{r}
+#| label: fig-color-palettes
+#| fig-cap:
+#|   - "ColorBrewer palettes for ecological data"
+#|   - "Viridis palette display"
+#|   - "Scatter plot with Set1 palette"
+#|   - "Scatter plot with Viridis palette"
+#|   - "Continuous color scale example"
+
 # Load packages for color palettes
 library(RColorBrewer)
 library(viridis)
@@ -240,6 +251,9 @@ By thoughtfully selecting color palettes, you can enhance the interpretability o
 Combining multiple plots can help compare different aspects of your data:
 
 ```{r}
+#| label: fig-multi-panel
+#| fig-cap: "Multi-panel figure combining boxplots and density plots"
+
 library(patchwork)
 
 # Create individual plots
@@ -289,7 +303,11 @@ Interactive visualizations allow users to explore data in more depth than static
 
 The `plotly` package allows you to convert ggplot2 graphics to interactive versions:
 
-```{r interactive-plotly, fig.width=8, fig.height=6, fig.cap="Interactive scatter plot of iris dataset. In the HTML version, you can hover over points to see details, zoom, and pan."}
+```{r}
+#| label: fig-interactive-plotly
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Interactive scatter plot of iris dataset"
 library(plotly)
 
 # Check if we're in HTML output mode
@@ -402,7 +420,11 @@ When using interactive plots in scientific communication:
 
 For spatial ecological data, interactive maps can be particularly useful:
 
-```{r interactive-map, fig.width=8, fig.height=6, fig.cap="Ecological study sites across different habitat types. In the HTML version, this map is interactive and allows zooming, panning, and clicking on markers for details."}
+```{r}
+#| label: fig-interactive-map
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Ecological study sites across different habitat types"
 library(leaflet)
 library(ggplot2)
 library(knitr)

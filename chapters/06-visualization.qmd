@@ -91,7 +91,11 @@ Visualizations not only enhance the understanding of natural phenomena but also 
 
 Let's create a bar chart using the plant biodiversity dataset:
 
-```{r bar-chart, fig.width=8, fig.height=6, dpi=300, fig.cap="Bar chart showing the conservation status of plant species across different regions. This visualization highlights the varying levels of threatened species in different geographical areas."}
+```{r}
+#| label: fig-bar-chart
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Bar chart showing the conservation status of plant species across different regions"
 # Load required packages
 library(tidyverse)
 library(ggplot2)
@@ -204,7 +208,11 @@ When creating scientific visualizations:
 
 Let's create a scatter plot to examine relationships between variables in our plant dataset:
 
-```{r scatter-plot, fig.width=8, fig.height=6, dpi=300, fig.cap="Scatter plot showing the relationship between threat scores and year last seen for plant species. Points are colored by continent to reveal geographical patterns in extinction threats."}
+```{r}
+#| label: fig-scatter-plot
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Scatter plot showing relationship between threat scores and year last seen"
 # Load necessary data
 library(tidyverse)
 
@@ -313,7 +321,11 @@ Scatter plots are particularly valuable in ecological research for examining rel
 
 Box plots are excellent for comparing distributions across groups:
 
-```{r box-plot, fig.width=8, fig.height=6, dpi=300, fig.cap="Box plot comparing threat scores across different continents. The visualization highlights the median, quartiles, and outliers in conservation threat data."}
+```{r}
+#| label: fig-box-plot
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Box plot comparing threat scores across different continents"
 # Create a publication-quality box plot
 ggplot(biodiversity_with_scores, aes(x = reorder(continent, threat_score, FUN = median, na.rm = TRUE),
                           y = threat_score,
@@ -383,7 +395,11 @@ Box plots are particularly useful in ecological research for comparing distribut
 
 Heatmaps are powerful for visualizing complex relationships in multivariate data:
 
-```{r heatmap, fig.width=9, fig.height=7, dpi=300, fig.cap="Heatmap visualizing the correlation matrix between different threat types. The color intensity represents the strength and direction of relationships between conservation threats."}
+```{r}
+#| label: fig-heatmap
+#| fig-width: 9
+#| fig-height: 7
+#| fig-cap: "Heatmap visualizing the correlation matrix between different threat types"
 # Create a simulated biodiversity dataset
 set.seed(123)  # For reproducibility
 
@@ -533,7 +549,11 @@ Heatmaps are particularly valuable in ecological research for visualizing comple
 
 Time series plots are essential for visualizing trends over time:
 
-```{r time-series, fig.width=9, fig.height=6, dpi=300, fig.cap="Time series plot tracking agricultural trends over time for major producers. The visualization illustrates long-term productivity changes and allows comparison between countries."}
+```{r}
+#| label: fig-time-series
+#| fig-width: 9
+#| fig-height: 6
+#| fig-cap: "Time series plot tracking agricultural trends over time for major producers"
 # Create a time series plot using the crop yields data
 # First, read the dataset
 crop_yields <- read.csv("../data/agriculture/crop_yields.csv")

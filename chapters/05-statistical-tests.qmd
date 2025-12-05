@@ -4,7 +4,9 @@ prefer-html: true
 
 # Common Statistical Tests
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
 # Load required packages for data analysis and visualization
 library(tidyverse)    # Core tidyverse (includes ggplot2, dplyr, tidyr, readr, etc.)
 library(rstatix)      # Pipe-friendly statistical tests
@@ -67,6 +69,7 @@ Selecting the appropriate statistical test depends on several factors:
 ### Decision Tree for Common Tests
 
 ```{r}
+#| label: fig-decision-tree
 #| echo: false
 #| fig-cap: "Decision tree for selecting appropriate statistical tests"
 #| eval: false
@@ -236,6 +239,9 @@ Non-parametric tests make fewer assumptions about the population distribution an
 Before applying a parametric test, it's essential to check if your data meets the necessary assumptions. Let's use our crop yield dataset to demonstrate:
 
 ```{r}
+#| label: fig-normality-check
+#| fig-cap: "Normality assessment for wheat yields"
+
 # Load necessary libraries
 library(tidyverse)
 
@@ -330,6 +336,9 @@ The normality assessment reveals a right-skewed distribution of wheat yields, co
 Used to compare means between two independent groups. Let's compare wheat yields between two time periods:
 
 ```{r}
+#| label: fig-independent-ttest
+#| fig-cap: "Wheat yields by time period"
+
 # Create two groups: early period (before 2000) and recent period (2000 onwards)
 crop_yields_grouped <- crop_yields %>%
   filter(!is.na(`Wheat (tonnes per hectare)`) & Year >= 1960) %>%
@@ -412,6 +421,9 @@ This increase of approximately 35% over time likely reflects advancements in agr
 Used to compare means between two related groups. Let's compare wheat and rice yields for the same countries and years:
 
 ```{r}
+#| label: fig-paired-samples
+#| fig-cap: "Comparison of wheat and rice yields"
+
 # Prepare data for paired t-test
 paired_data <- crop_yields %>%
   filter(!is.na(`Wheat (tonnes per hectare)`) & !is.na(`Rice (tonnes per hectare)`)) %>%
@@ -510,6 +522,9 @@ This difference is consistent with biological and agricultural knowledge - rice 
 ANOVA is used to compare means among three or more independent groups. Let's compare crop yields across different continents:
 
 ```{r}
+#| label: fig-anova-continents
+#| fig-cap: "Wheat yields by continent (2000-present)"
+
 # Create a mapping of countries to continents (simplified for demonstration)
 continent_mapping <- tibble(
   Entity = c("United States", "Canada", "Mexico",
@@ -644,6 +659,8 @@ Note that for unbalanced designs (unequal sample sizes across groups), Type II A
 The Mann-Whitney U test (also called Wilcoxon rank-sum test) is a non-parametric alternative to the independent samples t-test:
 
 ```{r}
+#| label: mann-whitney-test
+
 # Using the same time period groups as before
 wilcox_test <- wilcox.test(`Wheat (tonnes per hectare)` ~ period, data = crop_yields_grouped)
 
@@ -671,6 +688,8 @@ knitr::kable(wilcox_table,
 The Kruskal-Wallis test is a non-parametric alternative to ANOVA:
 
 ```{r}
+#| label: kruskal-wallis-test
+
 # Using the same continental data as before
 kruskal_result <- kruskal.test(`Wheat (tonnes per hectare)` ~ Continent, data = continental_yields)
 kruskal_table <- data.frame(
@@ -756,6 +775,9 @@ if(requireNamespace("dunn.test", quietly = TRUE)) {
 Pearson correlation measures the linear relationship between two continuous variables:
 
 ```{r}
+#| label: fig-pearson-correlation
+#| fig-cap: "Relationship between wheat and maize yields"
+
 # Examine correlation between wheat and maize yields
 crop_correlation <- crop_yields %>%
   filter(!is.na(`Wheat (tonnes per hectare)`) & !is.na(`Maize (tonnes per hectare)`)) %>%
@@ -823,6 +845,8 @@ Understanding these correlations can help in developing agricultural policies th
 Spearman correlation is a non-parametric measure of rank correlation:
 
 ```{r}
+#| label: spearman-correlation
+
 # Calculate Spearman correlation
 spearman_result <- cor.test(crop_correlation$`Wheat (tonnes per hectare)`, crop_correlation$`Maize (tonnes per hectare)`, method = "spearman")
 
@@ -894,6 +918,11 @@ The similarity between Pearson and Spearman results increases confidence in the 
 Linear regression models the relationship between a dependent variable and one or more independent variables:
 
 ```{r}
+#| label: fig-linear-regression
+#| fig-cap:
+#|   - "Wheat yield trends in the United States"
+#|   - "Regression diagnostic plots"
+
 # Create a dataset with year as predictor for wheat yields
 time_series_data <- crop_yields %>%
   filter(Entity == "United States" & !is.na(`Wheat (tonnes per hectare)`)) %>%
@@ -985,6 +1014,8 @@ This relationship has practical implications for agricultural planning and food 
 Multiple regression includes more than one predictor variable:
 
 ```{r}
+#| label: multiple-regression
+
 # Create a dataset with multiple predictors
 multi_crop_data <- crop_yields %>%
   filter(!is.na(`Wheat (tonnes per hectare)`) & !is.na(`Rice (tonnes per hectare)`) & !is.na(`Maize (tonnes per hectare)`)) %>%
@@ -1075,6 +1106,8 @@ For ecological and agricultural research, this type of analysis helps disentangl
 The Chi-Square test examines the association between categorical variables. Let's use our biodiversity dataset:
 
 ```{r}
+#| label: chi-square-test
+
 # Load the biodiversity dataset
 plants <- read_csv("../data/ecology/biodiversity.csv")
 
@@ -1217,6 +1250,9 @@ In ecological and agricultural research, this categorical approach can be valuab
 Time series analysis examines data collected over time to identify patterns, trends, and seasonal effects:
 
 ```{r}
+#| label: fig-time-series-analysis
+#| fig-cap: "US wheat yields over time with trend line"
+
 # Create a time series of wheat yields for a specific country
 us_wheat <- crop_yields %>%
   filter(Entity == "United States" & !is.na(`Wheat (tonnes per hectare)`)) %>%
@@ -1276,6 +1312,8 @@ For policy planning and food security assessments, understanding these temporal 
 The Mann-Kendall test is a non-parametric test for identifying trends in time series data:
 
 ```{r}
+#| label: mann-kendall-test
+
 # Perform Mann-Kendall trend test
 if(requireNamespace("Kendall", quietly = TRUE)) {
   library(Kendall)

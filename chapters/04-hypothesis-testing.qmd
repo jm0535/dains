@@ -21,7 +21,9 @@ By the end of this chapter, you will be able to:
 
 Hypothesis testing is a fundamental statistical approach used to make inferences about populations based on sample data. In ecological and forestry research, hypothesis testing helps researchers determine whether observed patterns or differences are statistically significant or merely due to random chance.
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
 # Load required packages for data analysis and visualization
 library(tidyverse)
 library(ggplot2)
@@ -105,6 +107,9 @@ To reduce Type II errors and increase the power of your study:
 ## Example: Two-Sample t-test
 
 ```{r}
+#| label: fig-two-sample-ttest
+#| fig-cap: "Tree heights comparison between two sites"
+
 # Simulate tree height data for two sites
 set.seed(123)
 site_A <- rnorm(30, mean = 25, sd = 5)  # 30 trees with mean height 25m
@@ -216,6 +221,9 @@ This analysis provides strong evidence that tree heights differ between the two 
 Let's apply the t-test to analyze real data. We'll use our marine dataset to compare fishing yields between different regions:
 
 ```{r}
+#| label: fig-marine-ttest
+#| fig-cap: "Comparison of fishing yields between lakes"
+
 # Load necessary packages
 library(tidyverse)
 
@@ -339,6 +347,9 @@ This analysis helps marine scientists and resource managers understand differenc
 The one-sample t-test compares a sample mean to a known or hypothesized population value:
 
 ```{r}
+#| label: fig-one-sample-ttest
+#| fig-cap: "Distribution of tree heights with reference value"
+
 # Let's test if the average tree height in Site A differs from a reference value of 23m
 reference_height <- 23  # Reference value (e.g., regional average)
 
@@ -429,6 +440,11 @@ When conducting hypothesis tests:
 A paired t-test is used when measurements are taken from the same subjects under different conditions:
 
 ```{r}
+#| label: fig-paired-ttest
+#| fig-cap:
+#|   - "Tree heights before and after treatment"
+#|   - "Distribution of height differences"
+
 # Simulate paired data: tree heights before and after treatment
 set.seed(456)
 trees_before <- rnorm(25, mean = 15, sd = 3)  # Heights before treatment
@@ -555,6 +571,9 @@ This analysis provides compelling evidence that the treatment had a significant 
 Before applying parametric tests like the t-test, we should check if the data meets the assumption of normality:
 
 ```{r}
+#| label: fig-normality-test
+#| fig-cap: "Q-Q plots for normality assessment"
+
 # Shapiro-Wilk test for normality
 shapiro_A <- shapiro.test(site_A)
 shapiro_B <- shapiro.test(site_B)
@@ -643,6 +662,9 @@ The combined approach of statistical testing and visual assessment provides a ro
 Confidence intervals provide a range of plausible values for population parameters:
 
 ```{r}
+#| label: fig-confidence-interval
+#| fig-cap: "95% confidence interval for mean tree height"
+
 # Calculate 95% confidence interval for mean tree height in Site A
 ci_result <- t.test(site_A)
 

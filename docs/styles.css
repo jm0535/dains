@@ -522,8 +522,7 @@ hr {
 @media (max-width: 991px) {
     .hero-banner {
         padding: var(--spacing-xl) var(--spacing-md);
-        margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-md))
-            var(--spacing-lg);
+        margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-md)) var(--spacing-lg);
     }
 
     .hero-title {
@@ -533,23 +532,38 @@ hr {
     .hero-subtitle {
         font-size: 1.2em !important;
     }
+
+    /* Tablet optimizations */
+    body {
+        font-size: 17px;
+        /* Slightly larger text for tablets */
+    }
+
+    .page-columns .content {
+        padding-left: var(--spacing-md);
+        padding-right: var(--spacing-md);
+    }
 }
 
 @media (max-width: 768px) {
     body {
         font-size: 16px;
+        line-height: 1.6;
+        /* Tighter line height for mobile */
     }
 
     h1 {
-        font-size: 1.8em;
+        font-size: 1.75em;
+        margin-top: var(--spacing-lg);
     }
 
     h2 {
-        font-size: 1.5em;
+        font-size: 1.4em;
+        margin-top: var(--spacing-lg);
     }
 
     h3 {
-        font-size: 1.25em;
+        font-size: 1.2em;
     }
 
     .hero-banner {
@@ -566,23 +580,56 @@ hr {
 
     pre {
         padding: var(--spacing-sm);
-        font-size: 0.85em;
+        font-size: 0.8em;
+        /* Smaller code font on mobile */
+        border-radius: var(--radius-sm);
+    }
+
+    /* Improved table responsiveness */
+    .cell-output-display {
+        overflow-x: auto;
     }
 
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
+        font-size: 0.85em;
+        /* Smaller table text */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
     }
 
     .g-col-12.g-col-md-6,
     .g-col-12.g-col-md-4 {
         padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        /* Add spacing between stacked columns */
     }
 
     .btn-lg {
         padding: var(--spacing-sm) var(--spacing-lg);
         font-size: 1em;
+        width: 100%;
+        /* Full width buttons on mobile */
+        text-align: center;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    /* Increase touch targets */
+    a,
+    button,
+    .btn {
+        min-height: 44px;
+        /* Minimum touch target size */
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* Adjust navbar padding */
+    .navbar {
+        padding: var(--spacing-sm);
     }
 }
 
@@ -614,6 +661,7 @@ button:focus,
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -644,7 +692,7 @@ h3 {
 }
 
 /* Ensure emoji don't affect line height */
-h3 > span[role="img"],
-h3 > img.emoji {
+h3>span[role="img"],
+h3>img.emoji {
     vertical-align: middle;
 }

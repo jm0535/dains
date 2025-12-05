@@ -16,7 +16,7 @@
     "section": "Welcome",
     "text": "Welcome\nWelcome to Data Analysis in Natural Sciences: An R-Based Approach — a comprehensive, practical guide designed for students, professionals, and researchers across the natural sciences. This book provides hands-on methods for analyzing and visualizing data using R, with real-world applications spanning ecology, forestry, agriculture, marine biology, environmental science, and beyond.\n\n\n\n\n\n\n📘 About This Book\n\n\n\nThis is an open-access online textbook that teaches modern data analysis techniques using the R programming language. Whether you’re a beginner learning R for the first time or an experienced researcher looking to adopt tidyverse workflows, this book offers practical guidance with reproducible code examples.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -24,9 +24,9 @@
     "href": "index.html#what-youll-learn",
     "title": "Data Analysis in Natural Sciences",
     "section": "What You’ll Learn",
-    "text": "What You’ll Learn\n\n\n1.0.2 📊 Data Analysis Fundamentals\n\nImport, clean, and transform data\nExploratory data analysis techniques\nWorking with the tidyverse ecosystem\n\n\n\n1.0.3 📈 Statistical Methods\n\nHypothesis testing frameworks\nParametric and non-parametric tests\nRegression analysis with tidymodels\n\n\n\n1.0.4 🎨 Data Visualization\n\nPublication-quality graphics with ggplot2\nInteractive visualizations\nEffective scientific communication\n\n\n\n1.0.5 🌍 Real-World Applications\n\nConservation case studies\nEnvironmental data analysis\nReproducible research practices",
+    "text": "What You’ll Learn\n\n\n📊 Data Analysis Fundamentals\n\nImport, clean, and transform data\nExploratory data analysis techniques\nWorking with the tidyverse ecosystem\n\n\n\n📈 Statistical Methods\n\nHypothesis testing frameworks\nParametric and non-parametric tests\nRegression analysis with tidymodels\n\n\n\n🎨 Data Visualization\n\nPublication-quality graphics with ggplot2\nInteractive visualizations\nEffective scientific communication\n\n\n\n🌍 Real-World Applications\n\nConservation case studies\nEnvironmental data analysis\nReproducible research practices",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -36,7 +36,7 @@
     "section": "Book Structure",
     "text": "Book Structure\n\n\n\n\n\n\n\n\nPart\nChapters\nTopics\n\n\n\n\nGetting Started\n1-2\nIntroduction to R, data structures, importing data\n\n\nData Analysis Fundamentals\n3-5\nEDA, hypothesis testing, statistical tests\n\n\nData Visualization\n6-7\nggplot2, advanced graphics, interactive plots\n\n\nAdvanced Topics\n8-9\nRegression analysis, conservation applications",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -46,7 +46,7 @@
     "section": "Who Is This Book For?",
     "text": "Who Is This Book For?\nThis book is designed for anyone working with data in the natural sciences:\n\n🎓 Students — Undergraduate and postgraduate students in biology, ecology, forestry, agriculture, and environmental sciences\n🔬 Researchers — Scientists seeking to enhance their data analysis and visualization skills\n🌿 Practitioners — Conservation professionals, environmental consultants, and natural resource managers\n📊 Data Enthusiasts — Anyone interested in learning R for scientific data analysis\n\n\n\n\n\n\n\nGetting Started\n\n\n\nNew to R? Start with Chapter 1: Introduction to Data Analysis for installation instructions and your first steps with R and RStudio.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -56,7 +56,7 @@
     "section": "Features",
     "text": "Features\n✅ Complete code examples — All code is fully reproducible ✅ Real datasets — Learn with actual data from ecological and environmental research ✅ Modern R practices — Tidyverse and tidymodels workflows throughout ✅ Professional tips — Best practices from experienced researchers ✅ Exercises — Practice problems to reinforce learning ✅ Open access — Free to read online",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -66,7 +66,7 @@
     "section": "About the Author",
     "text": "About the Author\nJimmy Moses is a Papua New Guinean entomologist and lecturer at the Papua New Guinea University of Technology’s School of Forestry. He specializes in ant ecology, biostatistics, and geospatial analysis, with a Ph.D. in Entomology from the University of South Bohemia (2021).\nHis research combines ecological field studies with modern analytical approaches, resulting in publications in journals including Global Ecology and Biogeography and Proceedings of the Royal Society B. His passion for making complex analytical methods accessible drives both his teaching and this book.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -74,9 +74,9 @@
     "href": "index.html#how-to-use-this-book",
     "title": "Data Analysis in Natural Sciences",
     "section": "How to Use This Book",
-    "text": "How to Use This Book\n\n\n1.0.6 📖 Read Online\nBrowse chapters directly in your web browser. Use the navigation menu to move between sections.\n\n\n1.0.7 💻 Run the Code\nCopy code examples into R or RStudio. All code is designed to be reproducible with the included datasets.\n\n\n1.0.8 🔧 Adapt & Apply\nModify examples for your own data and research questions. The techniques are broadly applicable.",
+    "text": "How to Use This Book\n\n\n📖 Read Online\nBrowse chapters directly in your web browser. Use the navigation menu to move between sections.\n\n\n💻 Run the Code\nCopy code examples into R or RStudio. All code is designed to be reproducible with the included datasets.\n\n\n🔧 Adapt & Apply\nModify examples for your own data and research questions. The techniques are broadly applicable.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -86,7 +86,7 @@
     "section": "Prerequisites",
     "text": "Prerequisites\nTo get the most out of this book, you should have:\n\nBasic computer skills\nR and RStudio installed (instructions in Chapter 1)\nCuriosity about data and natural sciences!\n\nNo prior programming experience is required — I start from the basics and build up progressively.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -94,9 +94,9 @@
     "href": "index.html#get-involved",
     "title": "Data Analysis in Natural Sciences",
     "section": "Get Involved",
-    "text": "Get Involved\n\n\n1.0.9 🐛 Found an Issue?\nReport errors or suggest improvements on GitHub Issues\n\n\n1.0.10 🤝 Want to Contribute?\nContributions welcome! See our Contributing Guide",
+    "text": "Get Involved\n\n\n🐛 Found an Issue?\nReport errors or suggest improvements on GitHub Issues\n\n\n🤝 Want to Contribute?\nContributions welcome! See our Contributing Guide",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {
@@ -106,7 +106,7 @@
     "section": "Acknowledgments",
     "text": "Acknowledgments\nThis book would not be possible without:\n\nThe R Core Team and the incredible R community\nThe tidyverse and tidymodels teams for transforming how I work with data\nRStudio/Posit for excellent development tools\nThe Quarto team for this beautiful publishing system\nAll the data providers whose open datasets make the examples possible\nStudents and colleagues who provided feedback and inspiration\n\n\n\nReady to start your data analysis journey?\nBegin with Chapter 1 →",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Analysis in Natural Sciences</span>"
+      "Welcome"
     ]
   },
   {

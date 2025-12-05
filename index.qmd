@@ -3,15 +3,7 @@ pagetitle: "Data Analysis in Natural Sciences"
 prefer-html: true
 ---
 
-::: {.hero-banner}
-
-# Data Analysis in Natural Sciences {.hero-title}
-
-### An R-Based Approach {.hero-subtitle}
-
-*From Field to Figures: Essential Methods for Environmental and Life Sciences*
-
-:::
+![](images/dans_coverpage_final.png){fig-align="center" width="100%"}
 
 ::: {.content-block}
 

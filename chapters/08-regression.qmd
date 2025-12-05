@@ -603,8 +603,8 @@ The tidymodels framework follows key principles:
 ### Linear Regression with Tidymodels
 
 ```{r}
-#| label: fig-tidymodels-linear
-#| fig-cap: "Tidymodels predicted vs actual body mass"
+#| label: tidymodels-linear-setup
+#| echo: true
 
 # Step 1: Split data into training and testing sets
 penguin_split <- initial_split(penguins, prop = 0.75, strata = species)
@@ -618,65 +618,65 @@ cat("Testing set:", nrow(penguin_test), "observations\n")
 penguin_recipe <- recipe(body_mass_g ~ bill_length_mm + bill_depth_mm +
                          flipper_length_mm + species,
                          data = penguin_train) %>%
-  # Create dummy variables for species
   step_dummy(species) %>%
-  # Normalize all numeric predictors
   step_normalize(all_numeric_predictors()) %>%
-  # Check for zero variance predictors
   step_zv(all_predictors())
-
-# View the recipe
-print(penguin_recipe)
 
 # Step 3: Specify the model
 lm_spec <- linear_reg() %>%
   set_engine("lm") %>%
   set_mode("regression")
 
-print(lm_spec)
-
 # Step 4: Create a workflow combining recipe and model
 penguin_wf <- workflow() %>%
   add_recipe(penguin_recipe) %>%
   add_model(lm_spec)
 
-print(penguin_wf)
-
 # Step 5: Fit the model
 penguin_fit <- penguin_wf %>%
   fit(data = penguin_train)
+```
 
-# Extract and display model results
+```{r}
+#| label: tbl-tidymodels-coef
+#| tbl-cap: "Tidymodels Linear Regression Coefficients"
+
 tidy(penguin_fit) %>%
-  knitr::kable(caption = "Tidymodels Linear Regression Coefficients",
-               digits = 3)
+  knitr::kable(digits = 3)
+```
 
-# Get model performance metrics on training data
+```{r}
+#| label: tbl-tidymodels-train
+#| tbl-cap: "Training Set Performance Metrics"
+
 train_results <- penguin_fit %>%
   predict(penguin_train) %>%
   bind_cols(penguin_train) %>%
   metrics(truth = body_mass_g, estimate = .pred)
 
-knitr::kable(train_results,
-             caption = "Training Set Performance Metrics",
-             digits = 3)
+knitr::kable(train_results, digits = 3)
+```
 
-# Step 6: Evaluate on test data
+```{r}
+#| label: tbl-tidymodels-test
+#| tbl-cap: "Test Set Performance Metrics"
+
 test_results <- penguin_fit %>%
   predict(penguin_test) %>%
   bind_cols(penguin_test) %>%
   metrics(truth = body_mass_g, estimate = .pred)
 
-knitr::kable(test_results,
-             caption = "Test Set Performance Metrics",
-             digits = 3)
+knitr::kable(test_results, digits = 3)
+```
 
-# Create predictions for visualization
+```{r}
+#| label: fig-tidymodels-linear
+#| fig-cap: "Tidymodels predicted vs actual body mass"
+
 penguin_pred <- penguin_fit %>%
   predict(penguin_test) %>%
   bind_cols(penguin_test)
 
-# Visualize predictions vs. actual
 ggplot(penguin_pred, aes(x = body_mass_g, y = .pred, color = species)) +
   geom_point(size = 3, alpha = 0.7) +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray50") +
@@ -709,10 +709,8 @@ The test set RMSE and R² provide unbiased estimates of model performance on new
 ### Cross-Validation with Tidymodels
 
 ```{r}
-#| label: fig-cross-validation
-#| fig-cap:
-#|   - "Cross-validation performance distribution"
-#|   - "Cross-validation predictions"
+#| label: cross-validation-setup
+#| echo: true
 
 # Create cross-validation folds
 set.seed(456)
@@ -727,15 +725,20 @@ cv_results <- penguin_wf %>%
     control = control_resamples(save_pred = TRUE),
     metrics = metric_set(rmse, rsq, mae)
   )
+```
 
-# Collect and display metrics
+```{r}
+#| label: tbl-cv-metrics
+#| tbl-cap: "10-Fold Cross-Validation Performance"
+
 cv_metrics <- collect_metrics(cv_results)
+knitr::kable(cv_metrics, digits = 3)
+```
 
-knitr::kable(cv_metrics,
-             caption = "10-Fold Cross-Validation Performance",
-             digits = 3)
+```{r}
+#| label: fig-cv-distribution
+#| fig-cap: "Cross-validation performance distribution"
 
-# Visualize cross-validation results
 collect_metrics(cv_results, summarize = FALSE) %>%
   ggplot(aes(x = .metric, y = .estimate)) +
   geom_boxplot(fill = "skyblue", alpha = 0.7) +
@@ -747,11 +750,14 @@ collect_metrics(cv_results, summarize = FALSE) %>%
     y = "Value"
   ) +
   theme_minimal()
+```
 
-# Extract predictions from all folds
+```{r}
+#| label: fig-cv-predictions
+#| fig-cap: "Cross-validation predictions"
+
 cv_predictions <- collect_predictions(cv_results)
 
-# Plot predictions from cross-validation
 ggplot(cv_predictions, aes(x = body_mass_g, y = .pred)) +
   geom_point(alpha = 0.5, color = "steelblue") +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
@@ -779,8 +785,8 @@ Cross-validation provides:
 ### Model Comparison with Tidymodels
 
 ```{r}
-#| label: fig-model-comparison
-#| fig-cap: "Model performance comparison"
+#| label: model-comparison-setup
+#| echo: true
 
 # Define multiple model specifications
 lm_spec <- linear_reg() %>%
@@ -819,13 +825,21 @@ model_comparison <- bind_rows(
   collect_metrics(lm_cv) %>% mutate(model = "Linear Regression"),
   collect_metrics(rf_cv) %>% mutate(model = "Random Forest")
 )
+```
+
+```{r}
+#| label: tbl-model-comparison
+#| tbl-cap: "Model Comparison: Linear Regression vs. Random Forest"
 
 knitr::kable(model_comparison %>% select(model, .metric, mean, std_err),
-             caption = "Model Comparison: Linear Regression vs. Random Forest",
              digits = 3,
              col.names = c("Model", "Metric", "Mean", "Std Error"))
+```
 
-# Visualize model comparison
+```{r}
+#| label: fig-model-comparison
+#| fig-cap: "Model performance comparison"
+
 model_comparison %>%
   ggplot(aes(x = model, y = mean, fill = model)) +
   geom_col() +
@@ -942,10 +956,8 @@ In the next chapter, we will explore [Advanced Modeling Techniques](09-advanced-
 ### Logistic Regression with Tidymodels
 
 ```{r}
-#| label: fig-tidymodels-logistic
-#| fig-cap:
-#|   - "Confusion matrix for Adelie classification"
-#|   - "ROC curve for tidymodels logistic regression"
+#| label: logistic-setup
+#| echo: true
 
 # Prepare binary classification data
 penguins_binary <- penguins %>%
@@ -982,36 +994,50 @@ logistic_pred <- logistic_fit %>%
   predict(binary_test, type = "prob") %>%
   bind_cols(logistic_fit %>% predict(binary_test)) %>%
   bind_cols(binary_test)
+```
 
-# Calculate multiple classification metrics
+```{r}
+#| label: tbl-logistic-metrics
+#| tbl-cap: "Logistic Regression Classification Metrics"
+
 logistic_metrics <- logistic_pred %>%
   metrics(truth = is_adelie, estimate = .pred_class, .pred_Adelie)
 
-knitr::kable(logistic_metrics,
-             caption = "Logistic Regression Classification Metrics",
-             digits = 3)
+knitr::kable(logistic_metrics, digits = 3)
+```
 
-# Create confusion matrix
+```{r}
+#| label: fig-logistic-confusion
+#| fig-cap: "Confusion matrix for Adelie classification"
+
 conf_mat(logistic_pred, truth = is_adelie, estimate = .pred_class) %>%
   autoplot(type = "heatmap") +
   labs(title = "Confusion Matrix: Adelie Classification") +
   theme_minimal()
+```
 
-# ROC curve
+```{r}
+#| label: fig-logistic-roc
+#| fig-cap: "ROC curve for tidymodels logistic regression"
+
 logistic_pred %>%
   roc_curve(truth = is_adelie, .pred_Adelie) %>%
   autoplot() +
   labs(title = "ROC Curve: Tidymodels Logistic Regression") +
   theme_minimal()
 
-# Calculate and display AUC
+# Calculate AUC for use in next plot
 auc_value <- logistic_pred %>%
   roc_auc(truth = is_adelie, .pred_Adelie) %>%
   pull(.estimate)
 
 cat("Area Under the Curve (AUC):", round(auc_value, 3), "\n")
+```
 
-# Visualize predicted probabilities
+```{r}
+#| label: fig-logistic-probs
+#| fig-cap: "Predicted probabilities for Adelie classification"
+
 ggplot(logistic_pred, aes(x = bill_length_mm, y = bill_depth_mm,
                          color = .pred_Adelie, shape = is_adelie)) +
   geom_point(size = 3, alpha = 0.7) +

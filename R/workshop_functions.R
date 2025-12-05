@@ -2,32 +2,141 @@
 # This file contains reusable functions for the data analysis workshop manual
 
 #' Load and prepare ecological dataset
-#' 
-#' @param file_path Path to the CSV file
+#'
+#' This function loads data from CSV files with comprehensive validation and error handling.
+#' It checks for file existence, validates data structure, and optionally cleans missing values.
+#'
+#' @param file_path Path to the CSV file (absolute or relative)
 #' @param clean Logical, whether to clean the data (remove NAs, etc.)
+#' @param required_cols Optional character vector of required column names
+#' @param verbose Logical, whether to print informative messages (default: TRUE)
 #' @return A tibble with the loaded and prepared data
 #' @examples
-#' forest_data <- load_ecological_data("./docs/data/Filtered.csv")
-load_ecological_data <- function(file_path, clean = TRUE) {
+#' \dontrun{
+#' # Basic usage
+#' forest_data <- load_ecological_data("./data/forestry/forest_inventory.csv")
+#'
+#' # With required columns validation
+#' forest_data <- load_ecological_data(
+#'   "./data/forestry/forest_inventory.csv",
+#'   required_cols = c("Tree_Density_per_ha", "Carbon")
+#' )
+#'
+#' # Load without cleaning
+#' raw_data <- load_ecological_data("./data/forestry/forest_inventory.csv", clean = FALSE)
+#' }
+#' @export
+load_ecological_data <- function(file_path, clean = TRUE, required_cols = NULL, verbose = TRUE) {
+  # Input validation
+  if (!is.character(file_path) || length(file_path) != 1) {
+    stop("file_path must be a single character string")
+  }
+
+  if (!is.logical(clean)) {
+    stop("clean must be a logical value (TRUE or FALSE)")
+  }
+
   # Check if file exists
   if (!file.exists(file_path)) {
-    stop("File does not exist: ", file_path)
+    stop(sprintf(
+      "File does not exist: '%s'\nCurrent working directory: '%s'\nPlease check the file path.",
+      file_path, getwd()
+    ))
   }
-  
-  # Load data
-  data <- readr::read_csv(file_path)
-  
+
+  # Check file extension
+  if (!grepl("\\.(csv|CSV)$", file_path)) {
+    warning(sprintf(
+      "File '%s' does not have a .csv extension. Attempting to read anyway.",
+      basename(file_path)
+    ))
+  }
+
+  # Load data with error handling
+  if (verbose) message("Loading data from: ", file_path)
+
+  data <- tryCatch(
+    {
+      readr::read_csv(file_path, show_col_types = FALSE)
+    },
+    error = function(e) {
+      stop(sprintf(
+        "Failed to read CSV file '%s'.\nError: %s\nPlease ensure the file is a valid CSV format.",
+        file_path, e$message
+      ))
+    }
+  )
+
+  # Validate data structure
+  if (nrow(data) == 0) {
+    stop(sprintf("File '%s' contains no data rows.", file_path))
+  }
+
+  if (ncol(data) == 0) {
+    stop(sprintf("File '%s' contains no columns.", file_path))
+  }
+
+  if (verbose) {
+    message(sprintf("Loaded %d rows and %d columns", nrow(data), ncol(data)))
+  }
+
+  # Validate required columns if specified
+  if (!is.null(required_cols)) {
+    if (!is.character(required_cols)) {
+      stop("required_cols must be a character vector")
+    }
+
+    missing_cols <- setdiff(required_cols, names(data))
+    if (length(missing_cols) > 0) {
+      stop(sprintf(
+        "Missing required columns: %s\nAvailable columns: %s",
+        paste(missing_cols, collapse = ", "),
+        paste(names(data), collapse = ", ")
+      ))
+    }
+
+    if (verbose) {
+      message("All required columns present: ", paste(required_cols, collapse = ", "))
+    }
+  }
+
   # Clean data if requested
   if (clean) {
-    # Remove rows with NA in key columns
-    data <- data %>% 
-      tidyr::drop_na(dplyr::any_of(c(
-        "Tree_Density_per_ha", 
-        "Aboveground_Tree_Carbon_ton_per_ha",
-        "Aboveground_Tree_Carbon_ton_per_ha_per_year"
-      )))
+    original_rows <- nrow(data)
+
+    # Define columns to check for NAs
+    clean_cols <- c(
+      "Tree_Density_per_ha",
+      "Aboveground_Tree_Carbon_ton_per_ha",
+      "Aboveground_Tree_Carbon_ton_per_ha_per_year"
+    )
+
+    # Only use columns that exist in the data
+    existing_clean_cols <- intersect(clean_cols, names(data))
+
+    if (length(existing_clean_cols) > 0) {
+      data <- data %>%
+        tidyr::drop_na(dplyr::any_of(existing_clean_cols))
+
+      removed_rows <- original_rows - nrow(data)
+
+      if (removed_rows > 0 && verbose) {
+        message(sprintf(
+          "Removed %d rows (%.1f%%) with missing values in: %s",
+          removed_rows,
+          100 * removed_rows / original_rows,
+          paste(existing_clean_cols, collapse = ", ")
+        ))
+      }
+
+      if (nrow(data) == 0) {
+        stop("All rows were removed during cleaning. Check for excessive missing values in key columns.")
+      }
+    } else if (verbose) {
+      message("No standard columns found for cleaning. Returning data as-is.")
+    }
   }
-  
+
   return(data)
 }
 

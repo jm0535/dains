@@ -1,4 +1,4 @@
-name: Publish to GitHub Pages
+name: CI/CD Pipeline
 
 on:
   push:
@@ -19,6 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+<<<<<<< HEAD
   build:
     runs-on: ubuntu-latest
 

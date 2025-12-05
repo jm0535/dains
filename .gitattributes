@@ -1,0 +1,24 @@
+# Git LFS Configuration
+# This tells Git to use Large File Storage for certain file types
+
+# Large images (book covers, diagrams)
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+
+# PDFs (rendered book, documentation)
+*.pdf filter=lfs diff=lfs merge=lfs -text
+
+# Large data files (if not already excluded by .gitignore)
+# Uncomment if you want to track large CSV/Excel files with LFS
+# *.csv filter=lfs diff=lfs merge=lfs -text
+# *.xlsx filter=lfs diff=lfs merge=lfs -text
+# *.xls filter=lfs diff=lfs merge=lfs -text
+
+# Video files (if you add tutorial videos)
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+
+# Archives
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.tar.gz filter=lfs diff=lfs merge=lfs -text

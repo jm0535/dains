@@ -423,7 +423,7 @@ penguins_binary <- penguins_clean %>%
                                   labels = c("Other", "Adelie")))
 
 # Create logistic regression model
-log_model <- glm(is_adelie ~ bill_length_mm + body_mass_g,
+log_model <- glm(is_adelie ~ bill_depth_mm + body_mass_g,
                 family = binomial(link = "logit"),
                 data = penguins_binary)
 
@@ -514,7 +514,7 @@ plot(roc_curve, print.auc = TRUE, auc.polygon = TRUE,
 #| fig-cap: "Classification visualization by species"
 
 # Create a visualization of predicted probabilities by species
-ggplot(penguins_pred, aes(x = bill_length_mm, y = body_mass_g, color = predicted_prob)) +
+ggplot(penguins_pred, aes(x = bill_depth_mm, y = body_mass_g, color = predicted_prob)) +
   geom_point(size = 3, alpha = 0.7) +
   # Add decision boundary (0.5 probability contour)
   geom_contour(aes(z = predicted_prob), breaks = 0.5, color = "black", linewidth = 1) +
@@ -528,7 +528,7 @@ ggplot(penguins_pred, aes(x = bill_length_mm, y = body_mass_g, color = predicted
   labs(
     title = "Classification of Adelie vs. Other Penguins",
     subtitle = paste0("AUC = ", round(auc_value, 3), ", Accuracy = ", round(accuracy * 100, 1), "%"),
-    x = "Bill Length (mm)",
+    x = "Bill Depth (mm)",
     y = "Body Mass (g)",
     color = "Probability\nof Adelie",
     caption = "Black line: decision boundary (p=0.5), ✗: misclassified points"
@@ -561,7 +561,7 @@ This enhanced logistic regression analysis provides comprehensive insights:
 1. **Model Construction**
    - Creates a binary outcome variable (Adelie vs. Other species)
    - Uses `glm()` with a binomial family and logit link
-   - Incorporates multiple predictors (bill length, body mass)
+   - Incorporates multiple predictors (bill depth, body mass)
 
 2. **Professional Reporting**
    - Displays odds ratios with confidence intervals for interpretability
@@ -1049,7 +1049,7 @@ binary_train <- training(binary_split)
 binary_test <- testing(binary_split)
 
 # Create recipe
-logistic_recipe <- recipe(is_adelie ~ bill_length_mm + body_mass_g,
+logistic_recipe <- recipe(is_adelie ~ bill_depth_mm + body_mass_g,
                          data = binary_train) %>%
   step_normalize(all_numeric_predictors())
 
@@ -1116,7 +1116,7 @@ cat("Area Under the Curve (AUC):", round(auc_value, 3), "\n")
 #| label: fig-logistic-probs-rf
 #| fig-cap: "Predicted probabilities for Adelie classification"
 
-ggplot(logistic_pred, aes(x = bill_length_mm, y = body_mass_g,
+ggplot(logistic_pred, aes(x = bill_depth_mm, y = body_mass_g,
                          color = .pred_Adelie, shape = is_adelie)) +
   geom_point(size = 3, alpha = 0.7) +
   scale_color_gradient2(low = "navy", mid = "white", high = "red",
@@ -1124,7 +1124,7 @@ ggplot(logistic_pred, aes(x = bill_length_mm, y = body_mass_g,
   labs(
     title = "Predicted Probabilities: Adelie Classification",
     subtitle = paste0("AUC = ", round(auc_value, 3)),
-    x = "Bill Length (mm)",
+    x = "Bill Depth (mm)",
     y = "Body Mass (g)",
     color = "P(Adelie)",
     shape = "Actual Species"

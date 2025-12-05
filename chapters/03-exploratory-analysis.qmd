@@ -55,17 +55,14 @@ To ensure your exploratory data analysis is reproducible and transparent:
 Descriptive statistics provide a concise summary of your data's central tendency, dispersion, and shape:
 
 ```{r}
-#| label: fig-descriptive-stats
-#| fig-cap: "Distribution of global wheat yields"
+#| label: load-crop-yields
+#| echo: true
 
 # Load necessary libraries
 library(tidyverse)
 
 # Load the crop yield dataset
 crop_yields <- read_csv("../data/agriculture/crop_yields.csv")
-
-# View the first few rows
-head(crop_yields)
 
 # Get summary statistics for wheat yields
 wheat_summary <- crop_yields %>%
@@ -79,9 +76,19 @@ wheat_summary <- crop_yields %>%
     Q1 = quantile(`Wheat (tonnes per hectare)`, 0.25, na.rm = TRUE),
     Q3 = quantile(`Wheat (tonnes per hectare)`, 0.75, na.rm = TRUE)
   )
+```
+
+```{r}
+#| label: tbl-wheat-summary-stats
+#| tbl-cap: "Summary Statistics for Global Wheat Yields"
 
 # Display the summary statistics
-knitr::kable(wheat_summary, caption = "Summary Statistics for Global Wheat Yields")
+knitr::kable(wheat_summary)
+```
+
+```{r}
+#| label: fig-descriptive-stats
+#| fig-cap: "Distribution of global wheat yields"
 
 # Visualize the distribution of wheat yields
 ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
@@ -90,6 +97,11 @@ ggplot(crop_yields, aes(x = `Wheat (tonnes per hectare)`)) +
        x = "Wheat Yield (tonnes per hectare)",
        y = "Frequency") +
   theme_minimal()
+```
+
+```{r}
+#| label: tbl-top-wheat-countries
+#| tbl-cap: "Top 10 Countries by Average Wheat Yield"
 
 # Identify top wheat-producing countries (by average yield)
 top_wheat_countries <- crop_yields %>%
@@ -100,7 +112,7 @@ top_wheat_countries <- crop_yields %>%
   head(10)
 
 # Display the top countries
-knitr::kable(top_wheat_countries, caption = "Top 10 Countries by Average Wheat Yield")
+knitr::kable(top_wheat_countries)
 ```
 
 ::: {.callout-note}

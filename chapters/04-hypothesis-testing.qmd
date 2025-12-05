@@ -129,10 +129,14 @@ ggplot(tree_data, aes(x = site, y = height, fill = site)) +
        x = "Site",
        y = "Height (m)") +
   theme_minimal()
+```
+
+```{r}
+#| label: tbl-two-sample-ttest
+#| tbl-cap: "Two-Sample t-Test Results: Tree Heights by Site"
 
 # Perform a t-test
 t_test_result <- t.test(height ~ site, data = tree_data)
-print(t_test_result)
 
 # Interpret the result
 alpha <- 0.05
@@ -161,7 +165,6 @@ t_test_table <- data.frame(
 
 # Display the formatted table
 knitr::kable(t_test_table,
-             caption = "Two-Sample t-Test Results: Tree Heights by Site",
              align = c("l", "r"),
              format = "html") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"),

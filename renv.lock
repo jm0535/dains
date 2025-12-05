@@ -596,14 +596,6 @@
       ],
       "Hash": "70a6489cc254171fb9b4a7f130f44dca"
     },
-    "bspm": {
-      "Package": "bspm",
-      "Version": "0.5.7",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "OS_type": "unix",
-      "Hash": "570483af87dabbb29adeff689769a5c6"
-    },
     "cachem": {
       "Package": "cachem",
       "Version": "1.1.0",

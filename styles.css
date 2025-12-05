@@ -116,12 +116,7 @@ p {
    Hero Banner (Landing Page)
    ----------------------------------------------------------------------------- */
 .hero-banner {
-    background: linear-gradient(
-        135deg,
-        var(--color-primary-dark) 0%,
-        var(--color-primary) 50%,
-        var(--color-primary-light) 100%
-    );
+    background: url('images/dans_coverpage_final.png') center center / cover no-repeat;
     color: white;
     padding: var(--spacing-xxl) var(--spacing-xl);
     margin: calc(-1 * var(--spacing-lg)) calc(-1 * var(--spacing-lg))
@@ -129,6 +124,18 @@ p {
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     text-align: center;
     box-shadow: var(--shadow-lg);
+    position: relative;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
 .hero-title {
@@ -137,7 +144,9 @@ p {
     color: white !important;
     border: none !important;
     margin-bottom: var(--spacing-sm) !important;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
 }
 
 .hero-subtitle {
@@ -146,12 +155,16 @@ p {
     color: rgba(255, 255, 255, 0.95) !important;
     margin-top: 0 !important;
     margin-bottom: var(--spacing-md) !important;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-banner em {
     font-size: 1.1em;
     color: rgba(255, 255, 255, 0.9);
     font-style: italic;
+    position: relative;
+    z-index: 1;
 }
 
 /* -----------------------------------------------------------------------------

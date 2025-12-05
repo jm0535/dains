@@ -22,7 +22,7 @@ By the end of this chapter, you will be able to:
 Hypothesis testing is a fundamental statistical approach used to make inferences about populations based on sample data. In ecological and forestry research, hypothesis testing helps researchers determine whether observed patterns or differences are statistically significant or merely due to random chance.
 
 ```{r}
-#| label: setup
+#| label: setup-hypothesis
 #| include: false
 # Load required packages for data analysis and visualization
 library(tidyverse)

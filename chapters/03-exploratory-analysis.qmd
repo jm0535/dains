@@ -801,7 +801,7 @@ The z-scores reveal extreme values:
 Agricultural data often contains important temporal patterns:
 
 ```{r}
-#| label: fig-time-series
+#| label: fig-time-series-eda
 #| fig-cap: "Wheat yield trends over time for major producers"
 
 # Select a few countries for time series analysis

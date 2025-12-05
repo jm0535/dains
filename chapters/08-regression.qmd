@@ -26,10 +26,8 @@ Regression analysis is a powerful statistical tool for modeling relationships be
 Linear regression models the relationship between a dependent variable and one or more independent variables:
 
 ```{r}
-#| label: fig-linear-regression-intro
-#| fig-cap:
-#|   - "Relationship between bill length and body mass"
-#|   - "Model diagnostic plots"
+#| label: setup-linear-regression
+#| include: false
 
 # Load required packages
 library(tidyverse)      # For data manipulation
@@ -39,6 +37,7 @@ library(performance)    # For model diagnostics
 library(see)            # For visualization of model diagnostics
 library(parameters)     # For parameter description
 library(ggeffects)      # For visualizing model effects
+library(gt)             # For tables
 
 # Set a professional theme for all plots
 theme_set(theme_minimal(base_size = 12) +
@@ -68,7 +67,11 @@ model <- lm(body_mass_g ~ bill_length_mm, data = penguins_clean)
 model_summary <- summary(model)
 model_tidy <- tidy(model, conf.int = TRUE)
 model_glance <- glance(model)
+```
 
+```{r}
+#| label: model-output-linear
+#| echo: false
 # Display key model metrics
 cat("Model Summary:\n")
 cat(paste0("R² = ", round(model_glance$r.squared, 3),
@@ -76,13 +79,22 @@ cat(paste0("R² = ", round(model_glance$r.squared, 3),
 cat(paste0("F-statistic: ", round(model_glance$statistic, 2),
           " on ", model_glance$df, " and ", model_glance$df.residual,
           " DF, p-value: ", format.pval(model_glance$p.value, digits = 3), "\n\n"))
+```
+
+```{r}
+#| label: tbl-linear-regression-coef
+#| tbl-cap: "Linear Regression Coefficients"
 
 # Create a more professional table of coefficients
-library(gt)
 model_tidy %>%
   gt() %>%
   tab_header(title = "Linear Regression Coefficients") %>%
   fmt_number(columns = c("estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high"), decimals = 3)
+```
+
+```{r}
+#| label: fig-linear-regression-plot
+#| fig-cap: "Relationship between bill length and body mass"
 
 # Create an enhanced scatter plot with regression line
 ggplot(penguins_clean, aes(x = bill_length_mm, y = body_mass_g)) +
@@ -115,14 +127,15 @@ ggplot(penguins_clean, aes(x = bill_length_mm, y = body_mass_g)) +
   scale_color_viridis_d() +
   # Adjust axis limits for better visualization
   coord_cartesian(expand = TRUE)
+```
+
+```{r}
+#| label: fig-linear-regression-diag
+#| fig-cap: "Model diagnostic plots"
 
 # Create diagnostic plots using the performance package
 check_model <- check_model(model)
 plot(check_model)
-
-# Create additional diagnostic plots for specific issues
-par(mfrow = c(2, 2))
-plot(model)
 ```
 
 ::: {.callout-note}
@@ -198,16 +211,15 @@ When conducting regression analysis:
 Multiple regression extends linear regression to include multiple predictors:
 
 ```{r}
-#| label: fig-multiple-regression
-#| fig-cap:
-#|   - "Multiple regression diagnostic plots"
-#|   - "Predicted vs actual body mass"
-#|   - "Effect of flipper length on body mass"
+#| label: setup-multiple-regression
+#| include: false
 
 # Load required packages
 library(broom)
 library(knitr)
 library(dplyr)
+library(car)
+library(effects)
 
 # Create multiple regression model
 multi_model <- lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species,
@@ -217,7 +229,11 @@ multi_model <- lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_
 multi_summary <- summary(multi_model)
 multi_tidy <- tidy(multi_model, conf.int = TRUE)
 multi_glance <- glance(multi_model)
+```
 
+```{r}
+#| label: model-output-multiple
+#| echo: false
 # Display key model metrics
 cat("Multiple Regression Model Summary:\n")
 cat(paste0("R² = ", round(multi_glance$r.squared, 3),
@@ -228,20 +244,37 @@ cat(paste0("F-statistic: ", round(multi_glance$statistic, 2),
 
 # Create a simple table of coefficients
 print(multi_tidy)
+```
+
+```{r}
+#| label: tbl-multiple-regression-vif
+#| tbl-cap: "Variance Inflation Factors (VIF)"
 
 # Check for multicollinearity
-library(car)
 vif_values <- car::vif(multi_model)
-knitr::kable(vif_values, digits = 3,
-             caption = "Variance Inflation Factors (VIF)")
+knitr::kable(vif_values, digits = 3)
+```
+
+```{r}
+#| label: fig-multiple-regression-diag
+#| fig-cap: "Multiple regression diagnostic plots"
 
 # Check for model assumptions
 check_multi_model <- check_model(multi_model)
 plot(check_multi_model)
+```
+
+```{r}
+#| label: fig-multiple-regression-effects
+#| fig-cap: "Predictor effects"
 
 # Visualize predictor effects
-library(effects)
 plot(allEffects(multi_model), ask = FALSE)
+```
+
+```{r}
+#| label: tbl-model-comparison
+#| tbl-cap: "Comparison of Regression Models"
 
 # Compare models using base R
 model_comparison <- data.frame(
@@ -262,7 +295,12 @@ model_comparison <- data.frame(
   ),
   check.names = FALSE
 )
-knitr::kable(model_comparison, caption = "Comparison of Regression Models")
+knitr::kable(model_comparison)
+```
+
+```{r}
+#| label: fig-predicted-vs-actual
+#| fig-cap: "Predicted vs actual body mass"
 
 # Create a visualization of predicted vs. actual values
 predicted_values <- augment(multi_model, data = penguins_clean)
@@ -280,6 +318,11 @@ ggplot(predicted_values, aes(x = .fitted, y = body_mass_g, color = species)) +
   ) +
   scale_color_viridis_d() +
   theme(legend.position = "bottom")
+```
+
+```{r}
+#| label: fig-flipper-pdp
+#| fig-cap: "Effect of flipper length on body mass"
 
 # Create a partial dependence plot for flipper length
 pdp_flipper <- ggeffects::ggpredict(multi_model, terms = "flipper_length_mm")
@@ -363,12 +406,12 @@ When conducting ecological multiple regression analyses:
 Logistic regression models binary outcomes:
 
 ```{r}
-#| label: fig-logistic-regression
-#| fig-cap:
-#|   - "ROC curve for Adelie penguin classification"
-#|   - "Classification visualization by species"
-#|   - "Marginal effects on probability"
-#|   - "DHARMa residual diagnostics"
+#| label: setup-logistic-regression
+#| include: false
+
+# Load required packages
+library(pROC)
+library(DHARMa)
 
 # Prepare data for logistic regression by creating a binary outcome
 # We'll predict whether a penguin is Adelie species or not
@@ -388,7 +431,11 @@ log_model <- glm(is_adelie ~ bill_length_mm + bill_depth_mm + flipper_length_mm,
 log_summary <- summary(log_model)
 log_tidy <- tidy(log_model, conf.int = TRUE, exponentiate = TRUE)
 log_glance <- glance(log_model)
+```
 
+```{r}
+#| label: model-output-logistic
+#| echo: false
 # Display key model metrics
 cat("Logistic Regression Model Summary:\n")
 cat(paste0("AIC: ", round(log_glance$AIC, 2),
@@ -399,12 +446,22 @@ cat(paste0("Null Deviance: ", round(log_glance$null.deviance, 2),
 # Calculate and show pseudo R-squared (McFadden)
 pseudo_r2 <- 1 - (log_glance$deviance / log_glance$null.deviance)
 cat(paste0("McFadden's Pseudo R²: ", round(pseudo_r2, 3), "\n\n"))
+```
+
+```{r}
+#| label: tbl-logistic-odds
+#| tbl-cap: "Logistic Regression Results (Odds Ratios)"
 
 # Create a table of odds ratios with CI
 log_tidy %>%
   gt() %>%
   tab_header(title = "Logistic Regression Results (Odds Ratios)") %>%
   fmt_number(columns = c("estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high"), decimals = 3)
+```
+
+```{r}
+#| label: tbl-logistic-confusion
+#| tbl-cap: "Confusion Matrix"
 
 # Add predictions to the data
 penguins_pred <- penguins_binary %>%
@@ -429,19 +486,32 @@ precision <- confusion["Adelie", "Adelie"] / sum(confusion["Adelie", ])
 # Display confusion matrix with metrics
 knitr::kable(confusion,
             caption = paste0("Confusion Matrix (Accuracy = ", round(accuracy * 100, 1), "%)"))
+```
 
+```{r}
+#| label: model-metrics-logistic
+#| echo: false
 cat(paste0("Sensitivity (True Positive Rate): ", round(sensitivity * 100, 1), "%\n"))
 cat(paste0("Specificity (True Negative Rate): ", round(specificity * 100, 1), "%\n"))
 cat(paste0("Precision (Positive Predictive Value): ", round(precision * 100, 1), "%\n\n"))
+```
+
+```{r}
+#| label: fig-logistic-roc
+#| fig-cap: "ROC curve for Adelie penguin classification"
 
 # Create ROC curve
-library(pROC)
 roc_curve <- roc(penguins_binary$is_adelie, fitted(log_model))
 auc_value <- auc(roc_curve)
 
 # Plot the ROC curve
 plot(roc_curve, print.auc = TRUE, auc.polygon = TRUE,
      grid = TRUE, main = "ROC Curve for Adelie Penguin Classification")
+```
+
+```{r}
+#| label: fig-logistic-probs
+#| fig-cap: "Classification visualization by species"
 
 # Create a visualization of predicted probabilities by species
 ggplot(penguins_pred, aes(x = bill_length_mm, y = bill_depth_mm, color = predicted_prob)) +
@@ -464,13 +534,21 @@ ggplot(penguins_pred, aes(x = bill_length_mm, y = bill_depth_mm, color = predict
     caption = "Black line: decision boundary (p=0.5), ✗: misclassified points"
   ) +
   theme(legend.position = "right")
+```
+
+```{r}
+#| label: fig-logistic-effects
+#| fig-cap: "Marginal effects on probability"
 
 # Create marginal effects plots for the predictors
-library(effects)
 plot(allEffects(log_model), ask = FALSE, main = "Marginal Effects on Probability of Adelie")
+```
+
+```{r}
+#| label: fig-logistic-residuals
+#| fig-cap: "DHARMa residual diagnostics"
 
 # Check model fit
-library(DHARMa)
 sim_residuals <- simulateResiduals(log_model)
 plot(sim_residuals)
 ```
@@ -828,7 +906,7 @@ model_comparison <- bind_rows(
 ```
 
 ```{r}
-#| label: tbl-model-comparison
+#| label: tbl-model-comparison-rf
 #| tbl-cap: "Model Comparison: Linear Regression vs. Random Forest"
 
 knitr::kable(model_comparison %>% select(model, .metric, mean, std_err),
@@ -1017,7 +1095,7 @@ conf_mat(logistic_pred, truth = is_adelie, estimate = .pred_class) %>%
 ```
 
 ```{r}
-#| label: fig-logistic-roc
+#| label: fig-logistic-roc-rf
 #| fig-cap: "ROC curve for tidymodels logistic regression"
 
 logistic_pred %>%
@@ -1035,7 +1113,7 @@ cat("Area Under the Curve (AUC):", round(auc_value, 3), "\n")
 ```
 
 ```{r}
-#| label: fig-logistic-probs
+#| label: fig-logistic-probs-rf
 #| fig-cap: "Predicted probabilities for Adelie classification"
 
 ggplot(logistic_pred, aes(x = bill_length_mm, y = bill_depth_mm,

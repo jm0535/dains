@@ -5,7 +5,7 @@ prefer-html: true
 # Common Statistical Tests
 
 ```{r}
-#| label: setup
+#| label: setup-statistical-tests
 #| include: false
 # Load required packages for data analysis and visualization
 library(tidyverse)    # Core tidyverse (includes ggplot2, dplyr, tidyr, readr, etc.)
@@ -1013,7 +1013,7 @@ ggplot(time_series_data, aes(x = Year, y = `Wheat (tonnes per hectare)`)) +
 ```
 
 ```{r}
-#| label: tbl-linear-regression-coef
+#| label: tbl-linear-regression-coef-stats
 #| tbl-cap: "Linear Regression Coefficients: Wheat Yield by Year"
 
 # Perform linear regression

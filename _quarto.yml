@@ -13,7 +13,7 @@ book:
       orcid: ""
   date: last-modified
   date-format: "MMMM YYYY"
-  cover-image: "images/dans_coverpage_final.png"
+  cover-image: "images/cover_page_v2.png"
   favicon: "images/Rlogo.jpg"
   site-url: https://jm0535.github.io/dains/
   repo-url: https://github.com/jm0535/dains

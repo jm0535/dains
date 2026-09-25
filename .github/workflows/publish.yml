@@ -115,7 +115,9 @@ jobs:
   deploy:
     if: github.event_name != 'pull_request'
     needs: build
-    runs-on: ubuntu-latest
+    # Pinned alongside the build job (ubuntu-latest migrates to Ubuntu 26
+    # on 2026-10-19).
+    runs-on: ubuntu-24.04
 
     environment:
       name: github-pages

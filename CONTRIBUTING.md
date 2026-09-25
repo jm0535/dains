@@ -34,6 +34,16 @@ What we ask you **not** to send:
 4. Make your changes
 5. Submit a pull request referencing the original issue
 
+## Validating Your Changes
+
+GitHub Actions is currently unable to run on this repository (account billing lock), so CI will not check your PR. Until that is resolved, validate locally before pushing:
+
+```bash
+scripts/validate_local.sh
+```
+
+The script mirrors the CI checks: the book contracts audit, YAML validation, large-file and secrets scans, and the chapter R code parse test (when R is installed). Add `--render` to also run a full `quarto render` with the same render-time regression gate CI uses. Checks whose tools are missing on your machine are reported as SKIP rather than failing.
+
 ## Style Guidelines
 
 ### Code Style

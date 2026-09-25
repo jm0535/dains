@@ -56,6 +56,14 @@ By the end of this chapter, you will be able to:
 
 Chapter 4 set up the logic of testing. This chapter goes through the actual tests you will reach for in practice. T-tests when you have two groups. ANOVA when you have more. Non-parametric versions of both when the data refuse to behave. Correlation and regression when you care about relationships rather than differences. By the end you should be able to pick the right test for a given question and run it without second-guessing yourself.
 
+::: {.callout-important}
+## Two issues that no test can hide
+
+**Missing data.** First describe where values are missing and why they might be missing. Complete-case analysis is defensible only when its assumptions are plausible. Distinguish missing completely at random, missing at random conditional on observed variables, and missing not at random; consider sensitivity analyses or multiple imputation when the missingness could change the conclusion.
+
+**Many comparisons.** If you test many outcomes, groups, or subgroups, at least one small p-value becomes likely by chance. Pre-specify primary comparisons where possible, separate planned contrasts from exploratory analyses, and use an appropriate adjustment such as Holm's procedure or false-discovery-rate control. Report the number of comparisons and focus on effect sizes and intervals rather than selecting only the most significant result.
+:::
+
 ## Choosing the right statistical test
 
 There is no single answer to "which test should I use?". It depends on a few things, and once you can answer them, the choice is usually obvious:
@@ -1443,7 +1451,7 @@ In the next part of the book, we will shift our focus to **Data Visualization**,
 
 ### Applied (using book datasets)
 
-2.  **ANOVA vs. Kruskal-Wallis**: Using `../data/agriculture/crop_yields.csv`, compare maize yields between continents using both ANOVA and the Kruskal-Wallis test. Which is more appropriate, and why? Justify with assumption checks (Shapiro-Wilk, Levene's test).
+2.  **ANOVA vs. Kruskal-Wallis**: Using `../data/agriculture/crop_yields.csv`, compare maize yields between continents using both ANOVA and the Kruskal-Wallis test. Which is more appropriate, and why? Use plots and residual diagnostics; treat Shapiro-Wilk and Levene's test as supporting evidence rather than automatic pass/fail gates.
 
 3.  **Correlation comparison**: Examine the relationship between potato and rice yields. Calculate both Pearson and Spearman correlations and explain which is more appropriate given the data's distribution.
 
@@ -1451,7 +1459,7 @@ In the next part of the book, we will shift our focus to **Data Visualization**,
 
 5.  **Time series**: Perform a Mann-Kendall trend test on wheat yields for China and compare the trend slope with that of the United States.
 
-6.  **Two-group comparison**: Using `../data/entomology/insects.csv`, compare two groups using an appropriate statistical test (justify your choice of parametric vs. non-parametric).
+6.  **Two-group comparison**: Using `../data/entomology/insects.csv` (animal-shelter outcomes, not insect measurements), choose a numeric state-count variable and compare two outcome groups or years. Explain the observational unit and why the test is appropriate.
 
 7.  **Multiple regression**: Using `../data/economics/economic.csv`, fit a multiple regression model to predict coffee quality scores and interpret the slope, R-squared value, and residual diagnostics.
 

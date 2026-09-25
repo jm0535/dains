@@ -131,7 +131,10 @@ execute:
   eval: true
   freeze: auto
   cache: true
-  error: false
+  # Fail the build when an evaluated code chunk errors. Examples that require
+  # optional software or external services must opt out explicitly with
+  # eval: false and explain how to run them locally.
+  error: true
 
 knitr:
   opts_chunk:

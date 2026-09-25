@@ -137,12 +137,30 @@ Each chapter ends with exercises to reinforce learning:
 - **Applied** problems that use the book's bundled datasets in `data/`
 - **Reporting** prompts that ask you to communicate your results
 
-Worked solutions are not bundled with the book — by design. Working through
-an exercise, inspecting your output, and iterating is the fastest way to
-build real fluency. If you get stuck, revisit the relevant section of the
-chapter or open an issue at
+Worked solutions are not bundled with the student-facing book — by design.
+Instructor solutions and rubrics are maintained separately so that learners
+can work before looking at an answer. Each exercise should produce a stated
+artifact (a plot, table, model summary, or short interpretation), and readers
+should report the estimand, uncertainty, and limitation rather than only a
+p-value. If you get stuck, revisit the relevant section or open an issue at
 [github.com/jm0535/dains/issues](https://github.com/jm0535/dains/issues)
 to discuss your approach with other readers.
+
+## Capstone project
+
+After Chapter 9, complete one end-to-end analysis rather than treating the
+chapters as a menu of disconnected techniques. Choose a dataset and:
+
+1. State a descriptive, predictive, or causal question and define the observational unit and estimand.
+2. Audit the data source, license, schema, missingness, and sampling design.
+3. Explore the data with at least one table and two complementary plots.
+4. Choose a model or test based on the design and report an effect estimate with an uncertainty interval.
+5. Validate assumptions and, for prediction, use resampling that matches the intended deployment setting.
+6. Write a short Quarto report containing methods, results, limitations, and reproducible code.
+
+A strong submission explains why the analysis is appropriate, not just whether a
+p-value is below 0.05. Instructors can assess it with the rubric in the
+companion solutions materials.
 
 ## Prerequisites
 
@@ -155,7 +173,7 @@ To get the most out of this book, you should have:
 
 ## Book Structure
 
-The book is organized into four main parts:
+The book is organized into six parts, matching the navigation in the online edition:
 
 ### Part I: Getting Started
 - Introduction to data analysis in natural sciences
@@ -172,11 +190,20 @@ The book is organized into four main parts:
 - Creating publication-quality graphics
 - Advanced visualization techniques
 
-### Part IV: Advanced Topics
+### Part IV: Statistical Modeling
 - Regression analysis
-- Modeling workflows with tidymodels
-- Conservation applications
-- Special topics in natural sciences
+- Model diagnostics and validation
+- Mixed-effects, generalized, and machine-learning workflows
+
+### Part V: Applied Ecology
+- Species distribution and spatial analysis
+- Monitoring, conservation planning, and decision-making
+
+### Part VI: R in Context
+- Choosing between R environments and companion tools
+- Reproducible integrations with Python, databases, and applications
+
+Chapter 11 is intentionally more reference-like and may be read as an optional appendix after the core analysis chapters.
 
 ## Companion Resources
 

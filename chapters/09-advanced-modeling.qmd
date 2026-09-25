@@ -21,7 +21,7 @@ By the end of this chapter, you will be able to:
 
 ## Introduction
 
-This chapter is about two things that did not fit neatly into earlier ones. The first is model interpretation: when you fit a random forest or a gradient boost and it predicts well, how do you actually explain what it is doing? The second is time series, which behaves badly in ordinary regression because the observations are not independent. Both come up often enough in real ecological work that ignoring them is no longer a defensible choice.
+This chapter is about two things that did not fit neatly into earlier ones. Keep the prediction goal explicit: validation must mimic the setting in which a model will be used. Random folds can be optimistic when observations are ordered in time, clustered by site, or repeated within subjects; use blocked, grouped, or rolling resampling where appropriate [@kuhn2022tidy]. The first is model interpretation: when you fit a random forest or a gradient boost and it predicts well, how do you actually explain what it is doing? The second is time series, which behaves badly in ordinary regression because the observations are not independent. Both come up often enough in real ecological work that ignoring them is no longer a defensible choice.
 
 ## Model interpretation and explainability
 

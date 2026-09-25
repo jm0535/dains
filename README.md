@@ -38,7 +38,7 @@ The book covers:
 
 ## 📊 Datasets
 
-All datasets live in the `data/` directory, organized by scientific discipline. A few of the directory names reflect the chapter context in which the data are used rather than the literal subject of the CSV file (the files were sourced from public datasets and kept under their working names so chapter references stay stable). See [`data/MISMATCHES.md`](data/MISMATCHES.md) for the full audit.
+All datasets live in the `data/` directory, organized by scientific discipline. A few of the directory names reflect the chapter context in which the data are used rather than the literal subject of the CSV file (the files were sourced from public datasets and kept under their working names so chapter references stay stable). See [`data/DATA_DICTIONARY.md`](data/DATA_DICTIONARY.md) for the actual columns and teaching role, and [`data/MISMATCHES.md`](data/MISMATCHES.md) for the full audit.
 
 | Directory | Chapter use | Actual data |
 |-----------|-------------|-------------|
@@ -75,7 +75,7 @@ Each dataset directory contains a `CITATION.txt` with source attribution. If you
 2. **Install required R packages:**
 
    ```r
-   source("install_packages.R")
+   source("scripts/install_packages.R")
    ```
 
    Or manually install core packages:

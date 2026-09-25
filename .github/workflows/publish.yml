@@ -80,6 +80,9 @@ jobs:
           # Use renv if lockfile is present
           use-renv: true
 
+      - name: Audit book contracts
+        run: python3 scripts/book_audit.py
+
       - name: Run chapter tests
         if: hashFiles('tests/test-chapters.R') != ''
         run: |

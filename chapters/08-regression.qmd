@@ -19,7 +19,7 @@ By the end of this chapter, you will be able to:
 
 ## Introduction
 
-Regression is how we describe a relationship between variables with an equation we can poke at. How much does tree height change per millimetre of rainfall? Does adding fertiliser actually increase yield once you account for soil type? This chapter covers the workhorse: linear regression with one predictor, multiple linear regression when you have several, and logistic regression when the outcome is yes-or-no instead of a number. We will also do the diagnostic work that separates a model worth quoting from one that just happens to fit your sample.
+Regression is how we describe a relationship between variables with an equation we can poke at. The interpretation depends on the design: an observational regression coefficient is generally an adjusted association, not automatically a causal effect [@zuur2009mixed; @bolker2009generalized]. How much does tree height change per millimetre of rainfall? Does adding fertiliser actually increase yield once you account for soil type? This chapter covers the workhorse: linear regression with one predictor, multiple linear regression when you have several, and logistic regression when the outcome is yes-or-no instead of a number. We will also do the diagnostic work that separates a model worth quoting from one that just happens to fit your sample.
 
 ## Linear regression
 
@@ -533,6 +533,16 @@ Report odds ratios with confidence intervals, an AUC, and at least one calibrati
 So far we have done the base-R version of regression. `lm()` handles continuous outcomes, with one predictor or several, and gives you coefficients, confidence intervals, and a diagnostic panel you can read in about a minute. `glm()` extends the same machinery to binary outcomes through the logit link, with odds ratios and an ROC curve as the natural way to report what came out.
 
 The next section does the same modelling with tidymodels. The maths is identical. What changes is the scaffolding around it: explicit train/test splits, a recipe for preprocessing, a workflow object that bundles model and recipe together, and built-in support for resampling and tuning. For one quick `lm()` call it is overkill. For comparing several models, or for anything you plan to deploy or revisit, it pays for itself fast.
+
+## Inference and prediction are different goals
+
+The regression examples above estimate associations and explain how a model relates predictors to an outcome. The tidymodels workflow below is primarily for prediction. A useful predictive score does not establish causation, and a statistically precise coefficient does not guarantee accurate predictions for new data. State the goal before choosing the workflow.
+
+For prediction, keep all preprocessing, feature selection, and tuning inside the resampling workflow to avoid leakage. Random folds are inappropriate when future observations, sites, plots, or species must be predicted: use temporal, spatial, or grouped resampling that mirrors deployment. Report a baseline model, uncertainty, calibration, and metrics suited to the outcome; do not rely on accuracy alone for imbalanced classes.
+
+::: {.callout-warning}
+A rule such as “ten events per predictor” is only a rough historical heuristic, not a universal sample-size guarantee. Check for separation, sparse data, unstable estimates, calibration, and out-of-sample performance. Consider penalized models or simpler predictors when information is limited.
+:::
 
 ## Regression with the tidymodels framework
 

@@ -26,6 +26,12 @@ By the end of this chapter, you will be able to:
 5. Decide which integrations are mature enough for coursework and which are still experimental.
 :::
 
+::: {.callout-warning}
+## Version-sensitive chapter
+
+This chapter describes tools whose interfaces, release status, and licensing can change quickly. The examples are intentionally illustrative and are not executed during the normal book build. Check the official documentation and the “last verified” date before using installation commands in a course or production project.
+:::
+
 RStudio is not the only way to write R, and R does not work alone. By 2026 the R ecosystem includes a point-and-click GUI used in undergraduate teaching (jamovi), a Bayesian-friendly cousin (JASP), a new flagship IDE from Posit (Positron), polyglot tools that treat R and Python as equals (Quarto, reticulate, VS Code), and a small zoo of ways to expose R to other languages (plumber, Rserve, rpy2). This chapter walks through the integrations that natural-science researchers actually reach for, organised around the question students keep asking: *what should I use, and when?*
 
 ::: {.callout-tip}

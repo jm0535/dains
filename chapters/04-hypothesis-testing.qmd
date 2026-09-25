@@ -19,7 +19,13 @@ By the end of this chapter, you will be able to:
 6.  Calculate and interpret confidence intervals for population parameters
 :::
 
-Hypothesis testing is how we ask a number whether it really means anything. You measure something in a sample, you see a pattern, and the test tells you whether that pattern is plausibly just noise. For ecologists and foresters that question comes up constantly. Are these two plots actually different, or did we just happen to draw a few unusual trees? Did the treatment work, or are we kidding ourselves?
+::: {.callout-important}
+## Start with the design, not the test
+
+Before choosing a test, identify the observational unit, the sampling unit, the response, the explanatory variable, the estimand, and the source of replication. A test cannot repair pseudoreplication, confounding, or biased sampling. Decide whether your question is descriptive, predictive, or causal, and report an effect estimate with uncertainty even when you also report a p-value.
+:::
+
+Hypothesis testing is how we ask a number whether it really means anything. It is one component of statistical inference, not a substitute for a sound sampling design or an estimate of scientific importance [@gelman2006data; @ioannidis2005most]. You measure something in a sample, you see a pattern, and the test tells you whether that pattern is plausibly just noise. For ecologists and foresters that question comes up constantly. Are these two plots actually different, or did we just happen to draw a few unusual trees? Did the treatment work, or are we kidding ourselves?
 
 ```{r}
 #| label: setup-hypothesis
@@ -112,7 +118,7 @@ To reduce Type II errors and increase the power of your study:
 - Reduce measurement variability: Use standardized protocols and calibrated instruments
 - Use paired or repeated measures designs when appropriate: These control for individual variation
 - Conduct a power analysis before data collection: This helps determine the minimum sample size needed
-- Consider using one-tailed tests when appropriate: These provide more power than two-tailed tests when the direction of effect is known
+- Use a one-tailed test only when the direction is specified before seeing the data, the opposite direction would not support the scientific claim, and that choice is justified in the protocol. Do not switch to one-tailed testing after seeing the result.
 - Report confidence intervals: These provide information about effect size and precision
 :::
 
@@ -566,7 +572,7 @@ In a real forestry study this could be a fertilization trial, a pruning regime, 
 
 ## Checking the normality assumption
 
-The t-test assumes the data are roughly normal. With large samples that assumption barely matters (the central limit theorem does the heavy lifting), but with smaller samples it is worth a quick look.
+For a two-sample t-test, the key distributional assumption concerns the outcome within each independent group (or, for a paired t-test, the within-pair differences). Independence comes from the sampling and experimental design; it cannot be established with a normality test. With larger samples, inference about a mean is often fairly robust to moderate non-normality, but strong skew, outliers, clustering, or unequal variance still require attention.
 
 ```{r}
 #| label: normality-tests
@@ -625,7 +631,7 @@ This code demonstrates how to test the normality assumption:
 1. **Shapiro-Wilk Test**:
    - `shapiro.test()` performs a statistical test for normality
    - The null hypothesis is that the data follows a normal distribution
-   - A p-value > 0.05 suggests the data does not significantly deviate from normality
+   - A p-value > 0.05 means the test did not detect a departure from normality; it does not prove that the data are normal
 
 2. **Visual Assessment**:
    - Quantile-Quantile (Q-Q) plots compare the data's quantiles to theoretical quantiles from a normal distribution
@@ -755,7 +761,7 @@ The thing to take away is that hypothesis testing is one tool, not the whole too
 
 ## Exercises
 
-1. Using the forest inventory dataset (`../data/forestry/forest_inventory.csv`), perform a two-sample t-test to compare tree measurements between two different species or sites.
+1. Using `../data/forestry/forest_inventory.csv` (Star Wars character measurements used as a numeric teaching example), compare character height between two species. State clearly that this is an illustrative dataset, not a forestry study.
 
 2. For the biodiversity dataset (`../data/ecology/biodiversity.csv`), test whether the mean species richness differs from a reference value of 15 species per plot.
 
@@ -763,6 +769,6 @@ The thing to take away is that hypothesis testing is one tool, not the whole too
 
 4. For any dataset of your choice, check the normality assumption using both visual methods (Q-Q plot) and statistical tests (Shapiro-Wilk).
 
-5. Calculate and interpret a 95% confidence interval for a parameter of interest in the environmental dataset (`../data/environmental/climate_data.csv`).
+5. Using `../data/environmental/climate_data.csv` (Palmer Penguins morphology), calculate and interpret a 95% confidence interval for mean body mass or mean flipper length. Confirm the column names before analysing.
 
 6. Design a hypothesis test for a research question of your choice related to natural sciences. Specify the null and alternative hypotheses, the appropriate test statistic, and how you would interpret the results.

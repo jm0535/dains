@@ -699,7 +699,7 @@ For natural sciences research, maintain reproducibility by:
 8. **Data Provenance**: Document data sources and processing steps
 
 ```{r}
-#| label: session-info
+#| label: session-info-reproducibility
 # Record your computational environment
 sessionInfo()
 ```

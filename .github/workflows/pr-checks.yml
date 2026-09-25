@@ -64,6 +64,9 @@ jobs:
             exit 1
           fi
 
+      - name: Audit book contracts
+        run: python3 scripts/book_audit.py
+
       - name: Install testing dependencies
         run: |
           install.packages(c("testthat", "lintr"))
